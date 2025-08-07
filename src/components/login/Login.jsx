@@ -9,7 +9,7 @@ import {
   GoogleAuthProvider,
 } from "firebase/auth";
 import { auth } from "../../auth";
-import { Mail, Lock, User, ArrowRight } from "lucide-react";
+import { Mail, Lock, User, ArrowRight, CircleAlert } from "lucide-react";
 import { toast } from 'react-toastify';
 const provider = new GoogleAuthProvider();
 
@@ -19,7 +19,11 @@ function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState({
+    emailErrorMessage: "",
+    passwordErrorMessage: "",
+    usernameErrorMessage: ""
+  });
 
   // Check if user is already logged in
   useEffect(() => {
@@ -31,12 +35,31 @@ function Login() {
     return () => unsubscribe();
   }, [navigate]);
 
+  const validateForm = () => {
+    const errors = {
+      emailErrorMessage: "",
+      passwordErrorMessage: "",
+      usernameErrorMessage: ""
+    };
+
+    if (!email) {
+      errors.emailErrorMessage = "Email is required";
+    }
+    if (!password) {
+      errors.passwordErrorMessage = "Password is required";
+    }
+    if (!isLogin && !username) {
+      errors.usernameErrorMessage = "Full name is required";
+    }
+
+    setErrorMessage(errors);
+    return !Object.values(errors).some(error => error !== "");
+  };
+
   const handleAuth = async (e) => {
     e.preventDefault();
-    setErrorMessage("");
 
-    if (!email || !password) {
-      setErrorMessage("Email and password are required.");
+    if (!validateForm()) {
       return;
     }
 
@@ -155,9 +178,20 @@ function Login() {
                     type="text"
                     placeholder="Full Name"
                     value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    onChange={(e) => {
+                      setUsername(e.target.value);
+                      if (errorMessage.usernameErrorMessage) {
+                        setErrorMessage({ ...errorMessage, usernameErrorMessage: "" });
+                      }
+                    }}
                     className="w-full pl-10 pr-4 py-3 rounded-lg bg-white/80 focus:outline-none focus:ring-2 focus:ring-pink-300"
                   />
+                  {errorMessage.usernameErrorMessage && (
+                    <div className="flex gap-2.5 my-2.5 text-pink-500 items-center">
+                      <CircleAlert size={16} />
+                      <span className="text-sm">{errorMessage.usernameErrorMessage}</span>
+                    </div>
+                  )}
                 </div>
               )}
 
@@ -170,9 +204,21 @@ function Login() {
                   type="email"
                   placeholder="Email Address"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 rounded-lg bg-white/80 focus:outline-none focus:ring-2 focus:ring-pink-300"
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    if (errorMessage.emailErrorMessage) {
+                      setErrorMessage({ ...errorMessage, emailErrorMessage: "" });
+                    }
+                  }}
+                  className={`w-full pl-10 pr-4 py-3 rounded-lg bg-white/80 focus:outline-none focus:ring-2 focus:ring-pink-300 ${errorMessage.emailErrorMessage ? 'border-2 border-pink-500' : ''
+                    }`}
                 />
+                {errorMessage.emailErrorMessage && (
+                  <div className="flex gap-2.5 my-2.5 text-pink-500 items-center">
+                    <CircleAlert size={16} />
+                    <span className="text-sm">{errorMessage.emailErrorMessage}</span>
+                  </div>
+                )}
               </div>
 
               <div className="relative">
@@ -184,14 +230,30 @@ function Login() {
                   type="password"
                   placeholder="Password"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 rounded-lg bg-white/80 focus:outline-none focus:ring-2 focus:ring-pink-300"
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    if (errorMessage.passwordErrorMessage) {
+                      setErrorMessage({ ...errorMessage, passwordErrorMessage: "" });
+                    }
+                  }}
+                  className={`w-full pl-10 pr-4 py-3 rounded-lg bg-white/80 focus:outline-none focus:ring-2 focus:ring-pink-300 ${errorMessage.passwordErrorMessage ? 'border-2 border-pink-500' : ''
+                    }`}
                 />
+                {errorMessage.passwordErrorMessage && (
+                  <div className="flex gap-2.5 my-2.5 text-pink-500 items-center">
+                    <CircleAlert size={16} />
+                    <span className="text-sm">{errorMessage.passwordErrorMessage}</span>
+                  </div>
+                )}
               </div>
 
               <button
                 type="submit"
-                className="w-full bg-gradient-to-r bg-[#e71f1f] hover:bg-[#F8A199] text-white hover:text-black py-3 rounded-lg font-medium shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2"
+                disabled={!email || !password || (!isLogin && !username)}
+                className={`w-full bg-gradient-to-r ${!email || !password || (!isLogin && !username)
+                  ? 'bg-gray-400 cursor-not-allowed'
+                  : 'bg-[#e71f1f] hover:bg-[#F8A199] hover:text-black'
+                  } text-white py-3 rounded-lg font-medium shadow-md transition-all duration-200 flex items-center justify-center gap-2`}
               >
                 {isLogin ? "Sign In" : "Create Account"}
                 <ArrowRight size={18} />
