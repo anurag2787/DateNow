@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import PasswordStrengthBar from "react-password-strength-bar";
+import { Check, X } from "lucide-react";
 import {
   getAuth,
   onAuthStateChanged,
@@ -10,7 +12,7 @@ import {
 } from "firebase/auth";
 import { auth } from "../../auth";
 import { Mail, Lock, User, ArrowRight } from "lucide-react";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 const provider = new GoogleAuthProvider();
 
 function Login() {
@@ -31,10 +33,50 @@ function Login() {
     return () => unsubscribe();
   }, [navigate]);
 
+  function validatePassword(password) {
+    const minLength = 8;
+    const hasUppercase = /[A-Z]/.test(password);
+    const hasLowercase = /[a-z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+    const hasSpecialChar = /[!@#$%^&*()]/.test(password);
+
+    const isValidLength = password.length >= minLength;
+
+    return {
+      isValid:
+        isValidLength &&
+        hasUppercase &&
+        hasLowercase &&
+        hasNumber &&
+        hasSpecialChar,
+      feedback: {
+        length: isValidLength,
+        uppercase: hasUppercase,
+        lowercase: hasLowercase,
+        number: hasNumber,
+        specialChar: hasSpecialChar,
+      },
+    };
+  }
+  const { isValid, feedback } = validatePassword(password);
+
+  const ValidIndicator = ({ val, text }) => {
+    return (
+      <li className="flex items-center gap-2 text-sm">
+        {val ? (
+          <Check className="w-4 h-4 text-green-500" />
+        ) : (
+          <X className="w-4 h-4 text-red-500" />
+        )}
+        <span className={val ? "text-green-600" : "text-gray-600"}>{text}</span>
+      </li>
+    );
+  };
+
+
   const handleAuth = async (e) => {
     e.preventDefault();
     setErrorMessage("");
-
     if (!email || !password) {
       setErrorMessage("Email and password are required.");
       return;
@@ -44,36 +86,43 @@ function Login() {
       if (isLogin) {
         await signInWithEmailAndPassword(auth, email, password);
         toast.success("✅ Logged in successfully!", {
-              position: "top-right",
-              autoClose: 3000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "dark",
-            })
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+        navigate("/");
+        setIsLogin(true);
       } else {
-        const userCredential =await createUserWithEmailAndPassword(auth, email, password);
-        const user = userCredential.user;
-        user.displayName = username;
+        if (isValid) {
+          const userCredential = await createUserWithEmailAndPassword(
+            auth,
+            email,
+            password
+          );
+          const user = userCredential.user;
+          user.displayName = username;
 
-        // Update the user's profile with their full name
-        await updateProfile(user, { displayName: username });
-        
-        toast.success("🎉 Registration successful!", {
-              position: "top-right",
-              autoClose: 3000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "dark",
-            });
+          // Update the user's profile with their full name
+          await updateProfile(user, { displayName: username });
+          toast.success("🎉 Registration successful!", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+          });
+          navigate("/");
+          setIsLogin(true);
+        }
       }
-      navigate("/");
-      setIsLogin(true);
     } catch (error) {
       setErrorMessage(error.message);
     }
@@ -83,15 +132,15 @@ function Login() {
     try {
       await signInWithPopup(auth, provider);
       toast.success("✅ Logged in successfully!", {
-              position: "top-right",
-              autoClose: 3000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "dark",
-            })
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
       navigate("/talk");
     } catch (error) {
       setErrorMessage(error.message);
@@ -187,6 +236,29 @@ function Login() {
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full pl-10 pr-4 py-3 rounded-lg bg-white/80 focus:outline-none focus:ring-2 focus:ring-pink-300"
                 />
+                <PasswordStrengthBar password={password} />
+                <div>
+                  <ValidIndicator
+                    val={feedback.uppercase}
+                    text={"At least one uppercase"}
+                  />
+                  <ValidIndicator
+                    val={feedback.lowercase}
+                    text={"At least one lowercase"}
+                  />
+                  <ValidIndicator
+                    val={feedback.number}
+                    text={"At least one number"}
+                  />
+                  <ValidIndicator
+                    val={feedback.specialChar}
+                    text={"At least one special character"}
+                  />
+                  <ValidIndicator
+                    val={feedback.length}
+                    text={"Minimum 8 characters"}
+                  />
+                </div>
               </div>
 
               <button
