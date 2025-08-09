@@ -240,23 +240,23 @@ function Login() {
                 <div>
                   <ValidIndicator
                     val={feedback.uppercase}
-                    text={"At least one uppercase"}
+                    text={"At least one uppercase letter (A–Z)"}
                   />
                   <ValidIndicator
                     val={feedback.lowercase}
-                    text={"At least one lowercase"}
+                    text={"At least one lowercase letter (a–z)"}
                   />
                   <ValidIndicator
                     val={feedback.number}
-                    text={"At least one number"}
+                    text={"At least one number (0–9)"}
                   />
                   <ValidIndicator
                     val={feedback.specialChar}
-                    text={"At least one special character"}
+                    text={"At least one special character (e.g., !@#$%^&*)"}
                   />
                   <ValidIndicator
                     val={feedback.length}
-                    text={"Minimum 8 characters"}
+                    text={"Minimum length of 8 characters"}
                   />
                 </div>
               </div>
