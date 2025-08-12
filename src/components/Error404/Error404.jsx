@@ -11,7 +11,7 @@ const Error404 = () => {
           <h1 className="text-3xl md:text-5xl font-bold text-red-600 md:mt-4">
             {`404💔- Love Not Found `}
           </h1>
-          <h2 className="text-lg md:text-2xl text-[#010E23] mt-3 md:mt-6">
+          <h2 className="text-sm font-medium md:text-2xl text-[#010E23] mt-3 md:mt-6">
             {`Oops, looks like the page ghosted you!`}
           </h2>
           <p className="text-sm md:text-md text-[#010E23] mt-2 ">
