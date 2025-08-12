@@ -28,6 +28,11 @@ function Chat() {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [history]);
   
+  //Delay with random time between min and max milliseconds
+  const randomDelay = (min, max) => {
+    return new Promise(resolve => setTimeout(resolve, Math.floor(Math.random() * (max - min + 1) + min)));
+  };
+
 const SYSTEM_PROMPTS = [
   `You are ${namevalue}, a ${agevalue}-year-old ${gendervalue}, and you are here to engage in friendly conversations. Speak politely, as if you're talking to a friend.`,
   `Engage in natural conversations as ${namevalue}, offering friendly, supportive, and respectful responses. Keep things lighthearted and healthy, just like a good friend would.`,
@@ -177,7 +182,15 @@ const SYSTEM_PROMPTS = [
 
     async function attemptSendMessage() {
       try {
-        const conversationHistory = history.slice(-10); // Keep last 10 messages for context
+        setHistory(prev => [
+          ...prev,
+          { role: "user", text: messageToSend },
+        ]);
+        setInput(""); 
+        const conversationHistory = history
+          .concat({ role: "user", text: messageToSend })
+          .slice(-10);
+
         const prompt = `Conversation Context:
         ${conversationHistory.map((entry) => `${entry.role}: ${entry.text}`).join("\n")}
         User: ${messageToSend}
@@ -188,9 +201,7 @@ const SYSTEM_PROMPTS = [
           url: `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`,
           method: "post",
           headers: { "Content-Type": "application/json" },
-          data: {
-            contents: [{ role: "user", parts: [{ text: prompt }] }],
-          },
+          data: { contents: [{ role: "user", parts: [{ text: prompt }] }] },
           timeout: 10000
         });
 
@@ -202,13 +213,13 @@ const SYSTEM_PROMPTS = [
           response.data.candidates[0].content.parts[0].text
         );
 
+        await randomDelay(1000, 3000);
+
         setHistory(prev => [
           ...prev,
-          { role: "user", text: messageToSend },
           { role: "bot", text: botResponse },
         ]);
 
-        setInput("");
         chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
 
       } catch (error) {
@@ -220,7 +231,7 @@ const SYSTEM_PROMPTS = [
           return attemptSendMessage();
         } else {
           setAnswer("Failed to send message. Please try again.");
-          setInput(messageToSend); // Preserve user's message
+          setInput(messageToSend); 
         }
       }
     }
