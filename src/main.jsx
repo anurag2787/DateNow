@@ -13,11 +13,9 @@ import Talk from './components/Talk/Talk.jsx'
 import Login from './components/login/Login.jsx'
 import PersonalityCheck from './components/personalitycheck/personalitycheck.jsx'
 import Error404 from './components/Error404/Error404.jsx'
-import Cursor from './components/Cursor/Cursor.jsx'
 
 const router=createBrowserRouter(
   createRoutesFromElements(
-    <>
       <Route path='/' element={<Layout/>}>
         <Route path='' element={<Home />} />
         <Route path='details' element={<Details />} />
@@ -28,14 +26,8 @@ const router=createBrowserRouter(
         <Route path='Talk' element={<Talk />} />
         <Route path='login' element={<Login />} />
         <Route path='personality' element={<PersonalityCheck />} />
+        <Route path='*' element={<Error404 />} />
       </Route>
-      <Route path='*' element={
-        <>
-          <Cursor />
-          <Error404 />
-        </>
-      } />
-    </>
   )
 )
 
