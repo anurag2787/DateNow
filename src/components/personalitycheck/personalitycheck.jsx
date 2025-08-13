@@ -1,11 +1,12 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTypewriter, Cursor } from "react-simple-typewriter";
+import { useAuth } from '../../context/AuthContext';
 import '../../index.css';
 
 const PersonalityCheck = () => {
   const navigate = useNavigate();
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const { user } = useAuth();
   const [userResponses, setUserResponses] = useState([]);
   const [selectedOption, setSelectedOption] = useState(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -31,7 +32,7 @@ const PersonalityCheck = () => {
   });
 
   // Potential questions bank with multiple choices and category tags
-  const questionBank = [
+  const questionBank = useMemo(() => [
     {
       id: 1,
       question: "What's your ideal first date? 🍷",
@@ -284,7 +285,7 @@ const PersonalityCheck = () => {
         { text: "Creative outlet like art or music", value: "creative", traits: ["expressive", "imaginative"] }
       ]
     }
-  ];
+  ], []);
 
   // Welcome message
   const welcomeMessage = "Hey! 👋 Before I send you out into the dating jungle, I wanna know you a little better. Ready? 😉 First question coming up...";
@@ -292,30 +293,8 @@ const PersonalityCheck = () => {
   // Personality trait tracking
   const [traitScores, setTraitScores] = useState({});
 
-  // Initialize with welcome message and prepare first questions
-  useEffect(() => {
-    const textToType = welcomeMessage;
-    let timer;
-
-    if (typingIndex < textToType.length) {
-      timer = setTimeout(() => {
-        setDisplayedText(prev => prev + textToType[typingIndex]);
-        setTypingIndex(typingIndex + 1);
-      }, 30); // typing speed
-    } else {
-      setIsTyping(false);
-      
-      // If we haven't initialized questions yet, do it now
-      if (questionsQueue.length === 0 && !personalityResult) {
-        initializeQuestions();
-      }
-    }
-
-    return () => clearTimeout(timer);
-  }, [typingIndex, questionsQueue.length, personalityResult]);
-
   // Initialize questions intelligently
-  const initializeQuestions = () => {
+  const initializeQuestions = useCallback(() => {
     // Start with key personality assessment questions
     const initialCategoriesNeeded = ['sociability', 'approach', 'values', 'expression', 'conflict'];
     
@@ -349,9 +328,29 @@ const PersonalityCheck = () => {
     if (allQuestions.length > 0) {
       setQuestionsQueue(allQuestions);
     }
-  };
+  }, [questionBank]);
 
+  // Initialize with welcome message and prepare first questions
+  useEffect(() => {
+    const textToType = welcomeMessage;
+    let timer;
 
+    if (typingIndex < textToType.length) {
+      timer = setTimeout(() => {
+        setDisplayedText(prev => prev + textToType[typingIndex]);
+        setTypingIndex(typingIndex + 1);
+      }, 30); // typing speed
+    } else {
+      setIsTyping(false);
+      
+      // If we haven't initialized questions yet, do it now
+      if (questionsQueue.length === 0 && !personalityResult) {
+        initializeQuestions();
+      }
+    }
+
+    return () => clearTimeout(timer);
+  }, [typingIndex, questionsQueue.length, personalityResult, initializeQuestions]);
 
   const handleOptionSelect = (option) => {
     setSelectedOption(option.value);
@@ -642,7 +641,6 @@ const PersonalityCheck = () => {
   };
 
   const handleStartOver = () => {
-    setCurrentQuestionIndex(0);
     setUserResponses([]);
     setSelectedOption(null);
     setIsAnalyzing(false);
@@ -665,127 +663,149 @@ const PersonalityCheck = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-[#ffdad7] py-10 px-4">
-      <div className="bg-white rounded-xl shadow-2xl w-full max-w-md p-6 relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-2 bg-orange-700"></div>
-        
-        <h2 className="text-2xl font-bold text-black mb-6 text-center">
-          Find Your <span className="text-red-500 font-extrabold">{text}</span>
-          <span className="text-green-800">
-            <Cursor cursorStyle="❤️" />
-          </span>
-        </h2>
-        
-        {isTyping ? (
-          <div className="bg-gray-100 rounded-lg p-4 mb-4">
-            <p className="text-gray-700">{displayedText}<span className="animate-pulse">|</span></p>
-          </div>
-        ) : personalityResult ? (
-          <div className="text-center">
-            <div className="mb-4 p-5 bg-[#ffdad7] rounded-lg">
-              <h3 className="text-xl font-bold text-black mb-2">Your Dating Personality:</h3>
-              <div className="inline-block bg-orange-700 text-white px-4 py-2 rounded-full font-bold text-lg mb-3">
-                {personalityResult.tag}
-              </div>
-              <p className="text-gray-700">{personalityResult.description}</p>
-              
-              {/* New confidence indicator */}
-              <div className="mt-4 bg-white bg-opacity-50 p-2 rounded-lg">
-                <div className="flex items-center justify-between mb-1">
-                  <span className="text-xs text-gray-600">Analysis Confidence</span>
-                  <span className="text-xs font-medium text-gray-700">{personalityResult.confidence}%</span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div 
-                    className="bg-orange-600 h-2 rounded-full" 
-                    style={{ width: `${personalityResult.confidence}%` }}
-                  ></div>
-                </div>
-                <p className="text-xs text-gray-500 mt-1">Based on {userResponses.length} questions</p>
-              </div>
-            </div>
-            
-            <div className="flex flex-col space-y-3 mt-6">
-              <button 
-                onClick={handleStartOver}
-                className="bg-white border border-orange-700 text-orange-700 hover:bg-orange-50 px-4 py-2 rounded-lg font-medium transition duration-200"
+    <div className="flex items-center justify-center min-h-screen bg-[#f8a199] py-10 px-4">
+      {!user ? (
+        <div className="bg-[#ffdad7] h-[75vh] p-5 md:p-11 md:pt-12 my-10 pt-12 rounded-xl shadow-2xl mx-5 md:mx-0 overflow-auto flex flex-col justify-between md:w-[1200px]">
+          <div className="flex flex-col items-center justify-center h-full">
+            <div className="text-center mb-6">
+              <h2 className="text-2xl font-bold text-[#e71f1f] mb-3 md:text-4xl">
+                Want to Discover Your Personality?
+              </h2>
+              <p className="text-lg mb-6 max-w-md md:text-xl font-medium text-black">
+                Ready to explore your dating personality and get personalized insights? To
+                access this feature, please log in to your account first.
+              </p>
+              <button
+                onClick={() => navigate("/login")}
+                className="bg-[#e71f1f] hover:bg-[#F8A199] text-white hover:text-black font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105"
               >
-                Try Again
-              </button>
-              <button 
-                onClick={handleContinue}
-                className="bg-orange-700 text-white px-4 py-2 rounded-lg font-medium hover:bg-orange-600 transition duration-200"
-              >
-                Continue to Matches
+                Go to Login Page
               </button>
             </div>
           </div>
-        ) : isAnalyzing ? (
-          <div className="text-center py-8">
-            <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange-700 mb-4"></div>
-            <p className="text-gray-700 font-medium">Analyzing your personality...</p>
-            <p className="text-gray-500 text-sm mt-2">This might take a moment</p>
-          </div>
-        ) : (
-          <>
-            {questionsQueue.length > 0 && (
-              <>
-                <div className="bg-gray-100 rounded-lg p-4 mb-4">
-                  <p className="text-gray-700 font-semibold">{questionsQueue[0].question}</p>
+        </div>
+      ) : (
+        <div className="bg-white rounded-xl shadow-2xl w-full max-w-md p-6 relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-2 bg-orange-700"></div>
+          
+          <h2 className="text-2xl font-bold text-black mb-6 text-center">
+            Find Your <span className="text-red-500 font-extrabold">{text}</span>
+            <span className="text-green-800">
+              <Cursor cursorStyle="❤️" />
+            </span>
+          </h2>
+          
+          {isTyping ? (
+            <div className="bg-gray-100 rounded-lg p-4 mb-4">
+              <p className="text-gray-700">{displayedText}<span className="animate-pulse">|</span></p>
+            </div>
+          ) : personalityResult ? (
+            <div className="text-center">
+              <div className="mb-4 p-5 bg-[#ffdad7] rounded-lg">
+                <h3 className="text-xl font-bold text-black mb-2">Your Dating Personality:</h3>
+                <div className="inline-block bg-orange-700 text-white px-4 py-2 rounded-full font-bold text-lg mb-3">
+                  {personalityResult.tag}
                 </div>
+                <p className="text-gray-700">{personalityResult.description}</p>
                 
-                <div className="mb-4 space-y-2">
-                  {questionsQueue[0].options.map((option, index) => (
-                    <div 
-                      key={index} 
-                      className={`p-3 rounded-lg border-2 cursor-pointer transition duration-200 ${
-                        selectedOption === option.value 
-                          ? 'border-orange-700 bg-orange-50' 
-                          : 'border-gray-200 hover:border-orange-300'
-                      }`}
-                      onClick={() => handleSelectOption(option.value)}
-                    >
-                      <p className="text-gray-700">{option.text}</p>
-                    </div>
-                  ))}
-                </div>
-                
-                <div className="flex items-center justify-between">
-                  <div className="text-sm text-gray-500 flex items-center">
-                    <span className="mr-1">Question {userResponses.length + 1}</span>
-                    {minQuestionsAsked && 
-                      <span className="bg-green-100 text-green-700 text-xs px-2 py-0.5 rounded-full">
-                        min. reached
-                      </span>
-                    }
+                {/* New confidence indicator */}
+                <div className="mt-4 bg-white bg-opacity-50 p-2 rounded-lg">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-xs text-gray-600">Analysis Confidence</span>
+                    <span className="text-xs font-medium text-gray-700">{personalityResult.confidence}%</span>
                   </div>
-                  <button
-                    className="bg-orange-700 text-white px-4 py-2 rounded-lg font-medium hover:bg-orange-600 transition duration-200 disabled:opacity-50"
-                    onClick={handleSubmitResponse}
-                    disabled={selectedOption === null}
-                  >
-                    Next Question
-                  </button>
-                </div>
-              </>
-            )}
-            
-            {userResponses.length > 0 && (
-              <div className="mt-6">
-                <h3 className="text-sm font-medium text-gray-700 mb-2">Your previous answers:</h3>
-                <div className="space-y-2 max-h-40 overflow-y-auto flex-hidescroll">
-                  {userResponses.map((response, index) => (
-                    <div key={index} className="bg-[#ffdad7] p-2 rounded text-sm">
-                      <span className="font-medium">{index + 1}. {response.question}</span>
-                      <p className="text-gray-700 mt-1">{response.answer}</p>
-                    </div>
-                  ))}
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div 
+                      className="bg-orange-600 h-2 rounded-full" 
+                      style={{ width: `${personalityResult.confidence}%` }}
+                    ></div>
+                  </div>
+                  <p className="text-xs text-gray-500 mt-1">Based on {userResponses.length} questions</p>
                 </div>
               </div>
-            )}
-          </>
-        )}
-      </div>
+              
+              <div className="flex flex-col space-y-3 mt-6">
+                <button 
+                  onClick={handleStartOver}
+                  className="bg-white border border-orange-700 text-orange-700 hover:bg-orange-50 px-4 py-2 rounded-lg font-medium transition duration-200"
+                >
+                  Try Again
+                </button>
+                <button 
+                  onClick={handleContinue}
+                  className="bg-orange-700 text-white px-4 py-2 rounded-lg font-medium hover:bg-orange-600 transition duration-200"
+                >
+                  Continue to Matches
+                </button>
+              </div>
+            </div>
+          ) : isAnalyzing ? (
+            <div className="text-center py-8">
+              <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange-700 mb-4"></div>
+              <p className="text-gray-700 font-medium">Analyzing your personality...</p>
+              <p className="text-gray-500 text-sm mt-2">This might take a moment</p>
+            </div>
+          ) : (
+            <>
+              {questionsQueue.length > 0 && (
+                <>
+                  <div className="bg-gray-100 rounded-lg p-4 mb-4">
+                    <p className="text-gray-700 font-semibold">{questionsQueue[0].question}</p>
+                  </div>
+                  
+                  <div className="mb-4 space-y-2">
+                    {questionsQueue[0].options.map((option, index) => (
+                      <div 
+                        key={index} 
+                        className={`p-3 rounded-lg border-2 cursor-pointer transition duration-200 ${
+                          selectedOption === option.value 
+                            ? 'border-orange-700 bg-orange-50' 
+                            : 'border-gray-200 hover:border-orange-300'
+                        }`}
+                        onClick={() => handleOptionSelect(option.value)}
+                      >
+                        <p className="text-gray-700">{option.text}</p>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <div className="text-sm text-gray-500 flex items-center">
+                      <span className="mr-1">Question {userResponses.length + 1}</span>
+                      {minQuestionsAsked && 
+                        <span className="bg-green-100 text-green-700 text-xs px-2 py-0.5 rounded-full">
+                          min. reached
+                        </span>
+                      }
+                    </div>
+                    <button
+                      className="bg-orange-700 text-white px-4 py-2 rounded-lg font-medium hover:bg-orange-600 transition duration-200 disabled:opacity-50"
+                      onClick={handleNextQuestion}
+                      disabled={selectedOption === null}
+                    >
+                      Next Question
+                    </button>
+                  </div>
+                </>
+              )}
+              
+              {userResponses.length > 0 && (
+                <div className="mt-6">
+                  <h3 className="text-sm font-medium text-gray-700 mb-2">Your previous answers:</h3>
+                  <div className="space-y-2 max-h-40 overflow-y-auto flex-hidescroll">
+                    {userResponses.map((response, index) => (
+                      <div key={index} className="bg-[#ffdad7] p-2 rounded text-sm">
+                        <span className="font-medium">{index + 1}. {response.question}</span>
+                        <p className="text-gray-700 mt-1">{response.answer}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </>
+          )}
+        </div>
+      )}
       
       {/* Dynamic Question Progress Indicator */}
       {!personalityResult && !isAnalyzing && userResponses.length > 0 && (

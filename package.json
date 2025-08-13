@@ -18,7 +18,7 @@
     "daisyui": "^5.0.9",
     "date-fns": "^4.1.0",
     "dotenv": "^16.4.5",
-    "firebase": "^11.5.0",
+    "firebase": "^11.10.0",
     "gsap": "^3.12.5",
     "lucide-react": "^0.483.0",
     "meme": "file:",
