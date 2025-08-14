@@ -12,20 +12,22 @@ import Chat from './components/chat/Chat.jsx'
 import Talk from './components/Talk/Talk.jsx'
 import Login from './components/login/Login.jsx'
 import PersonalityCheck from './components/personalitycheck/personalitycheck.jsx'
+import Error404 from './components/Error404/Error404.jsx'
 
 const router=createBrowserRouter(
   createRoutesFromElements(
-    <Route path='/' element={<Layout/>}>
-      <Route path='' element={<Home />} />
-      <Route path='details' element={<Details />} />
-      <Route path='match' element={<Match/>}/>
-      <Route path='chat' element={<Chat/>}/>
-      <Route path='about' element={<About />} />
-      <Route path='contact' element={<Contact />} />
-      <Route path='Talk' element={<Talk />} />
-      <Route path='login' element={<Login />} />
-      <Route path='personality' element={<PersonalityCheck />} />
-    </Route>
+      <Route path='/' element={<Layout/>}>
+        <Route path='' element={<Home />} />
+        <Route path='details' element={<Details />} />
+        <Route path='match' element={<Match/>}/>
+        <Route path='chat' element={<Chat/>}/>
+        <Route path='about' element={<About />} />
+        <Route path='contact' element={<Contact />} />
+        <Route path='Talk' element={<Talk />} />
+        <Route path='login' element={<Login />} />
+        <Route path='personality' element={<PersonalityCheck />} />
+        <Route path='*' element={<Error404 />} />
+      </Route>
   )
 )
 
