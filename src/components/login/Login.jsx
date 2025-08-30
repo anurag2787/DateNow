@@ -152,7 +152,7 @@ function Login() {
   };
 
   return (
-    <div className="w-full flex items-center justify-center mx-0 my-0 py-8">
+    <div className="min-h-screen w-full flex items-center justify-center bg-transparent">
       <div className="bg-[#ffdad7] p-8 md:p-12 rounded-xl shadow-2xl mx-5 md:mx-0 flex flex-col justify-between max-w-md w-full">
         <div className="overflow-y-auto mb-4">
           <div className="space-y-6">
