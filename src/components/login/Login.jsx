@@ -236,6 +236,8 @@ function Login() {
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full pl-10 pr-4 py-3 rounded-lg bg-white/80 focus:outline-none focus:ring-2 focus:ring-pink-300"
                 />
+                {!isLogin && (
+                  <>
                 <PasswordStrengthBar password={password} />
                 <div>
                   <ValidIndicator
@@ -259,6 +261,8 @@ function Login() {
                     text={"Minimum length of 8 characters"}
                   />
                 </div>
+                </>
+                )}
               </div>
 
               <button
