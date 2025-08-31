@@ -268,7 +268,7 @@ const PersonalityCheck = () => {
                 unlock the test and get instant, AI-powered insights tailoredjust for you.
               </p>
               <button
-                onClick={() => navigate("/login")}
+                onClick={() => navigate("/login?redirect=/personality")}
                 className="bg-[#e71f1f] hover:bg-[#F8A199] text-white hover:text-black font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105"
               >
                 Go to Login Page

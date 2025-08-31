@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import PasswordStrengthBar from "react-password-strength-bar";
 import { Check, X } from "lucide-react";
+import { useLocation } from "react-router-dom";
 import {
   getAuth,
   onAuthStateChanged,
@@ -22,12 +23,19 @@ function Login() {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const redirectPath = params.get("redirect") || "/";
+
+  useEffect(() => {
+    console.log(redirectPath);
+  }, []);
 
   // Check if user is already logged in
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        navigate("/talk"); // Redirect if already logged in
+        navigate(redirectPath); // Redirect if already logged in
       }
     });
     return () => unsubscribe();
@@ -73,6 +81,7 @@ function Login() {
     );
   };
 
+
   const handleAuth = async (e) => {
     e.preventDefault();
     setErrorMessage("");
@@ -94,7 +103,7 @@ function Login() {
           progress: undefined,
           theme: "dark",
         });
-        navigate("/");
+        navigate(redirectPath);
         setIsLogin(true);
       } else {
         if (isValid) {
@@ -118,38 +127,12 @@ function Login() {
             progress: undefined,
             theme: "dark",
           });
-          navigate("/");
+          navigate(redirectPath);
           setIsLogin(true);
         }
       }
     } catch (error) {
       setErrorMessage(error.message);
-      console.error(error);
-
-      switch (error.code) {
-        case "auth/invalid-email":
-          setErrorMessage("Please enter a valid email address.");
-          break;
-        case "auth/user-not-found":
-          setErrorMessage("No account found with this email.");
-          break;
-        case "auth/wrong-password":
-          setErrorMessage("Incorrect password. Please try again.");
-          break;
-        case "auth/weak-password":
-          setErrorMessage("Password should be at least 6 characters.");
-          break;
-        case "auth/email-already-in-use":
-          setErrorMessage("This email is already registered.");
-          break;
-        case "auth/invalid-credential":
-          setErrorMessage(
-            "Invalid credentials. Please check your email and password."
-          );
-          break;
-        default:
-          setErrorMessage("Something went wrong. Please try again.");
-      }
     }
   };
 
@@ -166,7 +149,7 @@ function Login() {
         progress: undefined,
         theme: "dark",
       });
-      navigate("/talk");
+      navigate(redirectPath);
     } catch (error) {
       setErrorMessage(error.message);
     }
@@ -263,37 +246,33 @@ function Login() {
                 />
                 {!isLogin && (
                   <>
-                    <PasswordStrengthBar password={password} />
-                    <div>
-                      <ValidIndicator
-                        val={feedback.uppercase}
-                        text={"At least one uppercase letter (A–Z)"}
-                      />
-                      <ValidIndicator
-                        val={feedback.lowercase}
-                        text={"At least one lowercase letter (a–z)"}
-                      />
-                      <ValidIndicator
-                        val={feedback.number}
-                        text={"At least one number (0–9)"}
-                      />
-                      <ValidIndicator
-                        val={feedback.specialChar}
-                        text={"At least one special character (e.g., !@#$%^&*)"}
-                      />
-                      <ValidIndicator
-                        val={feedback.length}
-                        text={"Minimum length of 8 characters"}
-                      />
-                    </div>
-                  </>
+                <PasswordStrengthBar password={password} />
+                <div>
+                  <ValidIndicator
+                    val={feedback.uppercase}
+                    text={"At least one uppercase letter (A–Z)"}
+                  />
+                  <ValidIndicator
+                    val={feedback.lowercase}
+                    text={"At least one lowercase letter (a–z)"}
+                  />
+                  <ValidIndicator
+                    val={feedback.number}
+                    text={"At least one number (0–9)"}
+                  />
+                  <ValidIndicator
+                    val={feedback.specialChar}
+                    text={"At least one special character (e.g., !@#$%^&*)"}
+                  />
+                  <ValidIndicator
+                    val={feedback.length}
+                    text={"Minimum length of 8 characters"}
+                  />
+                </div>
+                </>
                 )}
               </div>
-              {errorMessage && (
-                <p className="text-red-500 text-sm text-center">
-                  {errorMessage}
-                </p>
-              )}
+
               <button
                 type="submit"
                 className="w-full bg-gradient-to-r bg-[#e71f1f] hover:bg-[#F8A199] text-white hover:text-black py-3 rounded-lg font-medium shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2"

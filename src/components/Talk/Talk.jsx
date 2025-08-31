@@ -231,7 +231,7 @@ function Talk() {
                 access this feature, please log in to your account first.
               </p>
               <button
-                onClick={() => navigate("/login")}
+                onClick={() => navigate("/login?redirect=/talk")}
                 className="bg-[#e71f1f] hover:bg-[#F8A199] text-white hover:text-black font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105"
               >
                 Go to Login Page
