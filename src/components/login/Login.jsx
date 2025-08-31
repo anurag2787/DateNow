@@ -73,7 +73,6 @@ function Login() {
     );
   };
 
-
   const handleAuth = async (e) => {
     e.preventDefault();
     setErrorMessage("");
@@ -125,6 +124,32 @@ function Login() {
       }
     } catch (error) {
       setErrorMessage(error.message);
+      console.error(error);
+
+      switch (error.code) {
+        case "auth/invalid-email":
+          setErrorMessage("Please enter a valid email address.");
+          break;
+        case "auth/user-not-found":
+          setErrorMessage("No account found with this email.");
+          break;
+        case "auth/wrong-password":
+          setErrorMessage("Incorrect password. Please try again.");
+          break;
+        case "auth/weak-password":
+          setErrorMessage("Password should be at least 6 characters.");
+          break;
+        case "auth/email-already-in-use":
+          setErrorMessage("This email is already registered.");
+          break;
+        case "auth/invalid-credential":
+          setErrorMessage(
+            "Invalid credentials. Please check your email and password."
+          );
+          break;
+        default:
+          setErrorMessage("Something went wrong. Please try again.");
+      }
     }
   };
 
@@ -238,33 +263,37 @@ function Login() {
                 />
                 {!isLogin && (
                   <>
-                <PasswordStrengthBar password={password} />
-                <div>
-                  <ValidIndicator
-                    val={feedback.uppercase}
-                    text={"At least one uppercase letter (A–Z)"}
-                  />
-                  <ValidIndicator
-                    val={feedback.lowercase}
-                    text={"At least one lowercase letter (a–z)"}
-                  />
-                  <ValidIndicator
-                    val={feedback.number}
-                    text={"At least one number (0–9)"}
-                  />
-                  <ValidIndicator
-                    val={feedback.specialChar}
-                    text={"At least one special character (e.g., !@#$%^&*)"}
-                  />
-                  <ValidIndicator
-                    val={feedback.length}
-                    text={"Minimum length of 8 characters"}
-                  />
-                </div>
-                </>
+                    <PasswordStrengthBar password={password} />
+                    <div>
+                      <ValidIndicator
+                        val={feedback.uppercase}
+                        text={"At least one uppercase letter (A–Z)"}
+                      />
+                      <ValidIndicator
+                        val={feedback.lowercase}
+                        text={"At least one lowercase letter (a–z)"}
+                      />
+                      <ValidIndicator
+                        val={feedback.number}
+                        text={"At least one number (0–9)"}
+                      />
+                      <ValidIndicator
+                        val={feedback.specialChar}
+                        text={"At least one special character (e.g., !@#$%^&*)"}
+                      />
+                      <ValidIndicator
+                        val={feedback.length}
+                        text={"Minimum length of 8 characters"}
+                      />
+                    </div>
+                  </>
                 )}
               </div>
-
+              {errorMessage && (
+                <p className="text-red-500 text-sm text-center">
+                  {errorMessage}
+                </p>
+              )}
               <button
                 type="submit"
                 className="w-full bg-gradient-to-r bg-[#e71f1f] hover:bg-[#F8A199] text-white hover:text-black py-3 rounded-lg font-medium shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2"
