@@ -28,9 +28,18 @@ function Chat() {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [history]);
   
-  //Delay with random time between min and max milliseconds
-  const randomDelay = (min, max) => {
-    return new Promise(resolve => setTimeout(resolve, Math.floor(Math.random() * (max - min + 1) + min)));
+  //Delay with random time according to bot response;
+  const randomDelay = (length) => {
+    const typingSpeed = 8; // characters per second
+    const maxDelay = 3000; // 4 seconds in ms
+
+    // Calculate delay
+    let delay = (length / typingSpeed) * 1000;
+
+    // Cap delay at maxDelay
+    delay = Math.min(delay, maxDelay);
+
+    return new Promise(resolve => setTimeout(resolve, delay));
   };
 
 const SYSTEM_PROMPTS = [
@@ -212,8 +221,9 @@ const SYSTEM_PROMPTS = [
         const botResponse = cleanResponse(
           response.data.candidates[0].content.parts[0].text
         );
+        const botResponseLength= botResponse.length;
 
-        await randomDelay(1000, 3000);
+        await randomDelay(botResponseLength);
 
         setHistory(prev => [
           ...prev,
