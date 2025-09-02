@@ -105,14 +105,14 @@ function Details() {
                     <p className="text-sm font-medium text-gray-700">Fun Conversations</p>
                     <p className="text-xs text-gray-500 mt-1">Start chatting now</p>
                   </div>
-                  <div className="text-center">
+                  <div className="text-center hidden md:block">
                     <div className="w-12 h-12 bg-white/80 rounded-xl flex items-center justify-center mb-3 mx-auto shadow-sm">
                       <Heart className="w-6 h-6 text-red-500" fill="currentColor" />
                     </div>
                     <p className="text-sm font-medium text-gray-700">Easy & Simple</p>
                     <p className="text-xs text-gray-500 mt-1">Just enter details</p>
                   </div>
-                  <div className="text-center">
+                  <div className="text-center hidden md:block">
                     <div className="w-12 h-12 bg-white/80 rounded-xl flex items-center justify-center mb-3 mx-auto shadow-sm">
                       <Users className="w-6 h-6 text-purple-500" />
                     </div>
