@@ -57,6 +57,7 @@ function Talk() {
 
   useEffect(() => {
     if (user) {
+      console.log(user);
       setIsLoaded(true);
       setIslogin(true);
       
