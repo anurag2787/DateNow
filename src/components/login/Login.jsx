@@ -10,6 +10,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithPopup,
   GoogleAuthProvider,
+  updateProfile,
 } from "firebase/auth";
 import { auth } from "../../auth";
 import { Mail, Lock, User, ArrowRight } from "lucide-react";
@@ -132,7 +133,12 @@ function Login() {
         }
       }
     } catch (error) {
-      setErrorMessage(error.message);
+      console.error("Authentication error:", error);
+      if (!isLogin && error.code === "auth/email-already-in-use") {
+        setErrorMessage("An account with this email already exists. Please log in instead.");
+      } else {
+        setErrorMessage(error.message);
+      }
     }
   };
 
@@ -167,6 +173,13 @@ function Login() {
             <h1 className="text-3xl font-bold text-center mb-8 text-black">
               {isLogin ? "Welcome Back" : "Create Account"}
             </h1>
+            
+            {/* Error message display */}
+            {errorMessage && (
+              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-4">
+                {errorMessage}
+              </div>
+            )}
 
             {/* Google Sign In Button */}
             <button
