@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { gsap } from "gsap";
-import { LogIn, LogOut, Menu, X, Heart } from "lucide-react";
+import { LogIn,  User, Menu, X, Heart } from "lucide-react";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { useAuth } from "../../context/AuthContext";
 import { auth } from "../../auth";
@@ -13,27 +13,8 @@ function Navbar() {
   const { user } = useAuth();
   const navigate = useNavigate();
 
-  const handleLogout = async () => {
-    const confirmed = window.confirm("Are you sure you want to logout?");
-        if (!confirmed) {
-            return;
-        }
-        try {
-            await signOut(auth);
-            toast.info("👋 Logged out successfully!", {
-              position: "top-right",
-              autoClose: 3000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "dark",
-            })
-            navigate("/login");
-        } catch (error) {
-            console.error("Logout error:", error);
-        }
+  const handleprofile = async () => {
+    navigate("/profile");
   };
 
   const toggleMobileMenu = () => {
@@ -130,11 +111,11 @@ function Navbar() {
             <div className="hidden md:flex items-center">
               {user ? (
                 <button
-                  onClick={handleLogout}
+                  onClick={handleprofile}
                   className="flex items-center space-x-2 bg-red-500 hover:bg-[#ffdad7] hover:text-black text-white px-5 py-2 rounded-md transition-all duration-300 font-medium text-sm border border-red-500 hover:border-red-600 hover:shadow-md"
                 >
-                  <LogOut className="h-4 w-4" />
-                  <span>Logout</span>
+                  <User className="h-4 w-4" />
+                  <span>Profile</span>
                 </button>
               ) : (
                 <NavLink
@@ -209,13 +190,13 @@ function Navbar() {
       {user ? (
         <button
           onClick={() => {
-            handleLogout();
+            handleProfile();
             closeMobileMenu();
           }}
           className="flex items-center justify-center space-x-2 bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white px-6 py-3 rounded-full transition-all duration-300 shadow-md"
         >
-          <LogOut className="h-4 w-4" />
-          <span className="font-medium">Logout</span>
+          <User className="h-4 w-4" />
+          <span className="font-medium">Profile</span>
         </button>
       ) : (
         <NavLink

@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { User, Mail, Calendar, LogOut, Heart } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
+import { auth } from "../../auth";
+import { useNavigate } from "react-router-dom";
+import { signOut } from "firebase/auth";
+import { use } from "react";
+import { toast } from 'react-toastify';
 
 export default function DateNowProfile() {
   const [name, setName] = useState("Sarah Johnson");
@@ -8,8 +13,15 @@ export default function DateNowProfile() {
   const [joinDate, setJoinDate] = useState("15 Mar 2024");
   const [isLoading, setIsLoading] = useState(false);
   const [images,setImages]=useState("")
-
+  const navigate = useNavigate();
   const { user } = useAuth();
+
+  useEffect(() => {
+    if(!user){
+      navigate("/login");
+    }
+  }, [navigate,user]);
+
   useEffect(() => { 
     if (user) { 
       const date = new Date(Number(user.metadata.createdAt)); 
@@ -21,16 +33,33 @@ export default function DateNowProfile() {
       setImages(user.photoURL);
      } 
     }, [user]);
-  const handleLogout = () => {
-    setIsLoading(true);
-    setTimeout(() => {
-      console.log("Logging out...");
-      setIsLoading(false);
-    }, 1500);
+  const handleLogout = async () => {
+    const confirmed = window.confirm("Are you sure you want to logout?");
+        if (!confirmed) {
+            return;
+        }
+        try {
+            setIsLoading(true);
+            await signOut(auth);
+            setIsLoading(false);
+            toast.info("👋 Logged out successfully!", {
+              position: "top-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "dark",
+            })
+            navigate("/login");
+        } catch (error) {
+            console.error("Logout error:", error);
+        }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-white to-pink-50">
+    <div className="min-h-screen bg-gradient-to-br bg-[#F8A199]">
       
      
 
@@ -40,7 +69,7 @@ export default function DateNowProfile() {
           
           {/* Profile Image Section - Left Side */}
           <div className="lg:w-1/3">
-            <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-rose-100">
+            <div className="bg-[#ffdad7] rounded-3xl shadow-xl overflow-hidden border border-rose-100">
               
               {/* Profile Image Container */}
               <div className="aspect-[3/4] relative bg-gradient-to-br from-rose-100 via-pink-50 to-orange-50 flex items-center justify-center p-8">

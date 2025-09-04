@@ -13,7 +13,7 @@ import Talk from './components/Talk/Talk.jsx'
 import Login from './components/login/Login.jsx'
 import PersonalityCheck from './components/personalitycheck/personalitycheck.jsx'
 import Error404 from './components/Error404/Error404.jsx'
-import Profile from '/Users/asimmaji/Desktop/DateNow/DateNow/src/components/profile/Profile.jsx'
+import Profile from './components/profile/Profile.jsx'
 
 const router=createBrowserRouter(
   createRoutesFromElements(
