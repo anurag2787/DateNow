@@ -190,7 +190,7 @@ function Navbar() {
       {user ? (
         <button
           onClick={() => {
-            handleProfile();
+            handleprofile();
             closeMobileMenu();
           }}
           className="flex items-center justify-center space-x-2 bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white px-6 py-3 rounded-full transition-all duration-300 shadow-md"
