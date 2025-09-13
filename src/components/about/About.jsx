@@ -5,14 +5,14 @@ import img from '../../assets/abc.jpg';
 
 export default function About() {
     return (
-        <div className="py-16 bg-[#F8A199] mx-5 md:mx-52">
-            <div className="container m-auto pl-6 pr-6 xl:pl-6 xl:pr-0 mb-7  text-black bg-white p-8 rounded-3xl">
+        <div className="min-h-screen flex items-center justify-center bg-[#F8A199] p-4">
+            <div className="container mx-auto max-w-7xl text-black bg-white p-8 rounded-3xl">
                 <div className="space-y-6 md:space-y-0 md:flex md:gap-6 lg:items-center lg:gap-12">
-                    <div className="md:5/12 lg:w-5/12">
+                    <div className="md:w-5/12 lg:w-5/12">
                         <img
                             src={img}
                             alt="image"
-                            className='shadow-2xl rounded-2xl'
+                            className='shadow-2xl rounded-2xl w-full h-full object-cover'
                         />
                     </div>
                     <div className="md:7/12 lg:w-6/12 text-center">
