@@ -10,9 +10,9 @@ import { ToastContainer } from 'react-toastify';
 function Layout() {
   return (
     <AuthProvider>
-      <div className="flex flex-col min-h-screen bg-[#F8A199]">
+      <div className="flex flex-col bg-[#F8A199]">
         <Analytics />
-        <Navbar />
+        <Navbar />z
         <Cursor />
         <main className="flex-grow">
           <Outlet />
