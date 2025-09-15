@@ -44,8 +44,7 @@ function Login() {
 
   function validatePassword(password) {
     const minLength = 8;
-    const hasUppercase = /[A-Z]/.test(password);
-    const hasLowercase = /[a-z]/.test(password);
+    const hasLetter = /[a-zA-Z]/.test(password);
     const hasNumber = /[0-9]/.test(password);
     const hasSpecialChar = /[!@#$%^&*()]/.test(password);
 
@@ -54,14 +53,12 @@ function Login() {
     return {
       isValid:
         isValidLength &&
-        hasUppercase &&
-        hasLowercase &&
+        hasLetter &&
         hasNumber &&
         hasSpecialChar,
       feedback: {
         length: isValidLength,
-        uppercase: hasUppercase,
-        lowercase: hasLowercase,
+        letter: hasLetter,
         number: hasNumber,
         specialChar: hasSpecialChar,
       },
@@ -262,12 +259,8 @@ function Login() {
                 <PasswordStrengthBar password={password} />
                 <div>
                   <ValidIndicator
-                    val={feedback.uppercase}
-                    text={"At least one uppercase letter (A–Z)"}
-                  />
-                  <ValidIndicator
-                    val={feedback.lowercase}
-                    text={"At least one lowercase letter (a–z)"}
+                    val={feedback.letter}
+                    text={"At least one alphabet letter (A–Z or a–z)"}
                   />
                   <ValidIndicator
                     val={feedback.number}
