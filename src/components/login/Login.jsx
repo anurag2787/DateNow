@@ -260,7 +260,7 @@ function Login() {
                 <div>
                   <ValidIndicator
                     val={feedback.letter}
-                    text={"At least one Alphabet letter (A–Z or a–z)"}
+                    text={"At least one alphabet letter (A–Z or a–z)"}
                   />
                   <ValidIndicator
                     val={feedback.number}
