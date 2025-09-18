@@ -1,4 +1,4 @@
-<h1> Code of Conduct — DateNow </h1>
+# Code of Conduct — DateNow 
 
 ![Welcome Badge](https://img.shields.io/badge/Community-Welcoming-brightgreen?style=for-the-badge)  
 ![Respect Badge](https://img.shields.io/badge/Respect-Everyone-blueviolet?style=for-the-badge)  
@@ -6,7 +6,7 @@
 ![Kindness Badge](https://img.shields.io/badge/Be-Kind-ff69b4?style=for-the-badge)  
 ![Collaboration Badge](https://img.shields.io/badge/Collaboration-Priority-yellow?style=for-the-badge)  
 ![Inclusive Badge](https://img.shields.io/badge/Inclusive-Always-orange?style=for-the-badge)  
-![Fun Badge](https://img.shields.io/badge/Contributions-Fun-red?style=for-the-badge)  
+![Fun Badge](https://img.shields.io/badge/Contributions-Fun-aqua?style=for-the-badge)
 
 ---
 
