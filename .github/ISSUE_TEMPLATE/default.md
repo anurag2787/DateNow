@@ -1,20 +1,21 @@
-# Issue Report Template
+---
+name: General Issue
+about: Use this template for any issue in DateNow
+title: "[ISSUE] "
+labels: ""
+assignees: ""
+---
 
-## 📝 Issue Type  
-- [ ] 🐞 Bug  
-- [ ] 🚀 Feature Request  
-- [ ] 🔧 Improvement  
+## Description
+Clearly describe the issue here.
 
-## 📖 Description  
-*Clearly explain the issue or the feature/improvement you are requesting*
+## Steps to Reproduce (if bug)
+1. Step one
+2. Step two
+3. Step three
 
-## 🔁 Steps to Reproduce (for bugs)  
-1.  
-2.  
-3.  
+## Expected Behavior
+What you expected to happen.
 
-## 🎥 Screenshots / Video
-*Attach screenshots or a short video demonstrating the problem*
-
-## ✅ Additional Context  
-*Add any other context about the issue here*
+## Additional Context
+Add any other information here.
