@@ -1,7 +1,7 @@
 ---
-name: General Issue
+name: Create Issue
 about: Use this template for any issue in DateNow
-title: "[ISSUE] "
+title: "[ISSUE Title] "
 labels: ""
 assignees: ""
 ---
