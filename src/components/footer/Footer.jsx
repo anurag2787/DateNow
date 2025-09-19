@@ -3,44 +3,57 @@ import { Heart } from "lucide-react";
 
 function Footer() {
   return (
-    <footer className="bg-gray-900 text-gray-300">
-      {/* Top section */}
-      <div className="max-w-7xl  mx-auto px-6 pt-8 pb-3">
-        <div className="flex flex-col gap-7 justify-between md:grid md:grid-cols-1 lg:grid-cols-2 mb-6">
-          {/* Logo and Tagline */}
-          <div className="flex flex-col items-center md:items-start" >
+    <footer className="bg-gray-900 text-gray-300 relative overflow-hidden border-t border-gray-800">
+      {/* Subtle background glow */}
+      <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/95 to-gray-800/30"></div>
+      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-96 h-32 bg-red-500/10 blur-3xl rounded-full"></div>
+      
+      {/* Main content */}
+      <div className="max-w-6xl mx-auto px-6 py-3 relative z-10">
+        
+        {/* All content in single compact section */}
+        <div className="text-center">
+          {/* Logo and Navigation - Responsive Layout */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 mb-2">
             <div className="flex items-center gap-2">
-              <Heart className="h-7 w-7 text-red-400 animate-pulse" />
-              <div className="text-2xl font-bold">
+              <Heart className="h-5 w-5 text-red-400 animate-pulse" />
+              <div className="text-xl font-bold tracking-tight">
                 <span className="text-white">Date</span>
                 <span className="text-red-400">Now</span>
               </div>
             </div>
-            <p className="mt-4 text-sm text-gray-400 text-center md:text-left">
-              Bringing people closer, one date at a time.
+            <div className="hidden sm:block w-px h-4 bg-gray-600"></div>
+            <div className="flex items-center gap-3 sm:gap-4">
+              <a 
+                href="/about" 
+                className="text-gray-300 hover:text-white text-sm transition-all duration-300"
+              >
+                About Us
+              </a>
+              <div className="w-px h-3 bg-gray-700"></div>
+              <a 
+                href="/contact" 
+                className="text-gray-300 hover:text-white text-sm transition-all duration-300"
+              >
+                Contact Us
+              </a>
+            </div>
+          </div>
+          
+          {/* Copyright - Responsive */}
+          <div className="text-center">
+            <p className="text-gray-400 text-xs">
+              © {new Date().getFullYear()} DateNow. All rights reserved.
+            </p>
+            <p className="text-gray-500 text-xs mt-1 sm:mt-0 sm:inline">
+              <span className="hidden sm:inline"> | </span>Made with <Heart className="inline h-2 w-2 text-red-400" /> by Anurag Yadav
             </p>
           </div>
-          {/* Middle links */}
-          <div className="flex flex-col items-center space-y-3 md:items-start md:pl-10 lg:pl-60">
-            <a href="/about" className="hover:text-red-400">
-              About Us
-            </a>
-            <a href="/contact" className="hover:text-red-400">
-              Contact Us
-            </a>
-          </div>
         </div>
-
-        {/* Bottom bar */}
-        <div className="border-t border-gray-700 py-4">
-          <p className="text-center text-sm text-gray-400">
-            © {new Date().getFullYear()} Developer Anurag Yadav. All rights reserved.
-          </p>
-        </div>
+        
       </div>
     </footer>
   );
 }
 
 export default Footer;
-
