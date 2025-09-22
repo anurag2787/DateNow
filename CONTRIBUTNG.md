@@ -97,7 +97,7 @@ We aim to keep things smooth and transparent:
 ## How To Contribute
 
 - Drop a Star ⭐ in this repo
-- Take a look at the existing [Issues](https://github.com/anurag2787/DateNow/issues). 
+- Take a look at the existing [**Issues**](https://github.com/anurag2787/DateNow/issues). 
 - Fork the Repo & create a branch for any issue that you are working on and commit your work.
 - At first raise an issue in which you want to work
 - Then after assigning only then work on that issue & make a PR 
@@ -124,7 +124,7 @@ We aim to keep things smooth and transparent:
 
 ## 🏅 Attribution
 
-This **CONTRIBUTING.md** was prepared with **❤️** by **Divya Jain** for **DateNow** as part of the **GSSoC'25 program.**
+This **CONTRIBUTING.md** was prepared with **❤️** by  [`DIVYA JAIN`](https://github.com/DivyaJain-DataAnalyst) for **DateNow** as part of the **GSSoC'25 program.**
 
 The structure and recommendations follow **GitHub Open Source Guides** and best practices used in leading open-source repositories.
 
