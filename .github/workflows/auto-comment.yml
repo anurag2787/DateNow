@@ -19,11 +19,11 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              body: `👋 Thanks for opening an issue! 
-              
-               We'll review it as soon as possible. We truly appreciate your contributions! ✨
-               
-              > Meanwhile make sure you've visited the README.md, CONTRIBUTING.md, and CODE_OF_CONDUCT.md before creating a PR for this. Also, please do NOT create a PR until this issue has been assigned to you. 😊`;
+              body: `👋 Thanks for opening an issue!
+
+We'll review it as soon as possible. We truly appreciate your contributions! ✨
+
+> Meanwhile make sure you've visited the README.md, CONTRIBUTING.md, and CODE_OF_CONDUCT.md before creating a PR for this. Also, please do NOT create a PR until this issue has been assigned to you. 😊`;
             });
 
             core.info('comment added successfully.')
