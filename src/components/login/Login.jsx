@@ -4,22 +4,25 @@ import PasswordStrengthBar from "react-password-strength-bar";
 import { Check, X } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import {
-  getAuth,
+  // getAuth,
   onAuthStateChanged,
   signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
+  // createUserWithEmailAndPassword,
   signInWithPopup,
   GoogleAuthProvider,
-  updateProfile,
+  // updateProfile,
 } from "firebase/auth";
 import { auth } from "../../auth";
 import { Mail, Lock, User, ArrowRight } from "lucide-react";
 import { toast } from "react-toastify";
+import OTPVerification from "../OTP/otp-verfication";
+import { useOTP } from "../../context/OTPContext";
 const provider = new GoogleAuthProvider();
 
 function Login() {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
+  const {isOTP,setIsOTP,sendOTP} = useOTP()
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
@@ -105,7 +108,11 @@ function Login() {
         setIsLogin(true);
       } else {
         if (isValid) {
-          const userCredential = await createUserWithEmailAndPassword(
+          //Add OTP Verification here
+          sendOTP(username,email).then(()=>{
+            setIsOTP(true)
+          })
+/*           const userCredential = await createUserWithEmailAndPassword(
             auth,
             email,
             password
@@ -126,7 +133,7 @@ function Login() {
             theme: "dark",
           });
           navigate(redirectPath);
-          setIsLogin(true);
+          setIsLogin(true); */
         }
       }
     } catch (error) {
@@ -164,7 +171,7 @@ function Login() {
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-transparent">
-      <div className="bg-[#ffdad7] p-8 md:p-12 rounded-xl shadow-2xl mx-5 md:mx-0 flex flex-col justify-between max-w-md w-full">
+      {isOTP ? <OTPVerification username={username} email={email} password={password} redirectPath={redirectPath} /> : <div className="bg-[#ffdad7] p-8 md:p-12 rounded-xl shadow-2xl mx-5 md:mx-0 flex flex-col justify-between max-w-md w-full">
         <div className="overflow-y-auto mb-4">
           <div className="space-y-6">
             <h1 className="text-3xl font-bold text-center mb-8 text-black">
@@ -302,7 +309,7 @@ function Login() {
             </div>
           </div>
         </div>
-      </div>
+      </div>}
     </div>
   );
 }
