@@ -21,6 +21,7 @@ function Talk() {
   const chatEndRef = useRef(null);
   const navigate = useNavigate();
   const [isLoaded, setIsLoaded] = useState(false); 
+  const [isAnonymousInChatName,setIsAnonymousInChatName ] = useState(true); 
 
   const { user } = useAuth();
 
@@ -97,7 +98,7 @@ function Talk() {
         role: "user", 
         text: message, 
         userid: user.uid,
-        displayName: user.displayName || 'Anonymous',
+        displayName: isAnonymousInChatName? 'Anonymous' : user.displayName || 'Anonymous',
         createdAt: new Date()
       };
 
