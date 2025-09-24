@@ -164,7 +164,7 @@ function Login() {
   };
 
   const toggleShowPassword = () =>{
-    setShowPassword(!showPassword)
+    setShowPassword((showPassword)=>!showPassword)
   };
 
   return (
@@ -253,20 +253,30 @@ function Login() {
                   size={18}
                 />
                 <input
+                  id="password"
                   type={showPassword ? "text" : "password"}
+                  autoComplete={isLogin ? "current-password" : "new-password"}
                   placeholder="Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full pl-10 pr-12 py-3 rounded-lg bg-white/80 focus:outline-none focus:ring-2 focus:ring-pink-300"
                 />
-                {!showPassword?<Eye 
-                  className="absolute right-4 top-3 text-gray-400 cursor-pointer"
+                <button
+                  type="button"
                   onClick={toggleShowPassword}
-                />:
-                <EyeOff 
-                  className="absolute right-4 top-3 text-gray-400 cursor-pointer"
-                  onClick={toggleShowPassword}
-                />}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                  aria-pressed={showPassword}
+                  aria-controls="password"
+                  title={showPassword ? "Hide password" : "Show password"}
+                  className="absolute right-3 top-2.5 text-gray-400 cursor-pointer hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-pink-300 rounded"
+                >
+                  {!showPassword?(
+                    <Eye aria-hidden="true"/>
+                    ):(
+                    <EyeOff aria-hidden="true"/>
+                    )
+                  }
+                </button>
                 
                 {!isLogin && (
                   <>
