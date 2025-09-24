@@ -225,19 +225,15 @@ function Talk() {
                   checked={isAnonymousInChatName}
                   onChange={handleAnonymousToggle}
                   className="sr-only"
+                  aria-label={isAnonymousInChatName ? "Disable anonymous mode" : "Enable anonymous mode"}
+                  title="Send messages as Anonymous"
                 />
 
                 <div
                   className={`relative w-14 h-8 rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-gray-500 ${
                     isAnonymousInChatName ? "bg-gray-900" : "bg-gray-400"
                   }`}
-                  tabIndex={0}
-                  onKeyDown={(e) => {
-                    if (e.key === " " || e.key === "Enter") {
-                      e.preventDefault();
-                      handleAnonymousToggle();
-                    }
-                  }}
+                  aria-hidden="true"
                 >
                   <div
                     className={`absolute top-1 left-1 w-6 h-6 bg-white rounded-full shadow-md transition-transform duration-300 transform flex items-center justify-center ${
