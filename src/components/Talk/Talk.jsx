@@ -21,7 +21,7 @@ function Talk() {
   const chatEndRef = useRef(null);
   const navigate = useNavigate();
   const [isLoaded, setIsLoaded] = useState(false); 
-  const [isAnonymousInChatName,setIsAnonymousInChatName ] = useState(true); 
+  const [isAnonymousInChatName,setIsAnonymousInChatName ] = useState(false); 
 
   const { user } = useAuth();
 
@@ -135,6 +135,10 @@ function Talk() {
     }
   };
 
+  const handleAnonymousToggle = () => {
+    setIsAnonymousInChatName((isAnonymousInChatName)=>!isAnonymousInChatName)
+  }
+
   return (
     <div className="w-full flex items-center justify-center mx-0 my-0">
       
@@ -210,6 +214,60 @@ function Talk() {
                 }}
                 disabled={!ready}
               />
+
+              <label
+                htmlFor="anonymousToggle"
+                className="flex items-center cursor-pointer select-none space-x-3"
+              >
+                <input
+                  id="anonymousToggle"
+                  type="checkbox"
+                  checked={isAnonymousInChatName}
+                  onChange={handleAnonymousToggle}
+                  className="sr-only"
+                />
+
+                <div
+                  className={`relative w-14 h-8 rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-gray-500 ${
+                    isAnonymousInChatName ? "bg-gray-900" : "bg-gray-400"
+                  }`}
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === " " || e.key === "Enter") {
+                      e.preventDefault();
+                      handleAnonymousToggle();
+                    }
+                  }}
+                >
+                  <div
+                    className={`absolute top-1 left-1 w-6 h-6 bg-white rounded-full shadow-md transition-transform duration-300 transform flex items-center justify-center ${
+                      isAnonymousInChatName ? "translate-x-6" : "translate-x-0"
+                    }`}
+                  >
+                    {isAnonymousInChatName && (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="text-black"
+                      >
+                        <path d="M14 18a2 2 0 0 0-4 0" />
+                        <path d="m19 11-2.11-6.657a2 2 0 0 0-2.752-1.148l-1.276.61A2 2 0 0 1 12 4H8.5a2 2 0 0 0-1.925 1.456L5 11" />
+                        <path d="M2 11h20" />
+                        <circle cx="17" cy="18" r="3" />
+                        <circle cx="7" cy="18" r="3" />
+                      </svg>
+                    )}
+                  </div>
+                </div>
+              </label>
+
               <button
                 className={`p-3 ml-3 rounded-xl text-white font-semibold ${
                   ready
