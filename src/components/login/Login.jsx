@@ -268,12 +268,12 @@ function Login() {
                   aria-pressed={showPassword}
                   aria-controls="password"
                   title={showPassword ? "Hide password" : "Show password"}
-                  className="absolute right-3 top-2.5 text-gray-400 cursor-pointer hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-pink-300 rounded"
+                  className="absolute right-4 top-3 text-gray-400 cursor-pointer hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-pink-300 rounded"
                 >
                   {!showPassword?(
-                    <Eye aria-hidden="true"/>
+                    <Eye aria-hidden="true" className="w-5 h-5"/>
                     ):(
-                    <EyeOff aria-hidden="true"/>
+                    <EyeOff aria-hidden="true" className="w-5 h-5"/>
                     )
                   }
                 </button>
