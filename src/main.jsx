@@ -14,6 +14,7 @@ import Login from './components/login/Login.jsx'
 import PersonalityCheck from './components/personalitycheck/personalitycheck.jsx'
 import Error404 from './components/Error404/Error404.jsx'
 import Profile from './components/profile/Profile.jsx'
+import Privacy from './components/privacy-policy/Privacy.jsx'
 
 const router=createBrowserRouter(
   createRoutesFromElements(
@@ -29,6 +30,7 @@ const router=createBrowserRouter(
         <Route path='personality' element={<PersonalityCheck />} />
         <Route path='*' element={<Error404 />} />
         <Route path='profile' element={<Profile />} />
+        <Route path='privacy-policy' element={<Privacy />} />
       </Route>
   )
 )
