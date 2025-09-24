@@ -26,6 +26,10 @@
 
 <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" width="100%">
 
+<h2 align="center">  DateNow - Frontend 💕 </h2>
+
+<img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" width="100%">
+
 <h2 id="overview">🔍 Overview</h2>
 
 A modern dating app built with **React**, **Firebase**, and **Google Gemini AI**. Find your perfect match and chat intelligently.
@@ -71,17 +75,13 @@ A modern dating app built with **React**, **Firebase**, and **Google Gemini AI**
 
 <h2 id="demo">🚀 Live Demo</h2>
 
-Experience ThunderLean live here:
+Experience DateNow live here:
 
 <p align="center">
   <a href="https://datenow.vercel.app/" target="_blank">
     <img src="https://img.shields.io/badge/View-Live%20Demo-orange?style=for-the-badge" alt="Live Demo"/>
   </a>
 </p>
-
-<img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" width="100%">
-
-<h3 align="center">  DateNow - Frontend 💕 </h3>
 
 <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" width="100%">
 
