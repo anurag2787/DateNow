@@ -25,7 +25,9 @@ jobs:
               "- [CONTRIBUTING.md](./CONTRIBUTING.md)",
               "- [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md)",
               "",
-              "⚠️ **Do NOT create a PR until this issue has been assigned to you.** 😊"
+              "⚠️ **Do NOT create a PR until this issue has been assigned to you.** 😊",
+              "",
+              "⭐ If you like this project, please consider [starring the repo](https://github.com/${context.repo.owner}/${context.repo.repo}) to support us!"
             ].join("\n");
 
             await github.rest.issues.createComment({

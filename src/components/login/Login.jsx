@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import PasswordStrengthBar from "react-password-strength-bar";
-import { Check, X } from "lucide-react";
+import { Check, Eye, EyeOff, X } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import {
   // getAuth,
@@ -31,6 +31,7 @@ function Login() {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const redirectPath = params.get("redirect") || "/";
@@ -207,6 +208,10 @@ function Login() {
     setIsLogin(!isLogin);
   };
 
+  const toggleShowPassword = () =>{
+    setShowPassword((showPassword)=>!showPassword)
+  };
+
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-transparent">
       {isOTP ? <OTPVerification username={username} email={email} password={password} redirectPath={redirectPath} /> : <div className="bg-[#ffdad7] p-8 md:p-12 rounded-xl shadow-2xl mx-5 md:mx-0 flex flex-col justify-between max-w-md w-full">
@@ -293,12 +298,31 @@ function Login() {
                   size={18}
                 />
                 <input
-                  type="password"
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  autoComplete={isLogin ? "current-password" : "new-password"}
                   placeholder="Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 rounded-lg bg-white/80 focus:outline-none focus:ring-2 focus:ring-pink-300"
+                  className="w-full pl-10 pr-12 py-3 rounded-lg bg-white/80 focus:outline-none focus:ring-2 focus:ring-pink-300"
                 />
+                <button
+                  type="button"
+                  onClick={toggleShowPassword}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                  aria-pressed={showPassword}
+                  aria-controls="password"
+                  title={showPassword ? "Hide password" : "Show password"}
+                  className="absolute right-4 top-3 text-gray-400 cursor-pointer hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-pink-300 rounded"
+                >
+                  {!showPassword?(
+                    <Eye aria-hidden="true" className="w-5 h-5"/>
+                    ):(
+                    <EyeOff aria-hidden="true" className="w-5 h-5"/>
+                    )
+                  }
+                </button>
+                
                 {!isLogin && (
                   <>
                 <PasswordStrengthBar password={password} />

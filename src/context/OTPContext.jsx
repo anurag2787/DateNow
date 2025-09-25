@@ -25,7 +25,6 @@ export const OTPProvider = ({ children }) => {
                 username:user,
                 email:emailId,
             })
-            console.log(response)
             if(response.statusText === 'OK')
             {
                 localStorage.setItem('validationToken',response?.data?.token)
