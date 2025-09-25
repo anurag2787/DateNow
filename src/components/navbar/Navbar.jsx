@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { gsap } from "gsap";
-import { LogIn,  User, Menu, X, Heart } from "lucide-react";
+import { LogIn, User, Menu, X, Heart } from "lucide-react";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { useAuth } from "../../context/AuthContext";
 import { auth } from "../../auth";
@@ -12,6 +12,16 @@ function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user } = useAuth();
   const navigate = useNavigate();
+
+  // ADDED THIS BLOCK: Logic to get and format the current date
+  const dateOptions = {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  };
+  const currentDate = new Date().toLocaleString('en-US', dateOptions);
+  // END OF ADDED BLOCK
 
   const handleprofile = async () => {
     navigate("/profile");
@@ -107,25 +117,34 @@ function Navbar() {
               </NavLink>
             </div>
 
-            {/* Desktop Auth Button */}
-            <div className="hidden md:flex items-center">
-              {user ? (
-                <button
-                  onClick={handleprofile}
-                  className="flex items-center space-x-2 bg-red-500 hover:bg-[#ffdad7] hover:text-black text-white px-5 py-2 rounded-md transition-all duration-300 font-medium text-sm border border-red-500 hover:border-red-600 hover:shadow-md"
-                >
-                  <User className="h-4 w-4" />
-                  <span>Profile</span>
-                </button>
-              ) : (
-                <NavLink
-                  to="/login"
-                  className="flex items-center space-x-2 bg-red-500 hover:bg-[#ffdad7] hover:text-black text-white px-5 py-2 rounded-md transition-all duration-300 font-medium text-sm border border-red-500 hover:border-red-600 hover:shadow-md"
-                >
-                  <LogIn className="h-4 w-4" />
-                  <span>Login</span>
-                </NavLink>
-              )}
+            {/* Desktop Right Side: Date and Auth Button */}
+            <div className="hidden md:flex items-center space-x-6">
+              {/* ADDED THIS BLOCK: Date Display for Desktop */}
+              <div className="text-sm font-medium text-gray-400">
+                {currentDate}
+              </div>
+              {/* END OF ADDED BLOCK */}
+
+              {/* Desktop Auth Button */}
+              <div>
+                {user ? (
+                  <button
+                    onClick={handleprofile}
+                    className="flex items-center space-x-2 bg-red-500 hover:bg-[#ffdad7] hover:text-black text-white px-5 py-2 rounded-md transition-all duration-300 font-medium text-sm border border-red-500 hover:border-red-600 hover:shadow-md"
+                  >
+                    <User className="h-4 w-4" />
+                    <span>Profile</span>
+                  </button>
+                ) : (
+                  <NavLink
+                    to="/login"
+                    className="flex items-center space-x-2 bg-red-500 hover:bg-[#ffdad7] hover:text-black text-white px-5 py-2 rounded-md transition-all duration-300 font-medium text-sm border border-red-500 hover:border-red-600 hover:shadow-md"
+                  >
+                    <LogIn className="h-4 w-4" />
+                    <span>Login</span>
+                  </NavLink>
+                )}
+              </div>
             </div>
 
             {/* Mobile Menu Button */}
@@ -146,71 +165,78 @@ function Navbar() {
 
         {/* Mobile Menu */}
         <div 
-  className="mobile-menu md:hidden bg-gradient-to-b from-gray-900 to-black border-t border-gray-800 shadow-xl flex items-center justify-center"
-  style={{ display: "none" }}
->
-  <div className="flex flex-col items-center justify-center space-y-2 px-4 py-8">
-    <NavLink 
-      to="/"
-      className={mobileNavLinkClasses}
-      onClick={closeMobileMenu}
-    >
-      Home
-    </NavLink>
-    <NavLink 
-      to="/about"
-      className={mobileNavLinkClasses}
-      onClick={closeMobileMenu}
-    >
-      About Us
-    </NavLink>
-    <NavLink 
-      to="/contact"
-      className={mobileNavLinkClasses}
-      onClick={closeMobileMenu}
-    >
-      Contact Us
-    </NavLink>
-    <NavLink 
-      to="/talk"
-      className={mobileNavLinkClasses}
-      onClick={closeMobileMenu}
-    >
-      General Talk
-    </NavLink>
-    <NavLink 
-      to="/personality"
-      className={mobileNavLinkClasses}
-      onClick={closeMobileMenu}
-    >
-      Personality Check
-    </NavLink>
-    
-    <div className="pt-4 mt-2 border-t border-gray-800">
-      {user ? (
-        <button
-          onClick={() => {
-            handleprofile();
-            closeMobileMenu();
-          }}
-          className="flex items-center justify-center space-x-2 bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white px-6 py-3 rounded-full transition-all duration-300 shadow-md"
+          className="mobile-menu md:hidden bg-gradient-to-b from-gray-900 to-black border-t border-gray-800 shadow-xl flex items-center justify-center"
+          style={{ display: "none" }}
         >
-          <User className="h-4 w-4" />
-          <span className="font-medium">Profile</span>
-        </button>
-      ) : (
-        <NavLink
-          to="/login"
-          onClick={closeMobileMenu}
-          className="flex items-center justify-center space-x-2 bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white px-6 py-3 rounded-full transition-all duration-300 shadow-md"
-        >
-          <LogIn className="h-4 w-4" />
-          <span className="font-medium">Login</span>
-        </NavLink>
-      )}
-    </div>
-  </div>
-</div>
+          <div className="flex flex-col items-center justify-center space-y-2 px-4 py-8">
+            
+            {/* ADDED THIS BLOCK: Date Display for Mobile */}
+            <div className="text-center text-base font-medium text-gray-400 pb-4 mb-4 border-b border-gray-800 w-full">
+              {currentDate}
+            </div>
+            {/* END OF ADDED BLOCK */}
+
+            <NavLink 
+              to="/"
+              className={mobileNavLinkClasses}
+              onClick={closeMobileMenu}
+            >
+              Home
+            </NavLink>
+            <NavLink 
+              to="/about"
+              className={mobileNavLinkClasses}
+              onClick={closeMobileMenu}
+            >
+              About Us
+            </NavLink>
+            <NavLink 
+              to="/contact"
+              className={mobileNavLinkClasses}
+              onClick={closeMobileMenu}
+            >
+              Contact Us
+            </NavLink>
+            <NavLink 
+              to="/talk"
+              className={mobileNavLinkClasses}
+              onClick={closeMobileMenu}
+            >
+              General Talk
+            </NavLink>
+            <NavLink 
+              to="/personality"
+              className={mobileNavLinkClasses}
+              onClick={closeMobileMenu}
+            >
+              Personality Check
+            </NavLink>
+            
+            <div className="pt-4 mt-2 border-t border-gray-800 w-full flex justify-center">
+              {user ? (
+                <button
+                  onClick={() => {
+                    handleprofile();
+                    closeMobileMenu();
+                  }}
+                  className="flex items-center justify-center space-x-2 bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white px-6 py-3 rounded-full transition-all duration-300 shadow-md"
+                >
+                  <User className="h-4 w-4" />
+                  <span className="font-medium">Profile</span>
+                </button>
+              ) : (
+                <NavLink
+                  to="/login"
+                  onClick={closeMobileMenu}
+                  className="flex items-center justify-center space-x-2 bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white px-6 py-3 rounded-full transition-all duration-300 shadow-md"
+                >
+                  <LogIn className="h-4 w-4" />
+                  <span className="font-medium">Login</span>
+                </NavLink>
+              )}
+            </div>
+          </div>
+        </div>
       </nav>
     </>
   );
