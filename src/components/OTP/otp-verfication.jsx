@@ -1,9 +1,7 @@
-"use client"
-
 import { useState, useRef } from "react"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth"
+import { createUserWithEmailAndPassword, updateProfile, fetchSignInMethodsForEmail } from "firebase/auth"
 import { auth } from "../../auth"
 import { useOTP } from "../../context/OTPContext"
 import axios from "axios"
@@ -30,15 +28,30 @@ export default function OTPVerification({ username, email, password, redirectPat
 
   // Handle backspace navigation
   const handleKeyDown = (e, index) => {
-    if (e.key === "Backspace" && !otp[index] && index > 0) {
-      inputsRef.current[index - 1].focus()
+    if (e.key === "Backspace") {
+      e.preventDefault()
+      const newOtp = [...otp]
+      if (newOtp[index]) {
+        newOtp[index] = ""
+        setOtp(newOtp)
+        return
+      }
+      if (index > 0) {
+        inputsRef.current[index - 1].focus()
+        const prevOtp = [...newOtp]
+        if (prevOtp[index - 1]) {
+          prevOtp[index - 1] = ""
+          setOtp(prevOtp)
+        }
+      }
     }
   }
 
   // Handle paste of full OTP
   const handlePaste = (e) => {
-    const pasteData = e.clipboardData.getData("Text").slice(0, 6).split("")
-    setOtp(pasteData.concat(new Array(6 - pasteData.length).fill("")))
+    const pasteData = e.clipboardData.getData("Text").replace(/\D/g, "").slice(0, 6).split("")
+    const next = pasteData.concat(new Array(6 - pasteData.length).fill(""))
+    setOtp(next)
     inputsRef.current[Math.min(pasteData.length, 5)].focus()
   }
 
@@ -79,7 +92,16 @@ export default function OTPVerification({ username, email, password, redirectPat
         throw new Error("Invalid OTP")
       }
 
-      // If OTP is valid, create Firebase user
+      // Before creating account, check if email already has sign-in methods
+      const normalizedEmail = email.trim().toLowerCase()
+      const methods = await fetchSignInMethodsForEmail(auth, normalizedEmail)
+      if (methods && methods.length > 0) {
+        toast.error("An account with this email already exists. Please sign in.")
+        setIsOTP(false)
+        return
+      }
+
+      // If OTP is valid and email not registered, create Firebase user
       const { user } = await createUserWithEmailAndPassword(auth, email, password)
       await updateProfile(user, { displayName: username })
 
@@ -94,19 +116,20 @@ export default function OTPVerification({ username, email, password, redirectPat
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen py-8">
-      <div className="bg-[#ffdad7] pt-12 pb-16 px-8 md:px-16 rounded-xl shadow-2xl mx-5 md:mx-0 max-w-md w-full">
-        <div className="flex flex-col items-center gap-6">
+    <div className="flex items-center justify-center min-h-screen py-6 px-4 sm:py-10">
+      <div className="bg-[#ffdad7] pt-8 pb-10 px-5 sm:pt-12 sm:pb-14 sm:px-8 md:px-12 rounded-2xl shadow-2xl w-full max-w-md">
+        <div className="flex flex-col items-center gap-5 sm:gap-6">
           <div className="text-center">
-            <h2 className="text-3xl font-mono font-bold text-black mb-2">
+            <h2 className="text-2xl sm:text-3xl font-mono font-bold text-black mb-2">
               Verify Your <span className="text-red-500 font-extrabold">Code</span>
             </h2>
-            <p className="text-lg font-semibold text-red-500 max-w-sm">
+            <p className="text-sm sm:text-base md:text-lg font-medium text-red-500 max-w-sm px-2 sm:px-0 text-center">
               We've sent a 6-digit verification code to your email. Enter it below to complete your registration.
             </p>
           </div>
 
-          <div className="flex gap-3 justify-center" onPaste={handlePaste}>
+          {/* <CHANGE> Made OTP inputs more responsive with smaller size on mobile */}
+          <div className="flex gap-2 sm:gap-3 justify-center w-full" onPaste={handlePaste}>
             {otp.map((digit, index) => (
               <input
                 key={index}
@@ -116,14 +139,15 @@ export default function OTPVerification({ username, email, password, redirectPat
                 onChange={(e) => handleChange(e, index)}
                 onKeyDown={(e) => handleKeyDown(e, index)}
                 ref={(el) => (inputsRef.current[index] = el)}
-                className="w-12 h-12 text-center border-2 border-red-200 rounded-lg bg-white text-black text-xl font-bold focus:border-red-500 focus:outline-none focus:ring-2 focus:ring-red-200 transition-all duration-200 shadow-sm hover:border-red-300"
+                className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 text-center border-2 border-red-200 rounded-lg bg-white text-black text-lg sm:text-xl font-bold focus:border-red-500 focus:outline-none focus:ring-2 focus:ring-red-200 transition-all duration-200 shadow-sm hover:border-red-300"
               />
             ))}
           </div>
 
+          {/* <CHANGE> Made buttons consistent red color and more responsive */}
           <button
             onClick={handleVerify}
-            className="w-full bg-orange-700 text-white font-bold py-3 px-6 rounded-lg hover:bg-orange-600 transition ease-in-out duration-300 shadow-lg text-lg"
+            className="w-full bg-red-500 text-white font-bold py-3 px-4 sm:px-6 rounded-lg hover:bg-red-600 transition ease-in-out duration-300 shadow-lg text-base sm:text-lg"
           >
             Verify & Continue ❤️
           </button>
@@ -131,12 +155,12 @@ export default function OTPVerification({ username, email, password, redirectPat
           <button
             onClick={handleResendOTP}
             disabled={isResending}
-            className="w-full bg-red-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-red-600 disabled:bg-red-300 disabled:cursor-not-allowed transition ease-in-out duration-300 shadow-lg text-lg"
+            className="w-full bg-red-500 text-white font-bold py-3 px-4 sm:px-6 rounded-lg hover:bg-red-600 disabled:bg-red-300 disabled:cursor-not-allowed transition ease-in-out duration-300 shadow-lg text-base sm:text-lg"
           >
             {isResending ? "Resending..." : "Resend Code 🔄"}
           </button>
 
-          <p className="text-sm text-red-400 text-center font-medium">Almost there! Your perfect match awaits 💕</p>
+          <p className="text-xs sm:text-sm text-red-400 text-center font-medium px-2">Almost there! Your perfect match awaits 💕</p>
         </div>
       </div>
     </div>

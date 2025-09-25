@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import PasswordStrengthBar from "react-password-strength-bar";
 import { Check, X } from "lucide-react";
@@ -7,9 +8,11 @@ import {
   // getAuth,
   onAuthStateChanged,
   signInWithEmailAndPassword,
-  // createUserWithEmailAndPassword,
+  createUserWithEmailAndPassword,
   signInWithPopup,
   GoogleAuthProvider,
+  fetchSignInMethodsForEmail,
+  deleteUser
   // updateProfile,
 } from "firebase/auth";
 import { auth } from "../../auth";
@@ -23,6 +26,7 @@ function Login() {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
   const {isOTP,setIsOTP,sendOTP} = useOTP()
+  const [isVerifying, setIsVerifying] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
@@ -31,19 +35,17 @@ function Login() {
   const params = new URLSearchParams(location.search);
   const redirectPath = params.get("redirect") || "/";
 
-  useEffect(() => {
-    console.log(redirectPath);
-  }, []);
+  // Removed debug log effect
 
   // Check if user is already logged in
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        navigate(redirectPath); // Redirect if already logged in
+      if (user && !isVerifying) {
+        navigate(redirectPath); // Redirect if already logged in and not in verification flow
       }
     });
     return () => unsubscribe();
-  }, [navigate]);
+  }, [navigate, isVerifying, redirectPath]);
 
   function validatePassword(password) {
     const minLength = 8;
@@ -82,6 +84,11 @@ function Login() {
     );
   };
 
+  ValidIndicator.propTypes = {
+    val: PropTypes.bool.isRequired,
+    text: PropTypes.string.isRequired,
+  };
+
 
   const handleAuth = async (e) => {
     e.preventDefault();
@@ -108,10 +115,39 @@ function Login() {
         setIsLogin(true);
       } else {
         if (isValid) {
-          //Add OTP Verification here
-          sendOTP(username,email).then(()=>{
-            setIsOTP(true)
-          })
+          setIsVerifying(true);
+          // Robust duplicate check: attempt temp account create, then delete, then send OTP
+          const normalizedEmail = email.trim().toLowerCase();
+          try {
+            const tempCred = await createUserWithEmailAndPassword(auth, normalizedEmail, password);
+            // Account created => delete immediately and proceed to OTP
+            try {
+              await deleteUser(tempCred.user);
+            } catch (delErr) {
+              console.warn('Temporary user deletion failed:', delErr);
+            }
+            await sendOTP(username, normalizedEmail);
+            setIsOTP(true);
+          } catch (err) {
+            if (err.code === 'auth/email-already-in-use') {
+              toast.error('User Already Exists');
+              return;
+            }
+            // Fallback: if API available, try provider methods check
+            try {
+              const methods = await fetchSignInMethodsForEmail(auth, normalizedEmail);
+              if (methods && methods.length > 0) {
+                toast.error('User Already Exists');
+                return;
+              }
+            } catch (fallbackErr) {
+              console.warn('fetchSignInMethodsForEmail fallback failed:', fallbackErr);
+            }
+            // Unknown error: surface message
+            throw err;
+          } finally {
+            setIsVerifying(false);
+          }
 /*           const userCredential = await createUserWithEmailAndPassword(
             auth,
             email,
@@ -143,6 +179,8 @@ function Login() {
       } else {
         setErrorMessage(error.message);
       }
+    } finally {
+      setIsVerifying(false);
     }
   };
 
@@ -288,9 +326,10 @@ function Login() {
 
               <button
                 type="submit"
-                className="w-full bg-gradient-to-r bg-[#e71f1f] hover:bg-[#F8A199] text-white hover:text-black py-3 rounded-lg font-medium shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2"
+                disabled={isVerifying}
+                className="w-full bg-gradient-to-r bg-[#e71f1f] hover:bg-[#F8A199] text-white hover:text-black py-3 rounded-lg font-medium shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
               >
-                {isLogin ? "Sign In" : "Create Account"}
+                {isVerifying ? "Verifying..." : (isLogin ? "Sign In" : "Create Account")}
                 <ArrowRight size={18} />
               </button>
             </form>
