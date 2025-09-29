@@ -2,10 +2,12 @@ import React, { useState, useRef } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import GIF from "../../assets/giphy.gif"
+import { useAuth } from "../../context/AuthContext";
 
 export default function Contact() {
   const form = useRef();
   const [messages, setMessages] = useState([]);
+  const { user } = useAuth();
 
   const sendEmail = async (e) => {
     e.preventDefault();
@@ -64,7 +66,7 @@ export default function Contact() {
     
   });
 
- 
+
 
   return (
     <div className="flex justify-center bg-[#F8A199] sm:items-center sm:pt-0 md:mx-0 mx-5">
@@ -168,6 +170,7 @@ export default function Contact() {
                     type="name"
                     name="name"
                     id="name"
+                    defaultValue={user?.displayName}
                     placeholder="Full Name"
                     className="w-100 mt-2 py-3 px-3 rounded-lg bg-white border border-black text-black font-semibold focus:border-orange-500 focus:outline-none"
                   />
@@ -181,6 +184,7 @@ export default function Contact() {
                     type="email"
                     name="email"
                     id="email"
+                    defaultValue={user?.email}
                     placeholder="Email"
                     className="w-100 mt-2 py-3 px-3 rounded-lg bg-white border border-black text-black font-semibold focus:border-orange-500 focus:outline-none"
                   />
