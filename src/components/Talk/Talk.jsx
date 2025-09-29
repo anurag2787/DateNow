@@ -21,6 +21,7 @@ function Talk() {
   const chatEndRef = useRef(null);
   const navigate = useNavigate();
   const [isLoaded, setIsLoaded] = useState(false); 
+  const [isAnonymousInChatName,setIsAnonymousInChatName ] = useState(false); 
 
   const { user } = useAuth();
 
@@ -97,7 +98,7 @@ function Talk() {
         role: "user", 
         text: message, 
         userid: user.uid,
-        displayName: user.displayName || 'Anonymous',
+        displayName: isAnonymousInChatName? 'Anonymous' : user.displayName || 'Anonymous',
         createdAt: new Date()
       };
 
@@ -134,10 +135,16 @@ function Talk() {
     }
   };
 
+  const handleAnonymousToggle = () => {
+    setIsAnonymousInChatName((isAnonymousInChatName)=>!isAnonymousInChatName)
+  }
+
   return (
+    
     <div className="w-full flex items-center justify-center mx-0 my-0">
-      
-        <div className="bg-[#ffdad7] h-[75vh] p-5 md:p-11 md:pt-12 my-10 pt-12 rounded-xl shadow-2xl mx-5 md:mx-0 overflow-auto flex flex-col justify-between md:w-[1200px]">
+
+        <div className="bg-[#ffdad7] h-[75vh] px-5 md:p-11 md:pt-2 my-10 pt-2 rounded-xl shadow-2xl mx-5 md:mx-0 overflow-auto flex flex-col justify-between md:w-[1200px]">
+        <Toggle handleAnonymousToggle={handleAnonymousToggle} isAnonymousInChatName={isAnonymousInChatName}></Toggle>
         {isLoaded? (
           <>
             <div className="flex-1 overflow-y-auto mb-4">
@@ -209,6 +216,8 @@ function Talk() {
                 }}
                 disabled={!ready}
               />
+
+
               <button
                 className={`p-3 ml-3 rounded-xl text-white font-semibold ${
                   ready
@@ -244,6 +253,57 @@ function Talk() {
       
     </div>
   );
+}
+
+const Toggle =({isAnonymousInChatName,handleAnonymousToggle})=>{
+  return <label
+    htmlFor="anonymousToggle"
+    className="flex  py-4 items-center cursor-pointer select-none space-x-3"
+  >
+    <div className="text-[#BE123C] font-bold">Anonymous Mode</div>
+    <input
+      id="anonymousToggle"
+      type="checkbox"
+      checked={isAnonymousInChatName}
+      onChange={handleAnonymousToggle}
+      className="sr-only"
+      aria-label={isAnonymousInChatName ? "Disable anonymous mode" : "Enable anonymous mode"}
+      title="Send messages as Anonymous"
+    />
+    <div
+      className={`relative w-11 h-6 rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-gray-500 ${
+        isAnonymousInChatName ? "bg-gray-900" : "bg-gray-400"
+      }`}
+      aria-hidden="true"
+    >
+      <div
+        className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full shadow-md transition-transform duration-300 transform flex items-center justify-center ${
+          isAnonymousInChatName ? "translate-x-5" : "translate-x-0"
+        }`}
+      >
+        {isAnonymousInChatName && (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="text-black"
+          >
+            <path d="M14 18a2 2 0 0 0-4 0" />
+            <path d="m19 11-2.11-6.657a2 2 0 0 0-2.752-1.148l-1.276.61A2 2 0 0 1 12 4H8.5a2 2 0 0 0-1.925 1.456L5 11" />
+            <path d="M2 11h20" />
+            <circle cx="17" cy="18" r="3" />
+            <circle cx="7" cy="18" r="3" />
+          </svg>
+        )}
+      </div>
+    </div>
+  </label>
 }
 
 export default Talk;
