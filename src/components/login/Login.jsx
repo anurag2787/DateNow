@@ -215,7 +215,8 @@ function Login() {
               {!isLogin && (
                 <div className="relative">
                   <User
-                    className="absolute ml-3 flex flex-cols h-[48px] align-center text-gray-400"
+                    className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
+                    aria-hidden="true"
                     size={18}
                   />
                   <input
@@ -230,7 +231,8 @@ function Login() {
 
               <div className="relative">
                 <Mail
-                  className="absolute ml-3 flex flex-cols h-[48px] align-center text-gray-400"
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
+                  aria-hidden="true"
                   size={18}
                 />
                 <input
@@ -242,9 +244,10 @@ function Login() {
                 />
               </div>
 
-              <div className="relative">
+              <div className="relative ">
                 <Lock
-                  className="absolute ml-3 flex flex-cols h-[48px] align-center text-gray-400"
+                  className="absolute h-[48px] left-3 text-gray-400 pointer-events-none"
+                  aria-hidden="true"
                   size={18}
                 />
                 <input
