@@ -3,6 +3,7 @@ import io from "socket.io-client";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { formatDistanceToNow } from 'date-fns'; // Optional: for relative time formatting
+import { toast } from 'react-toastify';
 import sound from "../../assets/notification.mp3";
 
 const socket = io(import.meta.env.VITE_BACKEND_URL, {
@@ -137,6 +138,31 @@ function Talk() {
 
   const handleAnonymousToggle = () => {
     setIsAnonymousInChatName((isAnonymousInChatName)=>!isAnonymousInChatName)
+    
+    // Show appropriate message based on the new state
+    if (!isAnonymousInChatName) {
+      toast.success("🕶️ Anonymous mode activated!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    } else {
+      toast.info("👤 Anonymous mode deactivated!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    }
   }
 
   return (
