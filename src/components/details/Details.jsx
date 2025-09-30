@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Heart, Users, MessageCircle, Sparkles, Star, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-    
+import { useAuth } from "../../context/AuthContext";
+
 function Details() {
   const navigate = useNavigate();
   const [name, setName] = useState("");
@@ -9,7 +10,7 @@ function Details() {
   const [gender, setGender] = useState("");
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-
+  const { user } = useAuth()
   const validate = () => {
     const newErrors = {};
 
@@ -123,7 +124,7 @@ function Details() {
               </div>
             </div>
           </div>
-
+        
           {/* Right Side - Form */}
           <div className="lg:w-1/2 bg-white p-8 lg:p-12 flex flex-col justify-center">
             <div className="max-w-md mx-auto w-full">
@@ -143,7 +144,7 @@ function Details() {
                     name="name"
                     id="name"
                     placeholder="Enter your full name"
-                    value={name}
+                    defaultValue={user?.displayName}
                     onChange={(e) => {
                       setName(e.target.value);
                       setErrors((prev) => ({ ...prev, name: "" }));
