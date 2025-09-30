@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 
 function Match() {
   const [user, setUser] = useState(null); // Random user state
-  const [click, setClick] = useState(false);
   const navigate = useNavigate(); // For navigation
   const [mname, msetName] = useState("");
   const [mgender, setGender] = useState("");
@@ -40,9 +39,6 @@ function Match() {
       if (user.gender !== preferredGender || user.dob.age > localUserAge + 10) {
         fetchRandomUser();
       } else {
-        // setting button display value
-        setClick(true);
-
         // Update state and local storage with user data
         const fullName = `${user.name.first} ${user.name.last}`;
         const age = user.dob.age;
@@ -130,7 +126,6 @@ function Match() {
 
         {/* Chat Button */}
         <div className="flex justify-center">
-          {click ? (
             <button
               type="submit"
               onClick={press}
@@ -138,7 +133,6 @@ function Match() {
             >
               Chat
             </button>
-          ) : null}
         </div>
       </div>
     </div>
