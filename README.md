@@ -4,15 +4,6 @@
   <br>
   DATENOW
 </h1>
-
-<p align="center">
-  <b>This project is now OFFICIALLY accepted for:</b>
-</p>
-
-<div align="center">
-  <img src="src/assets/gssoc.png" alt="GSSOC" width="80%">
-</div>
-
 **📊 Project Insights**
 
 <table align="center">
