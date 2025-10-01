@@ -2,14 +2,14 @@ import React, { useState, useEffect, useRef } from "react";
 import io from "socket.io-client";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { formatDistanceToNow } from 'date-fns'; // Optional: for relative time formatting
+import { formatDistanceToNow } from 'date-fns';
 import sound from "../../assets/notification.mp3";
 
 const socket = io(import.meta.env.VITE_BACKEND_URL, {
   transports: ["websocket"],
   auth: {
-    userid: null, // Will be set dynamically
-    displayName: null // Will be set dynamically
+    userid: null,
+    displayName: null
   }
 });
 
@@ -21,6 +21,7 @@ function Talk() {
   const chatEndRef = useRef(null);
   const navigate = useNavigate();
   const [isLoaded, setIsLoaded] = useState(false); 
+  const [isAnonymousInChatName, setIsAnonymousInChatName] = useState(false); 
 
   const { user } = useAuth();
 
@@ -97,7 +98,7 @@ function Talk() {
         role: "user", 
         text: message, 
         userid: user.uid,
-        displayName: user.displayName || 'Anonymous',
+        displayName: isAnonymousInChatName ? 'Anonymous' : user.displayName || 'Anonymous',
         createdAt: new Date()
       };
 
@@ -134,11 +135,15 @@ function Talk() {
     }
   };
 
+  const handleAnonymousToggle = () => {
+    setIsAnonymousInChatName((isAnonymousInChatName) => !isAnonymousInChatName);
+  }
+
   return (
     <div className="w-full flex items-center justify-center mx-0 my-0">
-      
-        <div className="bg-[#ffdad7] h-[75vh] p-5 md:p-11 md:pt-12 my-10 pt-12 rounded-xl shadow-2xl mx-5 md:mx-0 overflow-auto flex flex-col justify-between md:w-[1200px]">
-        {isLoaded? (
+      <div className="bg-[#ffdad7] h-[75vh] px-5 md:p-11 md:pt-2 my-10 pt-2 rounded-xl shadow-2xl mx-5 md:mx-0 overflow-auto flex flex-col justify-between md:w-[1200px]">
+        <Toggle handleAnonymousToggle={handleAnonymousToggle} isAnonymousInChatName={isAnonymousInChatName} />
+        {isLoaded ? (
           <>
             <div className="flex-1 overflow-y-auto mb-4">
               <div className="space-y-3">
@@ -161,12 +166,13 @@ function Talk() {
                         </div>
                         <div className="chat-header text-black c">
                           {message.displayName}
-                          
                         </div>
                         <div className="chat-bubble bg-[#F8A199] text-black">{message.text}</div>
-                        <div className="chat-footer text-black"><time className="text-xs opacity-50 text-black ml-2">
+                        <div className="chat-footer text-black">
+                          <time className="text-xs opacity-50 text-black ml-2">
                             {formatDistanceToNow(new Date(message.createdAt), { addSuffix: true })}
-                          </time></div>
+                          </time>
+                        </div>
                       </div>
                     ) : (
                       <div className="chat chat-start">
@@ -180,14 +186,15 @@ function Talk() {
                         </div>
                         <div className="chat-header text-black font-semibold">
                           {message.displayName}
-                          
                         </div>
                         <div className="chat-bubble bg-[#e71f1f]">
                           {message.text}
                         </div>
-                        <div className="chat-footer text-black"><time className="text-xs opacity-50 text-black ml-2">
+                        <div className="chat-footer text-black">
+                          <time className="text-xs opacity-50 text-black ml-2">
                             {formatDistanceToNow(new Date(message.createdAt), { addSuffix: true })}
-                          </time></div>
+                          </time>
+                        </div>
                       </div>
                     )}
                   </div>
@@ -241,7 +248,97 @@ function Talk() {
           </div>
         )}
       </div>
-      
+    </div>
+  );
+}
+
+const Toggle = ({isAnonymousInChatName, handleAnonymousToggle}) => {
+  return (
+    <div className="bg-white/40 backdrop-blur-sm rounded-lg p-4 mb-4 border border-[#e71f1f]/20 shadow-sm">
+      <label
+        htmlFor="anonymousToggle"
+        className="flex items-center justify-between cursor-pointer select-none"
+      >
+        <div className="flex items-center space-x-3">
+          <div className="bg-[#e71f1f] p-2 rounded-lg">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="white"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+          </div>
+          <div>
+            <div className="text-[#BE123C] font-bold text-base">Anonymous Mode</div>
+            <div className="text-xs text-gray-700">
+              {isAnonymousInChatName ? "Your messages appear as Anonymous" : "Your display name is visible"}
+            </div>
+          </div>
+        </div>
+        
+        <input
+          id="anonymousToggle"
+          type="checkbox"
+          checked={isAnonymousInChatName}
+          onChange={handleAnonymousToggle}
+          className="sr-only"
+          aria-label={isAnonymousInChatName ? "Disable anonymous mode" : "Enable anonymous mode"}
+          title="Send messages as Anonymous"
+        />
+        <div
+          className={`relative w-14 h-7 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#e71f1f] ${
+            isAnonymousInChatName ? "bg-[#e71f1f]" : "bg-gray-300"
+          }`}
+          aria-hidden="true"
+        >
+          <div
+            className={`absolute top-0.5 left-0.5 w-6 h-6 bg-white rounded-full shadow-lg transition-transform duration-300 transform flex items-center justify-center ${
+              isAnonymousInChatName ? "translate-x-7" : "translate-x-0"
+            }`}
+          >
+            {isAnonymousInChatName ? (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#e71f1f"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                <circle cx="12" cy="12" r="3" />
+                <line x1="3" y1="3" x2="21" y2="21" />
+              </svg>
+            ) : (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#9ca3af"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+            )}
+          </div>
+        </div>
+      </label>
     </div>
   );
 }
