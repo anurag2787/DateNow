@@ -131,6 +131,7 @@ function Login() {
             setIsOTP(true);
           } catch (err) {
             if (err.code === 'auth/email-already-in-use') {
+              
               toast.error('User Already Exists');
               return;
             }
