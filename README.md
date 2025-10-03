@@ -228,6 +228,149 @@ MIT License — see the [LICENSE](LICENSE) file.
 
 ---
 
+## Contributors ✨
+
+Thanks go to these wonderful people who have contributed to this project:
+
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/anurag2787">
+        <img src="https://avatars.githubusercontent.com/anurag2787?v=4" width="100px;" alt=""/>
+        <br />
+        <sub><b>anurag2787</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/Rishav-Bagri">
+        <img src="https://avatars.githubusercontent.com/Rishav-Bagri?v=4" width="100px;" alt=""/>
+        <br />
+        <sub><b>Rishav-Bagri</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/asim770">
+        <img src="https://avatars.githubusercontent.com/asim770?v=4" width="100px;" alt=""/>
+        <br />
+        <sub><b>asim770</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/lokesh0921">
+        <img src="https://avatars.githubusercontent.com/lokesh0921?v=4" width="100px;" alt=""/>
+        <br />
+        <sub><b>lokesh0921</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/arishaix">
+        <img src="https://avatars.githubusercontent.com/arishaix?v=4" width="100px;" alt=""/>
+        <br />
+        <sub><b>arishaix</b></sub>
+      </a>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/DivyaJain-DataAnalyst">
+        <img src="https://avatars.githubusercontent.com/DivyaJain-DataAnalyst?v=4" width="100px;" alt=""/>
+        <br />
+        <sub><b>DivyaJain-DataAnalyst</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/Sameeralam9">
+        <img src="https://avatars.githubusercontent.com/Sameeralam9?v=4" width="100px;" alt=""/>
+        <br />
+        <sub><b>Sameeralam9</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/Copilot">
+        <img src="https://avatars.githubusercontent.com/Copilot?v=4" width="100px;" alt=""/>
+        <br />
+        <sub><b>Copilot</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/DivyaJain09">
+        <img src="https://avatars.githubusercontent.com/DivyaJain09?v=4" width="100px;" alt=""/>
+        <br />
+        <sub><b>DivyaJain09</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/AadityaHande">
+        <img src="https://avatars.githubusercontent.com/AadityaHande?v=4" width="100px;" alt=""/>
+        <br />
+        <sub><b>AadityaHande</b></sub>
+      </a>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/khushthecoder">
+        <img src="https://avatars.githubusercontent.com/khushthecoder?v=4" width="100px;" alt=""/>
+        <br />
+        <sub><b>khushthecoder</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/itspavant">
+        <img src="https://avatars.githubusercontent.com/itspavant?v=4" width="100px;" alt=""/>
+        <br />
+        <sub><b>itspavant</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/FMagueijo">
+        <img src="https://avatars.githubusercontent.com/FMagueijo?v=4" width="100px;" alt=""/>
+        <br />
+        <sub><b>FMagueijo</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/dependabot[bot]">
+        <img src="https://avatars.githubusercontent.com/dependabot[bot]?v=4" width="100px;" alt=""/>
+        <br />
+        <sub><b>dependabot[bot]</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/coding-mrinal">
+        <img src="https://avatars.githubusercontent.com/coding-mrinal?v=4" width="100px;" alt=""/>
+        <br />
+        <sub><b>coding-mrinal</b></sub>
+      </a>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/Chandan-U2003">
+        <img src="https://avatars.githubusercontent.com/Chandan-U2003?v=4" width="100px;" alt=""/>
+        <br />
+        <sub><b>Chandan-U2003</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/vachan-maker">
+        <img src="https://avatars.githubusercontent.com/vachan-maker?v=4" width="100px;" alt=""/>
+        <br />
+        <sub><b>vachan-maker</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/BUSHAAN">
+        <img src="https://avatars.githubusercontent.com/BUSHAAN?v=4" width="100px;" alt=""/>
+        <br />
+        <sub><b>BUSHAAN</b></sub>
+      </a>
+    </td>
+  </tr>
+</table>
+
+---
+
 ## 🙏 Acknowledgments
 
 * Firebase
