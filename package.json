@@ -29,7 +29,7 @@
     "react-password-strength-bar": "^0.4.1",
     "react-router-dom": "^6.26.1",
     "react-simple-typewriter": "^5.0.1",
-    "react-syntax-highlighter": "^5.8.0",
+    "react-syntax-highlighter": "^15.6.1",
     "react-toastify": "^11.0.5",
     "remark-gfm": "^4.0.0",
     "socket.io-client": "^4.8.1"
