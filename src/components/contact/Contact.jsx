@@ -6,6 +6,8 @@ import GIF from "../../assets/giphy.gif"
 export default function Contact() {
   const form = useRef();
   const [messages, setMessages] = useState([]);
+  const [check, setCheck] = useState(false);
+    const [isFormValid, setIsFormValid] = useState(false);
 
   const sendEmail = async (e) => {
     e.preventDefault();
@@ -30,12 +32,27 @@ export default function Contact() {
         console.error("Error saving message:", error);
       }
     }
+  
+// validate form fields on every input change
+  useEffect(() => {
+    const currentForm = form.current;
+    const handleInput = () => {
+      const name = currentForm.name.value.trim();
+      const email = currentForm.email.value.trim();
+      const msg = currentForm.msg.value.trim();
+      // simple email regex
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (name && emailRegex.test(email) && msg) {
+        setIsFormValid(true);
+      } else {
+        setIsFormValid(false);
+      }
+    };
 
+    currentForm.addEventListener("input", handleInput);
+    return () => currentForm.removeEventListener("input", handleInput);
+  }, []);
 
-
-
-
-  const [check, setCheck] = useState(false);
   useGSAP(() => {
     const tl=gsap.timeline();
     
@@ -169,6 +186,7 @@ export default function Contact() {
                     name="name"
                     id="name"
                     placeholder="Full Name"
+                     required   //  added
                     className="w-100 mt-2 py-3 px-3 rounded-lg bg-white border border-black text-black font-semibold focus:border-orange-500 focus:outline-none"
                   />
                 </div>
@@ -182,6 +200,7 @@ export default function Contact() {
                     name="email"
                     id="email"
                     placeholder="Email"
+                    required   //  added
                     className="w-100 mt-2 py-3 px-3 rounded-lg bg-white border border-black text-black font-semibold focus:border-orange-500 focus:outline-none"
                   />
                 </div>
@@ -195,13 +214,16 @@ export default function Contact() {
                     name="msg"
                     id="mg"
                     placeholder="Enter Your Message"
+                    required   //  added
                     className="w-100 mt-2 py-3 px-3 h-20 rounded-lg bg-white border border-black text-black font-semibold focus:border-orange-500 focus:outline-none"
                   />
                 </div>
 
                 <button
                   type="submit"
+                  disabled={!isFormValid}   //  disables submit until form valid
                   className="md:w-32 bg-orange-700 hover:bg-blue-dark text-white font-bold py-3 px-6 rounded-lg mt-8 ml-auto hover:bg-orange-600 transition ease-in-out duration-300"
+                    ${isFormValid ? "bg-orange-700 text-white hover:bg-orange-600" : "bg-gray-400 cursor-not-allowed"}`}
                 >
                   Submit
                 </button>
