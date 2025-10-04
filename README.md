@@ -366,6 +366,7 @@ Thanks go to these wonderful people who have contributed to this project:
         <sub><b>BUSHAAN</b></sub>
       </a>
     </td>
+    <td colspan="2"></td>
   </tr>
 </table>
 
