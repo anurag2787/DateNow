@@ -91,6 +91,7 @@ function Login() {
 
     try {
       if (isLogin) {
+  
         await signInWithEmailAndPassword(auth, email, password);
         toast.success("✅ Logged in successfully!", {
           position: "top-right",

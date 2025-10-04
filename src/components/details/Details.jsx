@@ -5,12 +5,13 @@ import { useAuth } from "../../context/AuthContext";
 
 function Details() {
   const navigate = useNavigate();
-  const [name, setName] = useState("");
+  const { user } = useAuth();
+  const [name, setName] = useState(user?.displayName||"");
   const [age, setAge] = useState("");
   const [gender, setGender] = useState("");
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { user } = useAuth()
+  
   const validate = () => {
     const newErrors = {};
 
@@ -144,7 +145,7 @@ function Details() {
                     name="name"
                     id="name"
                     placeholder="Enter your full name"
-                    defaultValue={user?.displayName}
+                    value={name}
                     onChange={(e) => {
                       setName(e.target.value);
                       setErrors((prev) => ({ ...prev, name: "" }));
