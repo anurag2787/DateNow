@@ -1,156 +1,183 @@
-<!-- GSSoC banner and project insights -->
+<div align="center">
 
-<h1 align="center">
-  <br>
-  DATENOW
-</h1>
-**📊 Project Insights**
+# 💕 DateNow
 
-<table align="center">
-    <thead align="center">
-        <tr>
-            <td><b>🌟 Stars</b></td>
-            <td><b>🍴 Forks</b></td>
-            <td><b>🐛 Issues</b></td>
-            <td><b>🔔 Open PRs</b></td>
-            <td><b>🔕 Closed PRs</b></td>
-            <td><b>🛠️ Languages</b></td>
-            <td><b>👥 Contributors</b></td>
-        </tr>
-     </thead>
-    <tbody>
-         <tr>
-            <td><img alt="Stars" src="https://img.shields.io/github/stars/anurag2787/DateNow?style=flat&logo=github"/></td>
-            <td><img alt="Forks" src="https://img.shields.io/github/forks/anurag2787/DateNow?style=flat&logo=github"/></td>
-            <td><img alt="Issues" src="https://img.shields.io/github/issues/anurag2787/DateNow?style=flat&logo=github"/></td>
-            <td><img alt="Open PRs" src="https://img.shields.io/github/issues-pr/anurag2787/DateNow?style=flat&logo=github"/></td>
-            <td><img alt="Closed PRs" src="https://img.shields.io/github/issues-pr-closed/anurag2787/DateNow?style=flat&color=critical&logo=github"/></td>
-            <td><img alt="Languages Count" src="https://img.shields.io/github/languages/count/anurag2787/DateNow?style=flat&color=green&logo=github"></td>
-            <td><img alt="Contributors Count" src="https://img.shields.io/github/contributors/anurag2787/DateNow?style=flat&color=blue&logo=github"/></td>
-        </tr>
-    </tbody>
-</table>
+### *Find Your Perfect Match with AI-Powered Intelligence*
 
+[![Stars](https://img.shields.io/github/stars/anurag2787/DateNow?style=for-the-badge&logo=github&color=yellow)](https://github.com/anurag2787/DateNow/stargazers)
+[![Forks](https://img.shields.io/github/forks/anurag2787/DateNow?style=for-the-badge&logo=github&color=blue)](https://github.com/anurag2787/DateNow/network/members)
+[![Issues](https://img.shields.io/github/issues/anurag2787/DateNow?style=for-the-badge&logo=github&color=red)](https://github.com/anurag2787/DateNow/issues)
+[![PRs](https://img.shields.io/github/issues-pr/anurag2787/DateNow?style=for-the-badge&logo=github&color=green)](https://github.com/anurag2787/DateNow/pulls)
+[![License](https://img.shields.io/badge/license-MIT-purple?style=for-the-badge)](LICENSE)
 
-# DateNow - Frontend 💕  
-A modern dating app built with **React**, **Firebase**, and **Google Gemini AI**. Find your perfect match and chat intelligently.
-
-> **Note:** This is the frontend repository. The backend lives [here](https://github.com/yourusername/DateNow-Backend). Run both for full functionality.
+[✨ Features](#-features) • [🚀 Quick Start](#-quick-start) • [📖 Documentation](#-documentation) • [🤝 Contributing](#-contributing)
 
 ---
 
-## 🌟 Features
+</div>
 
-- 🤖 AI-Powered Chat using Google Gemini
-- 💬 Real-time Messaging via Socket.io
-- 🔐 Firebase Authentication
-- 🎨 Beautiful, Responsive UI (Tailwind CSS + DaisyUI)
-- ❤️ Matchmaking Algorithm
-- 📧 Email Integration with EmailJS
-- 🧑‍💼 User Profile Management
+## 🎯 About
+
+**DateNow** is a cutting-edge dating platform that combines modern web technologies with artificial intelligence to create meaningful connections. Built with React 18 and powered by Google Gemini AI, it delivers an intelligent, real-time matchmaking experience.
+
+> 💡 **Frontend Repository** — Backend available at [DateNow-Backend](https://github.com/yourusername/DateNow-Backend)
+
+---
+
+## ✨ Features
+
+<table>
+<tr>
+<td width="50%">
+
+### 🤖 AI-Powered
+- Smart matchmaking algorithm
+- Intelligent chat assistance
+- Personalized recommendations
+
+</td>
+<td width="50%">
+
+### ⚡ Real-Time
+- Instant messaging with Socket.io
+- Live notifications
+- Real-time updates
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+### 🔐 Secure
+- Firebase Authentication
+- Protected routes
+- Data encryption
+
+</td>
+<td width="50%">
+
+### 🎨 Modern UI
+- Responsive design
+- Smooth animations (GSAP)
+- Dark mode support
+
+</td>
+</tr>
+</table>
 
 ---
 
 ## 🛠️ Tech Stack
 
-**React 18**, Tailwind CSS, DaisyUI, Firebase Auth, Google Gemini API, Socket.io, React Router, Vite, Lucide React, GSAP, EmailJS
+<div align="center">
+
+![React](https://img.shields.io/badge/React_18-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)
+![Socket.io](https://img.shields.io/badge/Socket.io-010101?style=for-the-badge&logo=socket.io&logoColor=white)
+
+</div>
+
+**Frontend:** React 18, Vite, TailwindCSS, DaisyUI  
+**Backend Integration:** Socket.io, Axios  
+**Authentication:** Firebase Auth  
+**AI:** Google Gemini API  
+**Animation:** GSAP  
+**Email:** EmailJS  
+**Icons:** Lucide React
 
 ---
 
-## 📋 Prerequisites
+## 🚀 Quick Start
 
-- Node.js (v16+)
-- npm / yarn
-- Git
-
----
-
-## 🚀 Getting Started
-
-### 1. Clone the Repository
+### Prerequisites
 
 ```bash
-git clone https://github.com/yourusername/DateNow-Frontend.git
-cd DateNow-Frontend
+Node.js >= 16.x
+npm or yarn
+Git
 ```
 
-### 2. Install Dependencies
+### Installation
+
+1️⃣ **Clone the repository**
+
+```bash
+git clone https://github.com/anurag2787/DateNow.git
+cd DateNow
+```
+
+2️⃣ **Install dependencies**
 
 ```bash
 npm install
 ```
 
-### 3. Setup Environment Variables
+3️⃣ **Configure environment**
 
 ```bash
 cp .env.example .env
 ```
 
-Fill in your `.env` file using the guide below.
+4️⃣ **Add your credentials** (see [Environment Setup](#-environment-setup))
 
-### 4. Backend Options
-
-**Option 1: Hosted Backend (Recommended)**
-
-```env
-VITE_BACKEND_URL=https://datenow-backend.onrender.com
-```
-
-> May take ~1–2 mins to start if inactive.
-
-**Option 2: Local Backend**
-
-```env
-VITE_BACKEND_URL=http://localhost:9000
-```
-
-Follow setup from: [DateNow-Backend](https://github.com/yourusername/DateNow-Backend)
-
-### 5. Start Development Server
+5️⃣ **Start development server**
 
 ```bash
 npm run dev
 ```
 
-Visit: [http://localhost:5173](http://localhost:5173)
+🎉 Open [http://localhost:5173](http://localhost:5173) in your browser!
 
 ---
 
-## 🔧 Environment Variables
+## ⚙️ Environment Setup
+
+### 🔥 Firebase Configuration
+
+1. Visit [Firebase Console](https://console.firebase.google.com/)
+2. Create a new project or select existing
+3. Navigate to Project Settings → Add Web App
+4. Copy credentials to `.env`:
 
 ```env
-# Firebase
-VITE_FIREBASE_API_KEY=your_firebase_api_key
-VITE_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
+VITE_FIREBASE_API_KEY=your_api_key_here
+VITE_FIREBASE_AUTH_DOMAIN=your_domain.firebaseapp.com
 VITE_FIREBASE_PROJECT_ID=your_project_id
-VITE_FIREBASE_STORAGE_BUCKET=your_project.appspot.com
-VITE_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
+VITE_FIREBASE_STORAGE_BUCKET=your_bucket.appspot.com
+VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
 VITE_FIREBASE_APP_ID=your_app_id
 VITE_FIREBASE_MEASUREMENT_ID=your_measurement_id
+```
 
-# Gemini AI
+### 🤖 Google Gemini API
+
+1. Go to [Google AI Studio](https://aistudio.google.com/)
+2. Generate API key
+3. Add to `.env`:
+
+```env
 VITE_GEMINI_API_KEY=your_gemini_api_key
+```
 
-# Backend
+### 🌐 Backend Configuration
+
+**Option A: Hosted Backend (Recommended)**
+
+```env
 VITE_BACKEND_URL=https://datenow-backend.onrender.com
 ```
 
----
+> ⏱️ First request may take 1-2 minutes (cold start)
 
-## 🔑 API Setup
+**Option B: Local Development**
 
-### Firebase
+```env
+VITE_BACKEND_URL=http://localhost:9000
+```
 
-1. Visit [Firebase Console](https://console.firebase.google.com/)
-2. Create/select a project
-3. Enable Authentication → Add sign-in methods
-4. Add a web app and copy config to `.env`
-
-### Google Gemini API
-
-1. Go to [Google AI Studio](https://aistudio.google.com/)
-2. Create an API key
-3. Add it to `.env` as `VITE_GEMINI_API_KEY`
+Clone and run [DateNow-Backend](https://github.com/yourusername/DateNow-Backend)
 
 ---
 
@@ -158,227 +185,193 @@ VITE_BACKEND_URL=https://datenow-backend.onrender.com
 
 ```
 DateNow/
-├── public/
-├── src/
-│   ├── assets/         # Static media
-│   ├── components/     # UI components
-│   ├── context/        # AuthContext
+├── 📂 public/              # Static assets
+├── 📂 src/
+│   ├── 📂 assets/          # Images, icons, media
+│   ├── 📂 components/      # Reusable React components
+│   │   ├── Auth/
+│   │   ├── Chat/
+│   │   ├── Profile/
+│   │   └── UI/
+│   ├── 📂 context/         # React Context (Auth, Theme)
+│   ├── 📂 hooks/           # Custom React hooks
+│   ├── 📂 services/        # API services
+│   ├── 📂 utils/           # Helper functions
 │   ├── App.jsx
-│   ├── auth.js
 │   ├── Layout.jsx
 │   └── main.jsx
 ├── .env.example
 ├── tailwind.config.js
 ├── vite.config.js
-└── vercel.json
+└── package.json
 ```
 
 ---
 
 ## 🐛 Troubleshooting
 
-**Backend Not Connecting?**
+<details>
+<summary><b>🔌 Backend Connection Issues</b></summary>
 
-* Wait 1–2 mins (cold start)
-* Check `VITE_BACKEND_URL`
-* Local: Ensure it's running on port `9000`
+- Wait 1-2 minutes for cold start on Render
+- Verify `VITE_BACKEND_URL` in `.env`
+- Check backend status: https://datenow-backend.onrender.com
+- For local dev, ensure backend runs on port 9000
 
-**Firebase Auth Errors?**
+</details>
 
-* Verify `.env` values
-* Check Firebase → Authentication → Sign-in methods
-* Add localhost to authorized domains
+<details>
+<summary><b>🔐 Firebase Authentication Errors</b></summary>
 
-**API Issues?**
+- Double-check all `.env` Firebase variables
+- Enable sign-in methods in Firebase Console
+- Add `localhost:5173` to authorized domains
+- Clear browser cache and retry
 
-* Validate Gemini and Backend URLs in `.env`
-* Check internet / CORS settings
+</details>
 
-🔗 **Check Backend Status**
-[https://datenow-backend.onrender.com](https://datenow-backend.onrender.com)
+<details>
+<summary><b>🤖 Gemini API Issues</b></summary>
+
+- Verify API key is active
+- Check API quota in Google AI Studio
+- Ensure proper environment variable naming
+
+</details>
+
+<details>
+<summary><b>💬 Socket.io Not Connecting</b></summary>
+
+- Confirm backend URL is correct
+- Check for CORS configuration
+- Verify backend is running
+- Inspect browser console for errors
+
+</details>
+
+---
+
+## 📖 Documentation
+
+### Available Scripts
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start development server |
+| `npm run build` | Build for production |
+| `npm run preview` | Preview production build |
+| `npm run lint` | Run ESLint |
+
+### Key Components
+
+- **AuthContext**: Manages authentication state
+- **ChatComponent**: Real-time messaging interface
+- **ProfileCard**: User profile display
+- **MatchCard**: Swipeable match cards
+
+### API Integration
+
+```javascript
+// Example: Gemini AI integration
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
+const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
+const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+```
 
 ---
 
 ## 🤝 Contributing
 
-1. Fork this repo
-2. Create a branch: `git checkout -b feature/your-feature`
-3. Commit: `git commit -m "Added feature"`
-4. Push: `git push origin feature/your-feature`
-5. Open a Pull Request 🚀
+We love contributions! Here's how you can help:
 
-**Guidelines**
+### Quick Contribution Guide
 
-* Follow code style
-* Write clear commit messages
-* Test thoroughly
-* Keep docs updated
+1. 🍴 Fork the repository
+2. 🌿 Create your feature branch
+   ```bash
+   git checkout -b feature/amazing-feature
+   ```
+3. 💻 Make your changes
+4. ✅ Commit with clear messages
+   ```bash
+   git commit -m "feat: add amazing feature"
+   ```
+5. 📤 Push to your fork
+   ```bash
+   git push origin feature/amazing-feature
+   ```
+6. 🎉 Open a Pull Request
+
+### Contribution Guidelines
+
+- Follow existing code style and conventions
+- Write meaningful commit messages ([Conventional Commits](https://www.conventionalcommits.org/))
+- Test thoroughly before submitting
+- Update documentation as needed
+- Be respectful and constructive
 
 ---
 
-## 📄 License
+## 👥 Contributors
 
-MIT License — see the [LICENSE](LICENSE) file.
+A huge thank you to all our amazing contributors! 🎉
 
----
+<div align="center">
 
-## 👥 Team
+<a href="https://github.com/anurag2787/DateNow/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=anurag2787/DateNow" />
+</a>
 
-**Lead Developer**: [Anurag Yadav](https://github.com/yourusername)
+</div>
 
----
+### Core Team
 
-## Contributors ✨
-
-Thanks go to these wonderful people who have contributed to this project:
-
-<table>
+<table align="center">
   <tr>
     <td align="center">
       <a href="https://github.com/anurag2787">
-        <img src="https://avatars.githubusercontent.com/anurag2787?v=4" width="100px;" alt=""/>
+        <img src="https://avatars.githubusercontent.com/anurag2787?v=4" width="100px;" alt="Anurag Yadav"/>
         <br />
-        <sub><b>anurag2787</b></sub>
+        <sub><b>Anurag Yadav</b></sub>
+        <br />
+        <sub>Lead Developer</sub>
       </a>
     </td>
-    <td align="center">
-      <a href="https://github.com/Rishav-Bagri">
-        <img src="https://avatars.githubusercontent.com/Rishav-Bagri?v=4" width="100px;" alt=""/>
-        <br />
-        <sub><b>Rishav-Bagri</b></sub>
-      </a>
-    </td>
-    <td align="center">
-      <a href="https://github.com/asim770">
-        <img src="https://avatars.githubusercontent.com/asim770?v=4" width="100px;" alt=""/>
-        <br />
-        <sub><b>asim770</b></sub>
-      </a>
-    </td>
-    <td align="center">
-      <a href="https://github.com/lokesh0921">
-        <img src="https://avatars.githubusercontent.com/lokesh0921?v=4" width="100px;" alt=""/>
-        <br />
-        <sub><b>lokesh0921</b></sub>
-      </a>
-    </td>
-    <td align="center">
-      <a href="https://github.com/arishaix">
-        <img src="https://avatars.githubusercontent.com/arishaix?v=4" width="100px;" alt=""/>
-        <br />
-        <sub><b>arishaix</b></sub>
-      </a>
-    </td>
-  </tr>
-  <tr>
-    <td align="center">
-      <a href="https://github.com/DivyaJain-DataAnalyst">
-        <img src="https://avatars.githubusercontent.com/DivyaJain-DataAnalyst?v=4" width="100px;" alt=""/>
-        <br />
-        <sub><b>DivyaJain-DataAnalyst</b></sub>
-      </a>
-    </td>
-    <td align="center">
-      <a href="https://github.com/Sameeralam9">
-        <img src="https://avatars.githubusercontent.com/Sameeralam9?v=4" width="100px;" alt=""/>
-        <br />
-        <sub><b>Sameeralam9</b></sub>
-      </a>
-    </td>
-    <td align="center">
-      <a href="https://github.com/Copilot">
-        <img src="https://avatars.githubusercontent.com/Copilot?v=4" width="100px;" alt=""/>
-        <br />
-        <sub><b>Copilot</b></sub>
-      </a>
-    </td>
-    <td align="center">
-      <a href="https://github.com/DivyaJain09">
-        <img src="https://avatars.githubusercontent.com/DivyaJain09?v=4" width="100px;" alt=""/>
-        <br />
-        <sub><b>DivyaJain09</b></sub>
-      </a>
-    </td>
-    <td align="center">
-      <a href="https://github.com/AadityaHande">
-        <img src="https://avatars.githubusercontent.com/AadityaHande?v=4" width="100px;" alt=""/>
-        <br />
-        <sub><b>AadityaHande</b></sub>
-      </a>
-    </td>
-  </tr>
-  <tr>
-    <td align="center">
-      <a href="https://github.com/khushthecoder">
-        <img src="https://avatars.githubusercontent.com/khushthecoder?v=4" width="100px;" alt=""/>
-        <br />
-        <sub><b>khushthecoder</b></sub>
-      </a>
-    </td>
-    <td align="center">
-      <a href="https://github.com/itspavant">
-        <img src="https://avatars.githubusercontent.com/itspavant?v=4" width="100px;" alt=""/>
-        <br />
-        <sub><b>itspavant</b></sub>
-      </a>
-    </td>
-    <td align="center">
-      <a href="https://github.com/FMagueijo">
-        <img src="https://avatars.githubusercontent.com/FMagueijo?v=4" width="100px;" alt=""/>
-        <br />
-        <sub><b>FMagueijo</b></sub>
-      </a>
-    </td>
-    <td align="center">
-      <a href="https://github.com/dependabot[bot]">
-        <img src="https://avatars.githubusercontent.com/dependabot[bot]?v=4" width="100px;" alt=""/>
-        <br />
-        <sub><b>dependabot[bot]</b></sub>
-      </a>
-    </td>
-    <td align="center">
-      <a href="https://github.com/coding-mrinal">
-        <img src="https://avatars.githubusercontent.com/coding-mrinal?v=4" width="100px;" alt=""/>
-        <br />
-        <sub><b>coding-mrinal</b></sub>
-      </a>
-    </td>
-  </tr>
-  <tr>
-    <td align="center">
-      <a href="https://github.com/Chandan-U2003">
-        <img src="https://avatars.githubusercontent.com/Chandan-U2003?v=4" width="100px;" alt=""/>
-        <br />
-        <sub><b>Chandan-U2003</b></sub>
-      </a>
-    </td>
-    <td align="center">
-      <a href="https://github.com/vachan-maker">
-        <img src="https://avatars.githubusercontent.com/vachan-maker?v=4" width="100px;" alt=""/>
-        <br />
-        <sub><b>vachan-maker</b></sub>
-      </a>
-    </td>
-    <td align="center">
-      <a href="https://github.com/BUSHAAN">
-        <img src="https://avatars.githubusercontent.com/BUSHAAN?v=4" width="100px;" alt=""/>
-        <br />
-        <sub><b>BUSHAAN</b></sub>
-      </a>
-    </td>
-    <td colspan="2"></td>
   </tr>
 </table>
 
 ---
 
-## 🙏 Acknowledgments
+## 📄 License
 
-* Firebase
-* Google Gemini AI
-* React + Open Source Libraries
-* All contributors ❤️
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
 
 ---
 
-**Made with ❤️ by the DateNow team**
+## 🙏 Acknowledgments
+
+Special thanks to:
+
+- [Firebase](https://firebase.google.com/) - Authentication & hosting
+- [Google Gemini](https://ai.google.dev/) - AI capabilities
+- [React Team](https://react.dev/) - Amazing framework
+- [TailwindCSS](https://tailwindcss.com/) - Utility-first CSS
+- [Socket.io](https://socket.io/) - Real-time engine
+- All our contributors and supporters! ❤️
+
+---
+
+<div align="center">
+
+### 💕 Made with love by the DateNow Team
+
+**[⬆ Back to Top](#-datenow)**
+
+[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/anurag2787/DateNow)
+[![Discord](https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white)](#)
+[![Twitter](https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](#)
+
+**Star ⭐ this repo if you find it helpful!**
+
+</div>
