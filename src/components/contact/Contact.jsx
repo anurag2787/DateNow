@@ -6,30 +6,49 @@ import GIF from "../../assets/giphy.gif"
 export default function Contact() {
   const form = useRef();
   const [messages, setMessages] = useState([]);
+  const [formError, setFormError] = useState("");
+
+  const validateEmail = (email) => {
+    // Simple email regex
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
 
   const sendEmail = async (e) => {
     e.preventDefault();
-    setCheck(true);
+    setFormError("");
+    const name = form.current.name.value.trim();
+    const email = form.current.email.value.trim();
+    const msg = form.current.msg.value.trim();
 
-      try {
-        const response = await fetch(
-          `${import.meta.env.VITE_BACKEND_URL}/sendemail`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              email: form.current.email.value,
-              displayName: form.current.name.value,
-              text: form.current.msg.value
-            }),
-          }
-        );
-      } catch (error) {
-        console.error("Error saving message:", error);
-      }
+    if (!name || !email || !msg) {
+      setFormError("Please fill in all required fields.");
+      return;
     }
+    if (!validateEmail(email)) {
+      setFormError("Please enter a valid email address.");
+      return;
+    }
+
+    setCheck(true);
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/sendemail`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            displayName: name,
+            text: msg
+          }),
+        }
+      );
+    } catch (error) {
+      console.error("Error saving message:", error);
+    }
+  };
 
 
 
@@ -155,26 +174,27 @@ export default function Contact() {
               </div>
 
               <form
-                // onSubmit={handleSubmit}
-                ref={form} 
+                ref={form}
                 onSubmit={sendEmail}
                 className="right p-0 pt-6 md:p-6 flex flex-col justify-center"
+                noValidate
               >
                 <div className="flex flex-col">
-                  <label for="name" className="hidden">
+                  <label htmlFor="name" className="hidden">
                     Full Name
                   </label>
                   <input
-                    type="name"
+                    type="text"
                     name="name"
                     id="name"
                     placeholder="Full Name"
                     className="w-100 mt-2 py-3 px-3 rounded-lg bg-white border border-black text-black font-semibold focus:border-orange-500 focus:outline-none"
+                    required
                   />
                 </div>
 
                 <div className="flex flex-col mt-2">
-                  <label for="email" className="hidden">
+                  <label htmlFor="email" className="hidden">
                     Email
                   </label>
                   <input
@@ -183,21 +203,31 @@ export default function Contact() {
                     id="email"
                     placeholder="Email"
                     className="w-100 mt-2 py-3 px-3 rounded-lg bg-white border border-black text-black font-semibold focus:border-orange-500 focus:outline-none"
+                    required
                   />
                 </div>
 
                 <div className="flex flex-col mt-2">
-                  <label for="mg" className="hidden">
-                    Number
+                  <label htmlFor="mg" className="hidden">
+                    Message
                   </label>
                   <textarea
-                    type="text"
                     name="msg"
                     id="mg"
                     placeholder="Enter Your Message"
                     className="w-100 mt-2 py-3 px-3 h-20 rounded-lg bg-white border border-black text-black font-semibold focus:border-orange-500 focus:outline-none"
+                    required
                   />
                 </div>
+
+                {formError && (
+                  <div className="flex items-center gap-2 mt-4 px-4 py-2 rounded-lg bg-gradient-to-r from-red-400 to-red-600 text-white shadow-lg animate-pulse">
+                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z" />
+                    </svg>
+                    <span className="font-semibold text-base">{formError}</span>
+                  </div>
+                )}
 
                 <button
                   type="submit"
