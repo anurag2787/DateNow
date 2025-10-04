@@ -234,7 +234,7 @@ const PersonalityCheck = () => {
               <Cursor cursorStyle="❤️" />
             </span>
           </h2>
-
+          
           {isTyping ? (
             <RenderIntro displayedText={displayedText} />
           ) : personalityResult ? (

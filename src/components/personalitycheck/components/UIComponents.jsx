@@ -92,11 +92,11 @@ export const RenderQuestions = ({
           <p className="text-gray-700 font-semibold">{questionsQueue[0].question}</p>
         </div>
         
-        <div className="mb-4 space-y-2">
+        <div className="mb-4  space-y-2">
           {questionsQueue[0].options.map((option, index) => (
             <div 
               key={index} 
-              className={`p-3 rounded-lg border-2 cursor-pointer transition duration-200 ${
+              className={`p-3  rounded-lg border-rose-400 border-2 cursor-pointer transition duration-200 ${
                 selectedOption === option.value 
                   ? 'border-orange-700 bg-orange-50' 
                   : 'border-gray-200 hover:border-orange-300'
@@ -133,9 +133,10 @@ export const RenderQuestions = ({
         <h3 className="text-sm font-medium text-gray-700 mb-2">Your previous answers:</h3>
         <div className="space-y-2 max-h-40 overflow-y-auto flex-hidescroll">
           {userResponses.map((response, index) => (
-            <div key={index} className="bg-[#ffdad7] p-2 rounded text-sm">
-              <span className="font-medium">{index + 1}. {response.question}</span>
-              <p className="text-gray-700 mt-1">{response.answer}</p>
+            <div key={index} className="bg-rose-200 p-2 rounded text-sm">
+              <span className="text-rose-700 font-medium">{index + 1}. {response.question}</span>
+              
+              <p className="text-gray-700 mt-1 ">{response.answer}</p>
             </div>
           ))}
         </div>
