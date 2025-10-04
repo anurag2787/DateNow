@@ -223,29 +223,6 @@ const PersonalityCheck = () => {
   // =========================================================================
   return (
     <div className="flex items-center justify-center min-h-screen bg-[#F8A199] py-10 px-4">
-      {isLoaded ? (
-        <div className="bg-[#ffdad7] rounded-xl shadow-2xl w-full max-w-md p-6 relative overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-2 bg-orange-700"></div>
-
-          <h2 className="text-2xl font-bold text-black mb-6 text-center">
-            Find Your{" "}
-            <span className="text-red-500 font-extrabold">{text}</span>
-            <span className="text-green-800">
-              <Cursor cursorStyle="❤️" />
-            </span>
-          </h2>
-          
-          {isTyping ? (
-            <RenderIntro displayedText={displayedText} />
-          ) : personalityResult ? (
-            <RenderPersonalityResult
-              personalityResult={personalityResult}
-              userResponsesLength={userResponses.length}
-              handleStartOver={handleStartOver}
-            />
-          ) : isAnalyzing ? (
-            <RenderAnalyzing />
-          ) : (
             <RenderQuestions
               questionsQueue={questionsQueue}
               selectedOption={selectedOption}
@@ -254,29 +231,6 @@ const PersonalityCheck = () => {
               userResponses={userResponses}
               minQuestionsAsked={minQuestionsAsked}
             />
-          )}
-        </div>
-      ) : (
-        <div className="bg-[#ffdad7] h-[75vh] p-5 md:p-11 md:pt-12 my-10 pt-12 rounded-xl shadow-2xl mx-5 md:mx-0 overflow-auto flex flex-col justify-between md:w-[1200px]">
-          <div className="flex flex-col items-center justify-center h-full">
-            <div className="text-center mb-6">
-              <h2 className="text-2xl font-bold text-[#e71f1f] mb-3 md:text-4xl">
-                Want to Check Your Personality?
-              </h2>
-              <p className="text-lg mb-6 max-w-md md:text-xl font-medium text-black">
-                Curious to see what your personality says about you? Log in to
-                unlock the test and get instant, AI-powered insights tailoredjust for you.
-              </p>
-              <button
-                onClick={() => navigate("/login?redirect=/personality")}
-                className="bg-[#e71f1f] hover:bg-[#F8A199] text-white hover:text-black font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105"
-              >
-                Go to Login Page
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
       <RenderProgressIndicator
         userResponsesLength={userResponses.length}

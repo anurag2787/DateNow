@@ -99,7 +99,7 @@ export const RenderQuestions = ({
               className={`p-3  rounded-lg border-rose-400 border-2 cursor-pointer transition duration-200 ${
                 selectedOption === option.value 
                   ? 'border-orange-700 bg-orange-50' 
-                  : 'border-gray-200 hover:bg-orange-50 transition duration-200 hover:border-orange-300'
+                  : 'border-gray-200 hover:bg-orange-50 hover:border-orange-300'
               }`}
               onClick={() => handleOptionSelect(option)}
             >
