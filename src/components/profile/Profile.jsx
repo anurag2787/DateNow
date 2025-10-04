@@ -26,7 +26,7 @@ export default function DateNowProfile() {
     if (user) { 
       const date = new Date(Number(user.metadata.createdAt)); 
       console.log(user); 
-      const formatted = date.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric", }); 
+      const formatted = date.toLocaleDateString("en-US",{ year: 'numeric', month: 'long', day: 'numeric' }); 
       setName(user.displayName); 
       setEmail(user.email); 
       setJoinDate(formatted); 
