@@ -91,6 +91,8 @@ function Login() {
 
     try {
       if (isLogin) {
+        console.log("Current Firebase Auth domain:", auth.app.options.authDomain);
+
         await signInWithEmailAndPassword(auth, email, password);
         toast.success("✅ Logged in successfully!", {
           position: "top-right",
