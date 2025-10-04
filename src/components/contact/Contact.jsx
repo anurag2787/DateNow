@@ -4,6 +4,11 @@ import { useGSAP } from "@gsap/react";
 import GIF from "../../assets/giphy.gif"
 
 export default function Contact() {
+  /**
+   * Contact form component for user inquiries.
+   * Handles form validation, submission, and UI feedback.
+   * @returns {JSX.Element} The rendered contact form UI.
+   */
   const form = useRef();
   const [messages, setMessages] = useState([]);
   const [formError, setFormError] = useState("");
@@ -29,7 +34,6 @@ export default function Contact() {
       return;
     }
 
-    setCheck(true);
     try {
       const response = await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/sendemail`,
@@ -45,8 +49,13 @@ export default function Contact() {
           }),
         }
       );
+      if (!response.ok) {
+        throw new Error(`Server error: ${response.status}`);
+      }
+      setCheck(true);
     } catch (error) {
       console.error("Error saving message:", error);
+      setFormError("Failed to send message. Please try again later.");
     }
   };
 
@@ -54,6 +63,11 @@ export default function Contact() {
 
 
 
+    /**
+     * Validates an email address using a simple regex.
+     * @param {string} email - The email address to validate.
+     * @returns {boolean} True if valid, false otherwise.
+     */
   const [check, setCheck] = useState(false);
   useGSAP(() => {
     const tl=gsap.timeline();
