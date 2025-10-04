@@ -96,14 +96,14 @@ export const RenderQuestions = ({
           {questionsQueue[0].options.map((option, index) => (
             <div 
               key={index} 
-              className={`p-3  rounded-lg border-rose-400 border-2 cursor-pointer transition duration-200 ${
+              className={`p-3 rounded-lg border-rose-400 border-2 cursor-pointer transition duration-200 ${
                 selectedOption === option.value 
-                  ? 'border-orange-700 bg-orange-50' 
-                  : 'border-gray-200 hover:border-orange-300'
+                  ? 'border-orange-700 bg-orange-50 shadow-md' 
+                  : 'border-gray-200 hover:border-orange-300 hover:bg-orange-100 hover:shadow-md'
               }`}
               onClick={() => handleOptionSelect(option)}
             >
-              <p className="text-gray-700">{option.text}</p>
+              <p className="text-gray-700 font-medium">{option.text}</p>
             </div>
           ))}
         </div>
