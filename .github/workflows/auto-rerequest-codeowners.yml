@@ -1,0 +1,73 @@
+name: Auto Re-request Code Owners on New Commits
+
+on:
+  pull_request:
+    types: [synchronize] # Trigger when new commits are pushed to an open PR
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  rerequest_codeowners:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: sudo apt-get install -y gh jq
+
+      - name: Authenticate GitHub CLI
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh auth setup-git
+
+      - name: Get PR details
+        id: pr
+        run: |
+          echo "PR_NUMBER=${{ github.event.pull_request.number }}" >> $GITHUB_ENV
+          echo "REPO=${{ github.repository }}" >> $GITHUB_ENV
+          echo "BASE_BRANCH=${{ github.event.pull_request.base.ref }}" >> $GITHUB_ENV
+
+      - name: Parse CODEOWNERS file
+        id: codeowners
+        run: |
+          CODEOWNERS_FILE=$(find .github/ CODEOWNERS -type f 2>/dev/null | head -n 1)
+          if [ -z "$CODEOWNERS_FILE" ]; then
+            echo "❌ No CODEOWNERS file found. Exiting."
+            exit 0
+          fi
+
+          echo "Found CODEOWNERS file: $CODEOWNERS_FILE"
+
+          # Extract unique usernames and teams (remove @ prefix)
+          REVIEWERS=$(grep -v '^#' "$CODEOWNERS_FILE" | awk '{for(i=2;i<=NF;i++) print $i}' | sed 's/@//' | sort -u | tr '\n' ' ')
+          echo "REVIEWERS=$REVIEWERS" >> $GITHUB_ENV
+
+      - name: Dismiss existing approvals
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Dismissing all existing APPROVED reviews..."
+          reviews=$(gh api repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/reviews --jq '.[] | select(.state=="APPROVED") | .id')
+          for review_id in $reviews; do
+            echo "Dismissing review ID: $review_id"
+            gh api --method PUT repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/reviews/$review_id/dismissals \
+              -f message='New commits were pushed. Re-approval required.' || true
+          done
+
+      - name: Re-request reviews from CODEOWNERS
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ -z "${REVIEWERS// }" ]; then
+            echo "No reviewers found in CODEOWNERS file."
+            exit 0
+          fi
+
+          echo "Re-requesting reviews from CODEOWNERS: ${REVIEWERS}"
+          reviewers_json=$(echo "${REVIEWERS}" | jq -R -s -c 'split(" ") | map(select(length>0))')
+          gh api repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/requested_reviewers \
+            -f reviewers="${reviewers_json}" || true
