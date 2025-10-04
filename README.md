@@ -359,7 +359,6 @@ Special thanks to:
 - [TailwindCSS](https://tailwindcss.com/) - Utility-first CSS
 - [Socket.io](https://socket.io/) - Real-time engine
 - All our contributors and supporters! ❤️
-
 ---
 
 <div align="center">
