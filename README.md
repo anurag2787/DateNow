@@ -320,7 +320,7 @@ A huge thank you to all our amazing contributors! 🎉
 <div align="center">
 
 <a href="https://github.com/anurag2787/DateNow/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=anurag2787/DateNow" />
+  <img src="https://contrib.rocks/image?repo=anurag2787/DateNow" alt="Contributors" />
 </a>
 
 </div>
