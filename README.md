@@ -215,7 +215,7 @@ DateNow/
 
 - Wait 1-2 minutes for cold start on Render
 - Verify `VITE_BACKEND_URL` in `.env`
-- Check backend status: https://datenow-backend.onrender.com
+- Check backend status: <https://datenow-backend.onrender.com>
 - For local dev, ensure backend runs on port 9000
 
 </details>
