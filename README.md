@@ -2,7 +2,7 @@
 
 # 💕 DateNow
 
-### *Find Your Perfect Match with AI-Powered Intelligence*
+## *Find Your Perfect Match with AI-Powered Intelligence*
 
 [![Stars](https://img.shields.io/github/stars/anurag2787/DateNow?style=for-the-badge&logo=github&color=yellow)](https://github.com/anurag2787/DateNow/stargazers)
 [![Forks](https://img.shields.io/github/forks/anurag2787/DateNow?style=for-the-badge&logo=github&color=blue)](https://github.com/anurag2787/DateNow/network/members)
