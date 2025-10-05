@@ -63,11 +63,6 @@ export default function Contact() {
 
 
 
-    /**
-     * Validates an email address using a simple regex.
-     * @param {string} email - The email address to validate.
-     * @returns {boolean} True if valid, false otherwise.
-     */
   const [check, setCheck] = useState(false);
   useGSAP(() => {
     const tl=gsap.timeline();
