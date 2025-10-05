@@ -223,7 +223,6 @@ export default function Contact() {
                   type="submit"
                   disabled={!isFormValid}   //  disables submit until form valid
                   className="md:w-32 bg-orange-700 hover:bg-blue-dark text-white font-bold py-3 px-6 rounded-lg mt-8 ml-auto hover:bg-orange-600 transition ease-in-out duration-300"
-                    ${isFormValid ? "bg-orange-700 text-white hover:bg-orange-600" : "bg-gray-400 cursor-not-allowed"}`}
                 >
                   Submit
                 </button>
