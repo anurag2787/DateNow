@@ -1,0 +1,17 @@
+name: Re-request Code Owner Review on PR Update
+
+on:
+  pull_request:
+    types: [synchronize]
+
+jobs:
+  re-request-review:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Re-request review from code owners
+        uses: peter-evans/re-request-review@v2
+        with:
+          reviewers: 'codeowners'
+          wait-for-mergeable: true
+          token: ${{ secrets.GITHUB_TOKEN }}
