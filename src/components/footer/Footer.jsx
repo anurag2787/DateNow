@@ -38,6 +38,13 @@ function Footer() {
               >
                 Contact Us
               </a>
+              <div className="w-px h-3 bg-gray-700"></div>
+              <a
+                href="/privacy-policy"
+                className="text-gray-300 hover:text-white text-sm transition-all duration-300"
+              >
+                Privacy Policy
+              </a>
             </div>
           </div>
 
