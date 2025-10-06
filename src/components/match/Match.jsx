@@ -81,7 +81,7 @@ function Match() {
     <div className="w-full min-h-[75vh] flex items-center justify-center my-11">
       <div className="bg-[#ffdad7] p-11 md:pt-12 pt-12 rounded-xl shadow-2xl mx-5 md:mx-0  h-full overflow-auto">
         <div className="flex justify-center">
-          <h1 className="text-3xl font-bold">Your Partner</h1>
+          <h1 className="text-4xl font-bold text-black">Your Partner</h1>
         </div>
         <div className="text-black flex flex-col md:flex-row md:justify-between items-center mt-3">
           {/* Local User's Profile */}
