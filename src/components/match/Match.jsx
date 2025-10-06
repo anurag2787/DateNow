@@ -31,7 +31,12 @@ function Match() {
   const gendervalue = localStorage.getItem("gender");
 
   // Set gender preference for matching
-  const preferredGender = gendervalue === "Male" ? "female" : "male";
+  const gender = ["female","male"]
+  let index=0;
+  if(gendervalue=="Male")index=0;
+  else if(gendervalue=="Female")index=1;
+  else index = Math.floor((Math.random())*10000)&1
+  const preferredGender = gender[index]
   const localUserAge = parseInt(agevalue, 10); // Convert agevalue to integer
 
   // Fetch new random user if the gender or age doesn't match
