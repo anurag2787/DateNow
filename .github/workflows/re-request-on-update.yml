@@ -4,6 +4,12 @@ on:
   pull_request:
     types: [synchronize]
 
+# Grant the action explicit permissions to write to pull requests
+permissions:
+  pull-requests: write
+  contents: read
+
+
 jobs:
   re-request-review:
     runs-on: ubuntu-latest
