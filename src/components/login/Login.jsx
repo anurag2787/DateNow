@@ -156,7 +156,13 @@ function Login() {
       });
       navigate(redirectPath);
     } catch (error) {
-      setErrorMessage(error.message);
+      if (error.code === 'auth/popup-closed-by-user') {
+        setErrorMessage('User closed the sign-in popup.')
+        return;
+      }
+      else{
+        setErrorMessage(error.message);
+      }
     }
   };
 
