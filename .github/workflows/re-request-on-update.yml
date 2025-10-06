@@ -1,7 +1,7 @@
 name: Re-request Code Owner Review on PR Update
 
 on:
-  pull_request:
+  pull_request_target:
     types: [synchronize]
 
 # Grant the action explicit permissions to write to pull requests
