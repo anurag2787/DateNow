@@ -29,9 +29,11 @@ function Match() {
   const namevalue = localStorage.getItem("name");
   const agevalue = localStorage.getItem("age");
   const gendervalue = localStorage.getItem("gender");
+  const prefGender = localStorage.getItem("preferredGender");
+  
 
   // Set gender preference for matching
-  const preferredGender = gendervalue === "Male" ? "female" : "male";
+  const preferredGender = prefGender === "Male" ? "female" : "male";
   const localUserAge = parseInt(agevalue, 10); // Convert agevalue to integer
 
   // Fetch new random user if the gender or age doesn't match
