@@ -20,7 +20,7 @@ function Details() {
     if (!age) newErrors.age = "This field is required *";
     else if (parseInt(age) <= 0) newErrors.age = "Please enter a valid age *";
     if (!gender) newErrors.gender = "This field is required *";
-    if (!preferredGender) newErrors.gender = "This field is required *";
+    if (!preferredGender) newErrors.preferredGender  = "This field is required *";
 
     return newErrors;
   };

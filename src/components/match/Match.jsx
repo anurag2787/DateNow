@@ -48,7 +48,7 @@ function Match() {
   // Fetch new random user if the gender or age doesn't match
   useEffect(() => {
     if (user) {
-      if (user.gender !== preferredGender || user.dob.age > localUserAge + 10) {
+       if ((preferredGender !== null && user.gender !== preferredGender) || user.dob.age > localUserAge + 10) {
         fetchRandomUser();
       } else {
         // setting button display value
