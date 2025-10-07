@@ -1,0 +1,64 @@
+name: "Auto Assign Hacktoberfest Label"
+
+on:
+  issues:
+    types: [opened]
+  pull_request:
+    types: [opened]
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  assign-hacktoberfest:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_REPOSITORY: ${{ github.repository }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Create Hacktoberfest label if missing and assign
+        run: |
+          #!/bin/bash
+          set -e
+
+          LABEL_NAME="Hacktoberfest"
+          LABEL_COLOR="#0DAB76"  # Green
+
+          # Create label if it doesn't exist
+          response=$(curl -s -o /dev/null -w "%{http_code}" \
+            -X POST \
+            -H "Authorization: token $GITHUB_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/${GITHUB_REPOSITORY}/labels \
+            -d "{\"name\":\"$LABEL_NAME\",\"color\":\"$LABEL_COLOR\"}")
+
+          if [[ "$response" == "422" ]]; then
+            echo "Label '$LABEL_NAME' already exists, skipping."
+          else
+            echo "Label '$LABEL_NAME' created."
+          fi
+
+          # Determine issue or PR number
+          if [ "${{ github.event_name }}" == "issues" ]; then
+            ITEM_NUMBER=${{ github.event.issue.number }}
+          else
+            ITEM_NUMBER=${{ github.event.pull_request.number }}
+          fi
+
+          # Assign Hacktoberfest label
+          assign_response=$(curl -s -o /dev/null -w "%{http_code}" \
+            -X POST \
+            -H "Authorization: token $GITHUB_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/${GITHUB_REPOSITORY}/issues/$ITEM_NUMBER/labels \
+            -d "{\"labels\":[\"$LABEL_NAME\"]}")
+
+          if [[ "$assign_response" == "200" ]]; then
+            echo "Hacktoberfest label assigned successfully."
+          else
+            echo "Failed to assign label. Response code: $assign_response"
+          fi
