@@ -7,39 +7,40 @@ on:
     types: [opened]
 
 permissions:
+  contents: read
   issues: write
   pull-requests: write
 
 jobs:
   assign-hacktoberfest:
     runs-on: ubuntu-latest
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      GITHUB_REPOSITORY: ${{ github.repository }}
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Create Hacktoberfest label if missing and assign
+      - name: Add Hacktoberfest label safely
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
         run: |
-          #!/bin/bash
-          set -e
-
           LABEL_NAME="Hacktoberfest"
-          LABEL_COLOR="#0DAB76"  # Green
+          LABEL_COLOR="0DAB76" # Green without "#"
 
-          # Create label if it doesn't exist
-          response=$(curl -s -o /dev/null -w "%{http_code}" \
-            -X POST \
-            -H "Authorization: token $GITHUB_TOKEN" \
+          echo "🟢 Checking for Hacktoberfest label..."
+          LABEL_EXISTS=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
             -H "Accept: application/vnd.github+json" \
-            https://api.github.com/repos/${GITHUB_REPOSITORY}/labels \
-            -d "{\"name\":\"$LABEL_NAME\",\"color\":\"$LABEL_COLOR\"}")
+            https://api.github.com/repos/$REPO/labels | jq -r ".[] | select(.name==\"$LABEL_NAME\") | .name")
 
-          if [[ "$response" == "422" ]]; then
-            echo "Label '$LABEL_NAME' already exists, skipping."
+          if [ -z "$LABEL_EXISTS" ]; then
+            echo "Creating Hacktoberfest label..."
+            curl -s -X POST \
+              -H "Authorization: token $GITHUB_TOKEN" \
+              -H "Accept: application/vnd.github+json" \
+              https://api.github.com/repos/$REPO/labels \
+              -d "{\"name\":\"$LABEL_NAME\",\"color\":\"$LABEL_COLOR\"}"
           else
-            echo "Label '$LABEL_NAME' created."
+            echo "Label already exists."
           fi
 
           # Determine issue or PR number
@@ -49,16 +50,9 @@ jobs:
             ITEM_NUMBER=${{ github.event.pull_request.number }}
           fi
 
-          # Assign Hacktoberfest label
-          assign_response=$(curl -s -o /dev/null -w "%{http_code}" \
-            -X POST \
+          echo "Adding label to #$ITEM_NUMBER..."
+          curl -s -X POST \
             -H "Authorization: token $GITHUB_TOKEN" \
             -H "Accept: application/vnd.github+json" \
-            https://api.github.com/repos/${GITHUB_REPOSITORY}/issues/$ITEM_NUMBER/labels \
-            -d "{\"labels\":[\"$LABEL_NAME\"]}")
-
-          if [[ "$assign_response" == "200" ]]; then
-            echo "Hacktoberfest label assigned successfully."
-          else
-            echo "Failed to assign label. Response code: $assign_response"
-          fi
+            https://api.github.com/repos/$REPO/issues/$ITEM_NUMBER/labels \
+            -d "{\"labels\":[\"$LABEL_NAME\"]}"
