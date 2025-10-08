@@ -1,0 +1,58 @@
+name: "Auto Assign Hacktoberfest Label"
+
+on:
+  issues:
+    types: [opened]
+  pull_request:
+    types: [opened]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  assign-hacktoberfest:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Add Hacktoberfest label safely
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          LABEL_NAME="Hacktoberfest"
+          LABEL_COLOR="0DAB76" # Green without "#"
+
+          echo "🟢 Checking for Hacktoberfest label..."
+          LABEL_EXISTS=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/$REPO/labels | jq -r ".[] | select(.name==\"$LABEL_NAME\") | .name")
+
+          if [ -z "$LABEL_EXISTS" ]; then
+            echo "Creating Hacktoberfest label..."
+            curl -s -X POST \
+              -H "Authorization: token $GITHUB_TOKEN" \
+              -H "Accept: application/vnd.github+json" \
+              https://api.github.com/repos/$REPO/labels \
+              -d "{\"name\":\"$LABEL_NAME\",\"color\":\"$LABEL_COLOR\"}"
+          else
+            echo "Label already exists."
+          fi
+
+          # Determine issue or PR number
+          if [ "${{ github.event_name }}" == "issues" ]; then
+            ITEM_NUMBER=${{ github.event.issue.number }}
+          else
+            ITEM_NUMBER=${{ github.event.pull_request.number }}
+          fi
+
+          echo "Adding label to #$ITEM_NUMBER..."
+          curl -s -X POST \
+            -H "Authorization: token $GITHUB_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/$REPO/issues/$ITEM_NUMBER/labels \
+            -d "{\"labels\":[\"$LABEL_NAME\"]}"
