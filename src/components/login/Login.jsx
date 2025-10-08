@@ -91,7 +91,7 @@ function Login() {
 
     try {
       if (isLogin) {
-  
+
         await signInWithEmailAndPassword(auth, email, password);
         toast.success("✅ Logged in successfully!", {
           position: "top-right",
@@ -157,10 +157,9 @@ function Login() {
       navigate(redirectPath);
     } catch (error) {
       if (error.code === 'auth/popup-closed-by-user') {
-        setErrorMessage('User closed the sign-in popup.')
         return;
       }
-      else{
+      else {
         setErrorMessage(error.message);
       }
     }
@@ -170,8 +169,8 @@ function Login() {
     setIsLogin(!isLogin);
   };
 
-  const toggleShowPassword = () =>{
-    setShowPassword((showPassword)=>!showPassword)
+  const toggleShowPassword = () => {
+    setShowPassword((showPassword) => !showPassword)
   };
 
   return (
@@ -182,7 +181,7 @@ function Login() {
             <h1 className="text-3xl font-bold text-center mb-8 text-black">
               {isLogin ? "Welcome Back" : "Create Account"}
             </h1>
-            
+
             {/* Error message display */}
             {errorMessage && (
               <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-4">
@@ -280,36 +279,36 @@ function Login() {
                   title={showPassword ? "Hide password" : "Show password"}
                   className="absolute right-4 top-3 text-gray-400 cursor-pointer hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-pink-300 rounded"
                 >
-                  {!showPassword?(
-                    <Eye aria-hidden="true" className="w-5 h-5"/>
-                    ):(
-                    <EyeOff aria-hidden="true" className="w-5 h-5"/>
-                    )
+                  {!showPassword ? (
+                    <Eye aria-hidden="true" className="w-5 h-5" />
+                  ) : (
+                    <EyeOff aria-hidden="true" className="w-5 h-5" />
+                  )
                   }
                 </button>
-                
+
                 {!isLogin && (
                   <>
-                <PasswordStrengthBar password={password} />
-                <div>
-                  <ValidIndicator
-                    val={feedback.letter}
-                    text={"At least one alphabet letter (A–Z or a–z)"}
-                  />
-                  <ValidIndicator
-                    val={feedback.number}
-                    text={"At least one number (0–9)"}
-                  />
-                  <ValidIndicator
-                    val={feedback.specialChar}
-                    text={"At least one special character (e.g., !@#$%^&*)"}
-                  />
-                  <ValidIndicator
-                    val={feedback.length}
-                    text={"Minimum length of 8 characters"}
-                  />
-                </div>
-                </>
+                    <PasswordStrengthBar password={password} />
+                    <div>
+                      <ValidIndicator
+                        val={feedback.letter}
+                        text={"At least one alphabet letter (A–Z or a–z)"}
+                      />
+                      <ValidIndicator
+                        val={feedback.number}
+                        text={"At least one number (0–9)"}
+                      />
+                      <ValidIndicator
+                        val={feedback.specialChar}
+                        text={"At least one special character (e.g., !@#$%^&*)"}
+                      />
+                      <ValidIndicator
+                        val={feedback.length}
+                        text={"Minimum length of 8 characters"}
+                      />
+                    </div>
+                  </>
                 )}
               </div>
 
