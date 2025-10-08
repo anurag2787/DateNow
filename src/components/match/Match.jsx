@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import img from "../../assets/match.png";
 import profile from "../../assets/profile.png";
 import { useNavigate } from "react-router-dom";
@@ -29,15 +29,26 @@ function Match() {
   const namevalue = localStorage.getItem("name");
   const agevalue = localStorage.getItem("age");
   const gendervalue = localStorage.getItem("gender");
+  const prefGender = localStorage.getItem("preferredGender");
+  
 
   // Set gender preference for matching
-  const preferredGender = gendervalue === "Male" ? "female" : "male";
+  const preferredGender = useMemo(() => {
+    const gender = ["female", "male"];
+    let index = 0;
+
+    if (prefGender === "Female") index = 0;
+    else if (prefGender === "Male") index = 1;
+    else index = Math.floor(Math.random() * 10000) & 1;
+
+    return gender[index];
+  }, [prefGender]);
   const localUserAge = parseInt(agevalue, 10); // Convert agevalue to integer
 
   // Fetch new random user if the gender or age doesn't match
   useEffect(() => {
     if (user) {
-      if (user.gender !== preferredGender || user.dob.age > localUserAge + 10) {
+       if ((preferredGender !== null && user.gender !== preferredGender) || user.dob.age > localUserAge + 10) {
         fetchRandomUser();
       } else {
         // setting button display value

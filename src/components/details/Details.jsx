@@ -9,6 +9,7 @@ function Details() {
   const [name, setName] = useState(user?.displayName||"");
   const [age, setAge] = useState("");
   const [gender, setGender] = useState("");
+  const [preferredGender, setPreferredGender] = useState("");
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   
@@ -19,6 +20,7 @@ function Details() {
     if (!age) newErrors.age = "This field is required *";
     else if (parseInt(age) <= 0) newErrors.age = "Please enter a valid age *";
     if (!gender) newErrors.gender = "This field is required *";
+    if (!preferredGender) newErrors.preferredGender  = "This field is required *";
 
     return newErrors;
   };
@@ -36,6 +38,7 @@ function Details() {
         localStorage.setItem("name", name);
         localStorage.setItem("age", age);
         localStorage.setItem("gender", gender);
+        localStorage.setItem("preferredGender", preferredGender);
         setIsSubmitting(false);
         navigate("/match");
       }, 3000);
@@ -134,7 +137,7 @@ function Details() {
                 <p className="text-gray-600">Let's get to know you better</p>
               </div>
 
-              <div className="space-y-6">
+              <div className="space-y-2">
                 {/* Name Field */}
                 <div className="space-y-2">
                   <label htmlFor="name" className="block text-sm font-semibold text-gray-700">
@@ -218,6 +221,42 @@ function Details() {
                     </div>
                     {errors.gender && (
                       <span className="text-red-500 text-sm font-medium mt-1 block">{errors.gender}</span>
+                    )}
+                  </div>
+                </div>
+
+                {/*prefered gender */}
+                <div className="space-y-2">
+                  <label htmlFor="preferredGender" className="block text-sm font-semibold text-gray-700">
+                    Looking For
+                  </label>
+                  <div className="relative">
+                    <select
+                      id="preferredGender"
+                      name="preferredGender"
+                      value={preferredGender}
+                      onChange={(e) => {
+                        setPreferredGender(e.target.value);
+                        setErrors((prev) => ({ ...prev, preferredGender: "" }));
+                      }}
+                      className={`w-full py-4 px-4 rounded-xl bg-gray-50 border-2 text-gray-900 font-medium focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all duration-300 appearance-none cursor-pointer ${
+                        errors.preferredGender ? "border-red-400 bg-red-50" : "border-gray-200 hover:border-pink-300"
+                      } ${!preferredGender ? "text-gray-400" : "text-gray-900"}`}
+                    >
+                      <option value="" disabled>
+                        Select preferred gender 
+                      </option>
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                      <option value="Other">Any</option>
+                    </select>
+                    <div className="absolute inset-y-0 right-4 flex items-center pointer-events-none">
+                      <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </div>
+                    {errors.preferredGender && (
+                      <span className="text-red-500 text-sm font-medium mt-1 block">{errors.preferredGender}</span>
                     )}
                   </div>
                 </div>
