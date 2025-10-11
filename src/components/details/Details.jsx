@@ -1,25 +1,18 @@
 import { useState } from "react";
-import {
-  Heart,
-  Users,
-  MessageCircle,
-  Sparkles,
-  Star,
-  ArrowRight,
-} from "lucide-react";
+import { Heart, Users, MessageCircle, Sparkles, Star, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 
 function Details() {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const [name, setName] = useState(user?.displayName || "");
+  const [name, setName] = useState(user?.displayName||"");
   const [age, setAge] = useState("");
   const [gender, setGender] = useState("");
   const [preferredGender, setPreferredGender] = useState("");
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-
+  
   const validate = () => {
     const newErrors = {};
 
@@ -27,8 +20,7 @@ function Details() {
     if (!age) newErrors.age = "This field is required *";
     else if (parseInt(age) <= 0) newErrors.age = "Please enter a valid age *";
     if (!gender) newErrors.gender = "This field is required *";
-    if (!preferredGender)
-      newErrors.preferredGender = "This field is required *";
+    if (!preferredGender) newErrors.preferredGender  = "This field is required *";
 
     return newErrors;
   };
