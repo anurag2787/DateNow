@@ -51,6 +51,7 @@ function Details() {
     <div className="min-h-screen bg-[#F8A199] flex items-center justify-center p-4">
       <div className="w-full max-w-5xl bg-white rounded-2xl shadow-2xl overflow-hidden">
         <div className="flex flex-col lg:flex-row min-h-[600px]">
+          
           {/* Left Side - Illustration/Icons */}
           <div className="lg:w-1/2 bg-[#ffdad7] flex flex-col items-center justify-center p-8 lg:p-12 relative">
             {/* Decorative elements */}
@@ -74,105 +75,72 @@ function Details() {
                 <div className="w-32 h-32 bg-gradient-to-br from-pink-400 to-red-400 rounded-full flex items-center justify-center shadow-lg mb-6">
                   <Heart className="w-16 h-16 text-white" fill="white" />
                 </div>
-
+                
                 {/* Floating hearts around */}
                 <div className="absolute -top-4 -left-4 animate-bounce">
-                  <Heart
-                    className="w-6 h-6 text-pink-500"
-                    fill="currentColor"
-                  />
+                  <Heart className="w-6 h-6 text-pink-500" fill="currentColor" />
                 </div>
                 <div className="absolute -top-2 -right-6 animate-pulse">
                   <Heart className="w-4 h-4 text-red-400" fill="currentColor" />
                 </div>
                 <div className="absolute -bottom-2 -left-6 animate-bounce delay-300">
-                  <Heart
-                    className="w-5 h-5 text-pink-400"
-                    fill="currentColor"
-                  />
+                  <Heart className="w-5 h-5 text-pink-400" fill="currentColor" />
                 </div>
               </div>
 
               <div className="space-y-4">
-                <h2 className="text-3xl font-bold text-gray-800">
-                  Find Your Soulmate
-                </h2>
+                <h2 className="text-3xl font-bold text-gray-800">Find Your Soulmate</h2>
                 <p className="text-gray-600 text-lg leading-relaxed">
-                  Connect with amazing people and discover meaningful
-                  relationships that last a lifetime.
+                  Connect with amazing people and discover meaningful relationships that last a lifetime.
                 </p>
-
+                
                 {/* Features */}
                 <div className="grid grid-cols-2 gap-6 pt-6">
                   <div className="text-center">
                     <div className="w-12 h-12 bg-white/80 rounded-xl flex items-center justify-center mb-3 mx-auto shadow-sm">
                       <Sparkles className="w-6 h-6 text-pink-600" />
                     </div>
-                    <p className="text-sm font-medium text-gray-700">
-                      Instant Match
-                    </p>
-                    <p className="text-xs text-gray-500 mt-1">
-                      No waiting around
-                    </p>
+                    <p className="text-sm font-medium text-gray-700">Instant Match</p>
+                    <p className="text-xs text-gray-500 mt-1">No waiting around</p>
                   </div>
                   <div className="text-center">
                     <div className="w-12 h-12 bg-white/80 rounded-xl flex items-center justify-center mb-3 mx-auto shadow-sm">
                       <MessageCircle className="w-6 h-6 text-blue-500" />
                     </div>
-                    <p className="text-sm font-medium text-gray-700">
-                      Fun Conversations
-                    </p>
-                    <p className="text-xs text-gray-500 mt-1">
-                      Start chatting now
-                    </p>
+                    <p className="text-sm font-medium text-gray-700">Fun Conversations</p>
+                    <p className="text-xs text-gray-500 mt-1">Start chatting now</p>
                   </div>
                   <div className="text-center hidden md:block">
                     <div className="w-12 h-12 bg-white/80 rounded-xl flex items-center justify-center mb-3 mx-auto shadow-sm">
-                      <Heart
-                        className="w-6 h-6 text-red-500"
-                        fill="currentColor"
-                      />
+                      <Heart className="w-6 h-6 text-red-500" fill="currentColor" />
                     </div>
-                    <p className="text-sm font-medium text-gray-700">
-                      Easy & Simple
-                    </p>
-                    <p className="text-xs text-gray-500 mt-1">
-                      Just enter details
-                    </p>
+                    <p className="text-sm font-medium text-gray-700">Easy & Simple</p>
+                    <p className="text-xs text-gray-500 mt-1">Just enter details</p>
                   </div>
                   <div className="text-center hidden md:block">
                     <div className="w-12 h-12 bg-white/80 rounded-xl flex items-center justify-center mb-3 mx-auto shadow-sm">
                       <Users className="w-6 h-6 text-purple-500" />
                     </div>
-                    <p className="text-sm font-medium text-gray-700">
-                      Random Matching
-                    </p>
-                    <p className="text-xs text-gray-500 mt-1">
-                      Surprise connections
-                    </p>
+                    <p className="text-sm font-medium text-gray-700">Random Matching</p>
+                    <p className="text-xs text-gray-500 mt-1">Surprise connections</p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-
+        
           {/* Right Side - Form */}
           <div className="lg:w-1/2 bg-white p-8 lg:p-12 flex flex-col justify-center">
             <div className="max-w-md mx-auto w-full">
               <div className="text-center mb-8">
-                <h1 className="text-3xl font-bold text-gray-800 mb-2">
-                  Enter Your Details
-                </h1>
+                <h1 className="text-3xl font-bold text-gray-800 mb-2">Enter Your Details</h1>
                 <p className="text-gray-600">Let's get to know you better</p>
               </div>
 
               <div className="space-y-2">
                 {/* Name Field */}
                 <div className="space-y-2">
-                  <label
-                    htmlFor="name"
-                    className="block text-sm font-semibold text-gray-700"
-                  >
+                  <label htmlFor="name" className="block text-sm font-semibold text-gray-700">
                     Full Name
                   </label>
                   <input
@@ -186,24 +154,17 @@ function Details() {
                       setErrors((prev) => ({ ...prev, name: "" }));
                     }}
                     className={`w-full py-4 px-4 rounded-xl bg-gray-50 border-2 text-gray-900 font-medium placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all duration-300 ${
-                      errors.name
-                        ? "border-red-400 bg-red-50"
-                        : "border-gray-200 hover:border-pink-300"
+                      errors.name ? "border-red-400 bg-red-50" : "border-gray-200 hover:border-pink-300"
                     }`}
                   />
                   {errors.name && (
-                    <span className="text-red-500 text-sm font-medium">
-                      {errors.name}
-                    </span>
+                    <span className="text-red-500 text-sm font-medium">{errors.name}</span>
                   )}
                 </div>
 
                 {/* Age Field */}
                 <div className="space-y-2">
-                  <label
-                    htmlFor="age"
-                    className="block text-sm font-semibold text-gray-700"
-                  >
+                  <label htmlFor="age" className="block text-sm font-semibold text-gray-700">
                     Age
                   </label>
                   <input
@@ -220,24 +181,17 @@ function Details() {
                       }
                     }}
                     className={`w-full py-4 px-4 rounded-xl bg-gray-50 border-2 text-gray-900 font-medium placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all duration-300 ${
-                      errors.age
-                        ? "border-red-400 bg-red-50"
-                        : "border-gray-200 hover:border-pink-300"
+                      errors.age ? "border-red-400 bg-red-50" : "border-gray-200 hover:border-pink-300"
                     }`}
                   />
                   {errors.age && (
-                    <span className="text-red-500 text-sm font-medium">
-                      {errors.age}
-                    </span>
+                    <span className="text-red-500 text-sm font-medium">{errors.age}</span>
                   )}
                 </div>
 
                 {/* Gender Field */}
                 <div className="space-y-2">
-                  <label
-                    htmlFor="gender"
-                    className="block text-sm font-semibold text-gray-700"
-                  >
+                  <label htmlFor="gender" className="block text-sm font-semibold text-gray-700">
                     Gender
                   </label>
                   <div className="relative">
@@ -249,18 +203,17 @@ function Details() {
                         const selectedGender = e.target.value;
                         setGender(selectedGender);
                         setErrors((prev) => ({ ...prev, gender: "" }));
-                        if (selectedGender === "Male") {
+
+                        if(selectedGender == "Male"){
                           setPreferredGender("Female");
-                        } else if (selectedGender === "Female") {
+                        } else if(selectedGender == "Female"){
                           setPreferredGender("Male");
-                        } else {
+                        } else{
                           setPreferredGender("");
-                        }
+                        } 
                       }}
                       className={`w-full py-4 px-4 rounded-xl bg-gray-50 border-2 text-gray-900 font-medium focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all duration-300 appearance-none cursor-pointer ${
-                        errors.gender
-                          ? "border-red-400 bg-red-50"
-                          : "border-gray-200 hover:border-pink-300"
+                        errors.gender ? "border-red-400 bg-red-50" : "border-gray-200 hover:border-pink-300"
                       } ${!gender ? "text-gray-400" : "text-gray-900"}`}
                     >
                       <option value="" disabled>
@@ -271,34 +224,19 @@ function Details() {
                       <option value="Other">Other</option>
                     </select>
                     <div className="absolute inset-y-0 right-4 flex items-center pointer-events-none">
-                      <svg
-                        className="w-5 h-5 text-gray-400"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M19 9l-7 7-7-7"
-                        />
+                      <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                       </svg>
                     </div>
                     {errors.gender && (
-                      <span className="text-red-500 text-sm font-medium mt-1 block">
-                        {errors.gender}
-                      </span>
+                      <span className="text-red-500 text-sm font-medium mt-1 block">{errors.gender}</span>
                     )}
                   </div>
                 </div>
 
                 {/*prefered gender */}
                 <div className="space-y-2">
-                  <label
-                    htmlFor="preferredGender"
-                    className="block text-sm font-semibold text-gray-700"
-                  >
+                  <label htmlFor="preferredGender" className="block text-sm font-semibold text-gray-700">
                     Looking For
                   </label>
                   <div className="relative">
@@ -311,39 +249,23 @@ function Details() {
                         setErrors((prev) => ({ ...prev, preferredGender: "" }));
                       }}
                       className={`w-full py-4 px-4 rounded-xl bg-gray-50 border-2 text-gray-900 font-medium focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all duration-300 appearance-none cursor-pointer ${
-                        errors.preferredGender
-                          ? "border-red-400 bg-red-50"
-                          : "border-gray-200 hover:border-pink-300"
-                      } ${
-                        !preferredGender ? "text-gray-400" : "text-gray-900"
-                      }`}
+                        errors.preferredGender ? "border-red-400 bg-red-50" : "border-gray-200 hover:border-pink-300"
+                      } ${!preferredGender ? "text-gray-400" : "text-gray-900"}`}
                     >
                       <option value="" disabled>
-                        Select preferred gender
+                        Select preferred gender 
                       </option>
                       <option value="Male">Male</option>
                       <option value="Female">Female</option>
                       <option value="Other">Any</option>
                     </select>
                     <div className="absolute inset-y-0 right-4 flex items-center pointer-events-none">
-                      <svg
-                        className="w-5 h-5 text-gray-400"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M19 9l-7 7-7-7"
-                        />
+                      <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                       </svg>
                     </div>
                     {errors.preferredGender && (
-                      <span className="text-red-500 text-sm font-medium mt-1 block">
-                        {errors.preferredGender}
-                      </span>
+                      <span className="text-red-500 text-sm font-medium mt-1 block">{errors.preferredGender}</span>
                     )}
                   </div>
                 </div>
