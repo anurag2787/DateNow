@@ -254,10 +254,9 @@ function Details() {
                       name="gender"
                       value={gender}
                       onChange={(e) => {
-                        const selectedGender = e.target.value; 
+                        const selectedGender = e.target.value;
                         setGender(selectedGender);
                         setErrors((prev) => ({ ...prev, gender: "" }));
-                        // Auto-set preferred gender based on selection
                         if (selectedGender === "Male") {
                           setPreferredGender("Female");
                         } else if (selectedGender === "Female") {
@@ -332,7 +331,7 @@ function Details() {
                       </option>
                       <option value="Male">Male</option>
                       <option value="Female">Female</option>
-                      <option value="Any">Any</option>
+                      <option value="Other">Any</option>
                     </select>
                     <div className="absolute inset-y-0 right-4 flex items-center pointer-events-none">
                       <svg
