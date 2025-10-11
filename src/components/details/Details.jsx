@@ -200,8 +200,17 @@ function Details() {
                       name="gender"
                       value={gender}
                       onChange={(e) => {
-                        setGender(e.target.value);
+                        const selectedGender = e.target.value;
+                        setGender(selectedGender);
                         setErrors((prev) => ({ ...prev, gender: "" }));
+
+                        if(selectedGender == "Male"){
+                          setPreferredGender("Female");
+                        } else if(selectedGender == "Female"){
+                          setPreferredGender("Male");
+                        } else{
+                          setPreferredGender("");
+                        } 
                       }}
                       className={`w-full py-4 px-4 rounded-xl bg-gray-50 border-2 text-gray-900 font-medium focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all duration-300 appearance-none cursor-pointer ${
                         errors.gender ? "border-red-400 bg-red-50" : "border-gray-200 hover:border-pink-300"
