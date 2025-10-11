@@ -84,8 +84,20 @@ function Login() {
   const handleAuth = async (e) => {
     e.preventDefault();
     setErrorMessage("");
-    if (!email || !password) {
-      setErrorMessage("Email and password are required.");
+    if (!email && !password) {
+      setErrorMessage("Email and password are required");
+      return;
+    }
+    else if (!isLogin && !username) {
+      setErrorMessage("Full name is required for registration");
+      return;
+    }
+    else if (!email) {
+      setErrorMessage("Email is required");
+      return;
+    }
+    else if(!password){
+      setErrorMessage("Password is required");
       return;
     }
 
@@ -166,6 +178,7 @@ function Login() {
   };
 
   const toggleForm = () => {
+    setErrorMessage("");
     setIsLogin(!isLogin);
   };
 
@@ -184,8 +197,8 @@ function Login() {
 
             {/* Error message display */}
             {errorMessage && (
-              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-4">
-                {errorMessage}
+              <div className="bg-red-100 border border-red-400 text-red-700 font-extrabold px-4 py-3 rounded-lg mb-4">
+                {errorMessage}*
               </div>
             )}
 
