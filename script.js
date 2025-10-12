@@ -10,3 +10,9 @@ const unDate = (user) => {
   isDating = false;
   return false;
 }
+if (isDating){
+  unDate("test")
+}
+else{
+  date("test")
+}
