@@ -4,25 +4,37 @@ import { useNavigate } from "react-router-dom";
 const Error404 = () => {
   const navigate = useNavigate();
   return (
-    <div className="w-full min-h-screen flex items-center justify-center mx-0 bg-[#F8A199]">
-      <div className="m-16 flex flex-col md:flex-row items-center justify-center bg-[#FFE0D9] rounded-lg shadow-lg overflow-hidden ">
-        <img src={img} alt="404 Error" className="w-[200px] md:w-[300px]" />
-        <div className="md:pr-12 box-border flex flex-col items-center md:items-start text-center md:text-left p-5 md:p-6">
-          <h1 className="text-3xl md:text-5xl font-bold text-red-600 md:mt-4">
-            {`404💔- Love Not Found `}
+    <div className="w-full min-h-screen flex items-center justify-center bg-[#F8A199] p-6">
+      <div className="w-full max-w-4xl m-6 flex flex-col md:flex-row items-center justify-center bg-[#FFE0D9] rounded-xl shadow-2xl overflow-hidden">
+        <img src={img} alt="404 Error" className="w-48 md:w-64 lg:w-80 p-6 object-contain" />
+        <div className="flex-1 md:pr-12 box-border flex flex-col items-center md:items-start text-center md:text-left p-6 md:p-10">
+          <h1 className="text-4xl md:text-5xl font-extrabold text-red-600">
+            404 — Page Not Found
           </h1>
-          <h2 className="text-lg md:text-2xl text-[#010E23] mt-3 md:mt-6">
-            {`Oops, looks like the page ghosted you!`}
+          <h2 className="text-lg md:text-2xl text-[#010E23] mt-3 md:mt-4 font-semibold">
+            We couldn’t find what you were looking for.
           </h2>
-          <p className="text-sm md:text-md text-[#010E23] mt-2 ">
-            {`Don't worry, it's not you. It's the URL. Let's get you back to where love lives.`}
+          <p className="text-sm md:text-md text-[#010E23] mt-3 max-w-xl">
+            The page may have been moved, renamed, or might never have existed. Try returning to the home page or go back to the previous screen.
           </p>
-          <button
-            className="md:w-32 bg-orange-700 text-white font-bold p-3 px-3 md:px-6 md:py-3 rounded-lg mt-3 md:mt-8  hover:bg-orange-600 transition ease-in-out duration-300"
-            onClick={() => navigate("/")}
-          >
-            <p className="text-md md:text-lg">{`Go back`}</p>
-          </button>
+
+          <div className="mt-5 flex gap-3">
+            <button
+              className="bg-rose-600 text-white font-semibold px-5 py-2 rounded-lg hover:bg-rose-500 transition ease-in-out duration-200"
+              onClick={() => navigate('/')}
+              aria-label="Go to Home"
+            >
+              Go Home
+            </button>
+
+            <button
+              className="border border-rose-300 text-rose-700 bg-white px-4 py-2 rounded-lg hover:bg-rose-50 transition"
+              onClick={() => navigate(-1)}
+              aria-label="Go back to previous page"
+            >
+              Go Back
+            </button>
+          </div>
         </div>
       </div>
     </div>
