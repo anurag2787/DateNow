@@ -1,3 +1,4 @@
 // kotlin script for automation 
-var duration: Long =2000L
-var times: Int = 6
+val duration: Long =2000L
+val times: Int = 6
+
