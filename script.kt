@@ -1,2 +1,2 @@
 // kotlin script for automation 
-var time =2000L
+var duration =2000L
