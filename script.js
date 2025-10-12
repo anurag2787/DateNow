@@ -1,6 +1,7 @@
 // This is a script
 
-const isDating = false;
+let isDating = false;
 const date = (user) => {
+  isDating = true;
   return true;
 }
