@@ -65,7 +65,7 @@ export default function DateNowProfile() {
         <div className="flex flex-col lg:flex-row lg:space-x-12 space-y-8 lg:space-y-0">
           {/* Left Column */}
           <div className="lg:w-1/3">
-            <div className="bg-[#ffdad7] rounded-3xl shadow-xl overflow-hidden border border-rose-100 flex flex-col h-full">
+            <div className="bg-[#ffdad7] rounded-3xl shadow-xl overflow-hidden border border-rose-200 flex flex-col h-full">
               {/* Image / top area grows to fill available space */}
               <div className="flex-1 relative bg-gradient-to-br from-rose-100 via-pink-50 to-orange-50 flex items-center justify-center p-8">
                 {/* Profile Avatar */}
@@ -89,9 +89,8 @@ export default function DateNowProfile() {
               </div>
 
               {/* Profile Name (fixed height) */}
-              <div className="p-8 text-center bg-gradient-to-r from-rose-500 to-pink-500">
+              <div className="p-8 text-center bg-gradient-to-r from-rose-400 to-pink-400">
                 <h2 className="text-2xl font-bold text-white mb-2">{name}</h2>
-                <p className="text-rose-100">Welcome to DateNow</p>
               </div>
             </div>
           </div>
@@ -147,7 +146,7 @@ export default function DateNowProfile() {
                   <button
                     onClick={handleLogout}
                     disabled={isLoading}
-                    className="w-full bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-semibold py-4 px-8 rounded-2xl transition-all duration-200 transform hover:scale-105 shadow-xl hover:shadow-2xl flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                    className="w-full bg-gradient-to-r from-red-400 to-red-500 hover:from-red-700 hover:to-red-700 text-white font-semibold py-4 px-8 rounded-2xl transition-all duration-200 transform hover:scale-105 shadow-xl hover:shadow-2xl flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                   >
                     {isLoading ? (
                       <>
