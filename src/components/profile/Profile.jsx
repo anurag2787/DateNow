@@ -1,82 +1,84 @@
 import React, { useState, useEffect } from "react";
-import { User, Mail, Calendar, LogOut, Heart } from "lucide-react";
+import { User, Mail, Calendar, LogOut } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import { auth } from "../../auth";
 import { useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";
-import { use } from "react";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
 export default function DateNowProfile() {
   const [name, setName] = useState("Sarah Johnson");
   const [email, setEmail] = useState("sarah.johnson@email.com");
   const [joinDate, setJoinDate] = useState("15 Mar 2024");
   const [isLoading, setIsLoading] = useState(false);
-  const [images,setImages]=useState("")
+  const [images, setImages] = useState("");
   const navigate = useNavigate();
   const { user } = useAuth();
 
   useEffect(() => {
-    if(!user){
+    if (!user) {
       navigate("/login");
     }
-  }, [navigate,user]);
+  }, [navigate, user]);
 
-  useEffect(() => { 
-    if (user) { 
-      const date = new Date(Number(user.metadata.createdAt)); 
-      console.log(user); 
-      const formatted = date.toLocaleDateString("en-US",{ year: 'numeric', month: 'long', day: 'numeric' }); 
-      setName(user.displayName); 
-      setEmail(user.email); 
-      setJoinDate(formatted); 
+  useEffect(() => {
+    if (user) {
+      const date = new Date(Number(user.metadata.createdAt));
+      const formatted = date.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+      setName(user.displayName);
+      setEmail(user.email);
+      setJoinDate(formatted);
       setImages(user.photoURL);
-     } 
-    }, [user]);
+    }
+  }, [user]);
+
   const handleLogout = async () => {
     const confirmed = window.confirm("Are you sure you want to logout?");
-        if (!confirmed) {
-            return;
-        }
-        try {
-            setIsLoading(true);
-            await signOut(auth);
-            setIsLoading(false);
-            toast.info("👋 Logged out successfully!", {
-              position: "top-right",
-              autoClose: 3000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "dark",
-            })
-            navigate("/login");
-        } catch (error) {
-            console.error("Logout error:", error);
-        }
+    if (!confirmed) {
+      return;
+    }
+    try {
+      setIsLoading(true);
+      await signOut(auth);
+      setIsLoading(false);
+      toast.info("👋 Logged out successfully!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+      navigate("/login");
+    } catch (error) {
+      console.error("Logout error:", error);
+      setIsLoading(false);
+    }
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br bg-[#F8A199]">
-      
-     
-
       {/* Main Content */}
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="flex flex-col lg:flex-row lg:space-x-12 space-y-8 lg:space-y-0">
-          
-          {/* Profile Image Section - Left Side */}
+          {/* Left Column */}
           <div className="lg:w-1/3">
-            <div className="bg-[#ffdad7] rounded-3xl shadow-xl overflow-hidden border border-rose-100">
-              
-              {/* Profile Image Container */}
-              <div className="aspect-[3/4] relative bg-gradient-to-br from-rose-100 via-pink-50 to-orange-50 flex items-center justify-center p-8">
-                
+            <div className="bg-[#ffdad7] rounded-3xl shadow-xl overflow-hidden border border-rose-100 flex flex-col h-full">
+              {/* Image / top area grows to fill available space */}
+              <div className="flex-1 relative bg-gradient-to-br from-rose-100 via-pink-50 to-orange-50 flex items-center justify-center p-8">
                 {/* Profile Avatar */}
                 <div className="w-40 h-40 bg-gradient-to-br from-rose-400 to-pink-500 rounded-full flex items-center justify-center shadow-2xl">
-                  <User className="w-20 h-20 text-white" />
+                  {images ? (
+                    <img 
+                      src={images} 
+                      alt="Profile" 
+                      className="w-full h-full rounded-full object-cover"
+                    />
+                  ) : (
+                    <User className="w-20 h-20 text-white" />
+                  )}
                 </div>
 
                 {/* Online Status */}
@@ -86,7 +88,7 @@ export default function DateNowProfile() {
                 </div>
               </div>
 
-              {/* Profile Name */}
+              {/* Profile Name (fixed height) */}
               <div className="p-8 text-center bg-gradient-to-r from-rose-500 to-pink-500">
                 <h2 className="text-2xl font-bold text-white mb-2">{name}</h2>
                 <p className="text-rose-100">Welcome to DateNow</p>
@@ -94,20 +96,18 @@ export default function DateNowProfile() {
             </div>
           </div>
 
-          {/* Profile Information - Right Side */}
+          {/* Right Column */}
           <div className="lg:w-2/3">
-            <div className="bg-white rounded-3xl shadow-xl border border-rose-100 overflow-hidden">
-              
-              {/* Header */}
+            <div className="bg-white rounded-3xl shadow-xl border border-rose-100 overflow-hidden flex flex-col h-full">
+              {/* Header (fixed) */}
               <div className="px-8 py-6 bg-gradient-to-r from-gray-50 to-rose-50 border-b border-rose-100">
                 <h3 className="text-2xl font-bold text-gray-900">Profile Information</h3>
                 <p className="text-gray-600 mt-1">Your account details</p>
               </div>
 
-              {/* Profile Details */}
-              <div className="p-8">
-                <div className="space-y-6">
-                  
+              {/* Profile Details (grows to fill) */}
+              <div className="p-8 flex-1 overflow-auto flex flex-col">
+                <div className="space-y-6 flex-1">
                   {/* Name */}
                   <div className="flex items-center space-x-4 p-6 bg-gradient-to-r from-rose-50 to-pink-50 rounded-2xl border border-rose-100">
                     <div className="w-14 h-14 bg-gradient-to-br from-rose-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg">
@@ -142,9 +142,9 @@ export default function DateNowProfile() {
                   </div>
                 </div>
 
-                {/* Logout Button */}
-                <div className="mt-10">
-                  <button 
+                {/* Logout Button anchored to bottom */}
+                <div className="mt-6">
+                  <button
                     onClick={handleLogout}
                     disabled={isLoading}
                     className="w-full bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-semibold py-4 px-8 rounded-2xl transition-all duration-200 transform hover:scale-105 shadow-xl hover:shadow-2xl flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
@@ -171,20 +171,20 @@ export default function DateNowProfile() {
       {/* Custom CSS for animations */}
       <style jsx>{`
         @keyframes float-heart {
-          0%, 100% { 
-            transform: translateY(0px) translateX(0px) rotate(0deg); 
+          0%, 100% {
+            transform: translateY(0px) translateX(0px) rotate(0deg);
             opacity: 0.3;
           }
-          25% { 
-            transform: translateY(-15px) translateX(10px) rotate(5deg); 
+          25% {
+            transform: translateY(-15px) translateX(10px) rotate(5deg);
             opacity: 0.6;
           }
-          50% { 
-            transform: translateY(-30px) translateX(-5px) rotate(-3deg); 
+          50% {
+            transform: translateY(-30px) translateX(-5px) rotate(-3deg);
             opacity: 0.4;
           }
-          75% { 
-            transform: translateY(-20px) translateX(15px) rotate(8deg); 
+          75% {
+            transform: translateY(-20px) translateX(15px) rotate(8deg);
             opacity: 0.5;
           }
         }
