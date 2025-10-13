@@ -1,3 +1,3 @@
 function greet() {
-  console.log("Hello, GitHub!");
+  console.log("Hello, Sweta!");
 }
