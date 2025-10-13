@@ -366,6 +366,13 @@ Thanks go to these wonderful people who have contributed to this project:
         <sub><b>BUSHAAN</b></sub>
       </a>
     </td>
+    <td align="center">
+      <a href="https://github.com/swetak0911">
+        <img src="https://avatars.githubusercontent.com/swetak0911?v=4" width="100px;" alt=""/>
+        <br />
+        <sub><b>swetak0911</b></sub>
+      </a>
+    </td>
     <td colspan="2"></td>
   </tr>
 </table>
