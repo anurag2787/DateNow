@@ -8,6 +8,7 @@ export default function Contact() {
   const [messages, setMessages] = useState([]);
   const [errors, setErrors] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -92,7 +93,8 @@ export default function Contact() {
       return;
     }
 
-    setCheck(true);
+    // Start loading state
+    setIsLoading(true);
 
     try {
       const response = await fetch(
@@ -110,13 +112,29 @@ export default function Contact() {
         }
       );
       
+      // Check if the response is successful (status 200-299)
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || `Server error: ${response.status}`);
+      }
+
+      // Only show success if server confirms
+      setCheck(true);
+      
       // Reset form on success
       setFormData({ name: "", email: "", msg: "" });
       setErrors({});
       setIsSubmitted(false);
     } catch (error) {
-      console.error("Error saving message:", error);
-      setCheck(false);
+      console.error("Error sending message:", error);
+      
+      // Show user-friendly error message
+      setErrors({
+        submit: error.message || "Failed to send message. Please try again later."
+      });
+    } finally {
+      // Stop loading state regardless of success or failure
+      setIsLoading(false);
     }
   };  
   const [check, setCheck] = useState(false);
@@ -368,21 +386,50 @@ export default function Contact() {
               )}
             </div>
 
+            {/* Submit Error Display */}
+            {errors.submit && (
+              <div className="bg-red-50 border-2 border-red-500 text-red-700 px-4 py-3 rounded-lg animate-fade-in">
+                <div className="flex items-center gap-2">
+                  <svg className="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                  </svg>
+                  <div>
+                    <p className="font-semibold">Failed to send message</p>
+                    <p className="text-sm">{errors.submit}</p>
+                  </div>
+                </div>
+              </div>
+            )}
+
             <button
               type="submit"
-              className="w-full md:w-auto md:ml-auto mt-6 bg-gradient-to-r from-orange-500 to-orange-600 
+              disabled={isLoading}
+              className={`w-full md:w-auto md:ml-auto mt-6 bg-gradient-to-r from-orange-500 to-orange-600 
                 hover:from-orange-600 hover:to-orange-700 
                 text-white font-bold py-3.5 px-8 rounded-lg
                 transition-all ease-in-out duration-300 
                 shadow-lg hover:shadow-xl
                 transform hover:scale-105 hover:-translate-y-0.5 active:scale-95
                 focus:outline-none focus:ring-4 focus:ring-orange-300
-                flex items-center justify-center gap-2 group"
+                flex items-center justify-center gap-2 group
+                ${isLoading ? 'opacity-75 cursor-not-allowed' : ''}`}
             >
-              <span>Send Message</span>
-              <svg className="w-5 h-5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-              </svg>
+              {isLoading ? (
+                <>
+                  <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  <span>Sending...</span>
+                </>
+              ) : (
+                <>
+                  <span>Send Message</span>
+                  <svg className="w-5 h-5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  </svg>
+                </>
+              )}
             </button>
           </form>
         </div>
