@@ -272,7 +272,7 @@ export default function Contact() {
                 value={formData.name}
                 onChange={handleInputChange}
                 placeholder="Enter your full name"
-                className={`w-100 py-3 px-4 rounded-lg bg-white text-black font-medium
+                className={`w-full py-3 px-4 rounded-lg bg-white text-black font-medium
                   transition-all duration-300 ease-in-out
                   ${errors.name
                     ? 'border-2 border-red-500 focus:border-red-600 focus:ring-4 focus:ring-red-100'
@@ -314,7 +314,7 @@ export default function Contact() {
                 value={formData.email}
                 onChange={handleInputChange}
                 placeholder="you@example.com"
-                className={`w-100 py-3 px-4 rounded-lg bg-white text-black font-medium
+                className={`w-full py-3 px-4 rounded-lg bg-white text-black font-medium
                   transition-all duration-300 ease-in-out
                   ${errors.email
                     ? 'border-2 border-red-500 focus:border-red-600 focus:ring-4 focus:ring-red-100'
@@ -342,7 +342,7 @@ export default function Contact() {
 
             {/* Message Field */}
             <div className="flex flex-col mt-5 group">
-              <label htmlFor="mg" className="text-black font-semibold mb-2 text-sm flex items-center gap-1">
+              <label htmlFor="msg" className="text-black font-semibold mb-2 text-sm flex items-center gap-1">
                 <svg className="w-4 h-4 text-orange-600" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clipRule="evenodd" />
                 </svg>
@@ -351,7 +351,7 @@ export default function Contact() {
               <div className="relative">
                 <textarea
                   name="msg"
-                  id="mg"
+                  id="msg"
                   value={formData.msg}
                   onChange={handleInputChange}
                   placeholder="Tell us what you're thinking..."
