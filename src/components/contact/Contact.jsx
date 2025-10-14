@@ -46,7 +46,7 @@ export default function Contact() {
     // Clear error for this field as user types (only after first submit attempt)
     if (isSubmitted && errors[name]) {
       const newErrors = { ...errors };
-      
+
       // Validate in real-time after first submit
       let error = "";
       switch (name) {
@@ -62,7 +62,7 @@ export default function Contact() {
         default:
           break;
       }
-      
+
       newErrors[name] = error;
       setErrors(newErrors);
     }
@@ -71,7 +71,7 @@ export default function Contact() {
   const sendEmail = async (e) => {
     e.preventDefault();
     setIsSubmitted(true);
-    
+
     // Validate all fields
     const nameError = validateName(formData.name);
     const emailError = validateEmail(formData.email);
@@ -88,7 +88,7 @@ export default function Contact() {
     // Check if there are any errors
     if (nameError || emailError || msgError) {
       // Scroll to first error
-      const firstErrorField = nameError ? 'name' : emailError ? 'email' : 'mg';
+      const firstErrorField = nameError ? 'name' : emailError ? 'email' : 'msg';
       document.getElementById(firstErrorField)?.focus();
       return;
     }
@@ -111,7 +111,7 @@ export default function Contact() {
           }),
         }
       );
-      
+
       // Check if the response is successful (status 200-299)
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
@@ -120,14 +120,14 @@ export default function Contact() {
 
       // Only show success if server confirms
       setCheck(true);
-      
+
       // Reset form on success
       setFormData({ name: "", email: "", msg: "" });
       setErrors({});
       setIsSubmitted(false);
     } catch (error) {
       console.error("Error sending message:", error);
-      
+
       // Show user-friendly error message
       setErrors({
         submit: error.message || "Failed to send message. Please try again later."
@@ -136,7 +136,7 @@ export default function Contact() {
       // Stop loading state regardless of success or failure
       setIsLoading(false);
     }
-  };  
+  };
   const [check, setCheck] = useState(false);
   useGSAP(() => {
     const tl = gsap.timeline();
@@ -275,7 +275,7 @@ export default function Contact() {
                 className={`w-100 py-3 px-4 rounded-lg bg-white text-black font-medium
                   transition-all duration-300 ease-in-out
                   ${errors.name
-                    ? 'border-2 border-red-500 focus:border-red-600 focus:ring-4 focus:ring-red-100' 
+                    ? 'border-2 border-red-500 focus:border-red-600 focus:ring-4 focus:ring-red-100'
                     : 'border-2 border-gray-300 focus:border-orange-500 focus:ring-4 focus:ring-orange-100'
                   }
                   focus:outline-none 
@@ -285,8 +285,8 @@ export default function Contact() {
                 aria-describedby={errors.name ? "name-error" : undefined}
               />
               {errors.name && (
-                <p 
-                  id="name-error" 
+                <p
+                  id="name-error"
                   className="text-red-600 text-sm mt-2 flex items-center gap-1.5 animate-fade-in font-semibold bg-red-50 p-2 rounded-md"
                   role="alert"
                 >
@@ -317,7 +317,7 @@ export default function Contact() {
                 className={`w-100 py-3 px-4 rounded-lg bg-white text-black font-medium
                   transition-all duration-300 ease-in-out
                   ${errors.email
-                    ? 'border-2 border-red-500 focus:border-red-600 focus:ring-4 focus:ring-red-100' 
+                    ? 'border-2 border-red-500 focus:border-red-600 focus:ring-4 focus:ring-red-100'
                     : 'border-2 border-gray-300 focus:border-orange-500 focus:ring-4 focus:ring-orange-100'
                   }
                   focus:outline-none
@@ -327,8 +327,8 @@ export default function Contact() {
                 aria-describedby={errors.email ? "email-error" : undefined}
               />
               {errors.email && (
-                <p 
-                  id="email-error" 
+                <p
+                  id="email-error"
                   className="text-red-600 text-sm mt-2 flex items-center gap-1.5 animate-fade-in font-semibold bg-red-50 p-2 rounded-md"
                   role="alert"
                 >
@@ -359,7 +359,7 @@ export default function Contact() {
                   className={`w-full py-3 px-4 rounded-lg bg-white text-black font-medium
                     transition-all duration-300 ease-in-out resize-none
                     ${errors.msg
-                      ? 'border-2 border-red-500 focus:border-red-600 focus:ring-4 focus:ring-red-100' 
+                      ? 'border-2 border-red-500 focus:border-red-600 focus:ring-4 focus:ring-red-100'
                       : 'border-2 border-gray-300 focus:border-orange-500 focus:ring-4 focus:ring-orange-100'
                     }
                     focus:outline-none
@@ -373,8 +373,8 @@ export default function Contact() {
                 </div>
               </div>
               {errors.msg && (
-                <p 
-                  id="msg-error" 
+                <p
+                  id="msg-error"
                   className="text-red-600 text-sm mt-2 flex items-center gap-1.5 animate-fade-in font-semibold bg-red-50 p-2 rounded-md"
                   role="alert"
                 >
