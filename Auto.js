@@ -1,13 +1,16 @@
+// Greeting.test.js
+import React from 'react';
+import { render, screen } from '@testing-library/react';
+import Greeting from './Greeting';
 
-function calculateFactorial(n) {
-  if (n < 0) return "Factorial not defined for negative numbers";
-  if (n === 0 || n === 1) return 1;
-  
-  let result = 1;
-  for (let i = 2; i <= n; i++) {
-    result *= i;
-  }
-  return result;
-}
+describe('Greeting Component', () => {
+  it('renders default greeting when no name is provided', () => {
+    render(<Greeting />);
+    expect(screen.getByText('Hello, Guest!')).toBeInTheDocument();
+  });
 
-console.log("Factorial of 5 is:", calculateFactorial(5));
+  it('renders personalized greeting when name is provided', () => {
+    render(<Greeting name="Alice" />);
+    expect(screen.getByText('Hello, Alice!')).toBeInTheDocument();
+  });
+});
