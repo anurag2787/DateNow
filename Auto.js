@@ -1,209 +1,93 @@
-// UserProfile.test.jsx
+// TodoItem.test.jsx
 import React from 'react';
-import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import UserProfile from './UserProfile';
-import * as api from '../api/user'; // Mocked API module
+import TodoItem from './TodoItem';
 
-jest.mock('../api/user');
+describe('TodoItem Component', () => {
+  const mockTodo = {
+    id: 1,
+    text: 'Buy groceries',
+    completed: false,
+  };
 
-const mockUser = {
-  id: 1,
-  name: 'John Doe',
-  email: 'john@example.com',
-  bio: 'A regular guy.',
-};
+  const setup = (overrides = {}) => {
+    const props = {
+      ...mockTodo,
+      onToggle: jest.fn(),
+      onDelete: jest.fn(),
+      ...overrides,
+    };
 
-describe('UserProfile Component', () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
+    render(<TodoItem {...props} />);
+    return props;
+  };
+
+  test('renders todo text', () => {
+    setup();
+    expect(screen.getByText(/buy groceries/i)).toBeInTheDocument();
   });
 
-  test('renders loading state initially', async () => {
-    api.fetchUser.mockResolvedValue(mockUser);
-    render(<UserProfile userId={1} />);
-    expect(screen.getByText(/loading/i)).toBeInTheDocument();
-    await waitFor(() => expect(api.fetchUser).toHaveBeenCalled());
+  test('calls onToggle when checkbox is clicked', () => {
+    const props = setup();
+    const checkbox = screen.getByRole('checkbox');
+    fireEvent.click(checkbox);
+    expect(props.onToggle).toHaveBeenCalledWith(mockTodo.id);
   });
 
-  test('displays user info after loading', async () => {
-    api.fetchUser.mockResolvedValue(mockUser);
-    render(<UserProfile userId={1} />);
-    expect(screen.getByText(/loading/i)).toBeInTheDocument();
-
-    const name = await screen.findByDisplayValue(mockUser.name);
-    expect(name).toBeInTheDocument();
-    expect(screen.getByDisplayValue(mockUser.email)).toBeInTheDocument();
-    expect(screen.getByDisplayValue(mockUser.bio)).toBeInTheDocument();
+  test('calls onDelete when delete button is clicked', () => {
+    const props = setup();
+    const deleteBtn = screen.getByRole('button', { name: /delete/i });
+    fireEvent.click(deleteBtn);
+    expect(props.onDelete).toHaveBeenCalledWith(mockTodo.id);
   });
 
-  test('handles API error gracefully', async () => {
-    api.fetchUser.mockRejectedValue(new Error('Failed to fetch user'));
-    render(<UserProfile userId={1} />);
-
-    const error = await screen.findByText(/failed to fetch user/i);
-    expect(error).toBeInTheDocument();
+  test('checkbox reflects completed state', () => {
+    setup({ completed: true });
+    const checkbox = screen.getByRole('checkbox');
+    expect(checkbox).toBeChecked();
   });
 
-  test('allows editing user fields', async () => {
-    api.fetchUser.mockResolvedValue(mockUser);
-    render(<UserProfile userId={1} />);
-    await screen.findByDisplayValue(mockUser.name);
-
-    const nameInput = screen.getByLabelText(/name/i);
-    fireEvent.change(nameInput, { target: { value: 'Jane Doe' } });
-    expect(nameInput.value).toBe('Jane Doe');
+  test('applies "completed" class when completed', () => {
+    setup({ completed: true });
+    const textEl = screen.getByText(/buy groceries/i);
+    expect(textEl).toHaveClass('completed');
   });
 
-  test('validates empty name field', async () => {
-    api.fetchUser.mockResolvedValue(mockUser);
-    render(<UserProfile userId={1} />);
-    await screen.findByDisplayValue(mockUser.name);
-
-    const nameInput = screen.getByLabelText(/name/i);
-    fireEvent.change(nameInput, { target: { value: '' } });
-
-    const saveBtn = screen.getByRole('button', { name: /save/i });
-    fireEvent.click(saveBtn);
-
-    const error = await screen.findByText(/name is required/i);
-    expect(error).toBeInTheDocument();
+  test('does not apply "completed" class when not completed', () => {
+    setup({ completed: false });
+    const textEl = screen.getByText(/buy groceries/i);
+    expect(textEl).not.toHaveClass('completed');
   });
 
-  test('submits updated user data', async () => {
-    api.fetchUser.mockResolvedValue(mockUser);
-    api.updateUser.mockResolvedValue({ ...mockUser, name: 'Jane Doe' });
-
-    render(<UserProfile userId={1} />);
-    await screen.findByDisplayValue(mockUser.name);
-
-    const nameInput = screen.getByLabelText(/name/i);
-    fireEvent.change(nameInput, { target: { value: 'Jane Doe' } });
-
-    const saveBtn = screen.getByRole('button', { name: /save/i });
-    fireEvent.click(saveBtn);
-
-    await waitFor(() => expect(api.updateUser).toHaveBeenCalledWith(1, expect.objectContaining({ name: 'Jane Doe' })));
-    const success = await screen.findByText(/profile updated/i);
-    expect(success).toBeInTheDocument();
+  test('checkbox has correct accessibility label', () => {
+    setup();
+    const checkbox = screen.getByRole('checkbox');
+    expect(checkbox).toHaveAccessibleName(/mark buy groceries as done/i);
   });
 
-  test('handles update error', async () => {
-    api.fetchUser.mockResolvedValue(mockUser);
-    api.updateUser.mockRejectedValue(new Error('Update failed'));
-
-    render(<UserProfile userId={1} />);
-    await screen.findByDisplayValue(mockUser.name);
-
-    const nameInput = screen.getByLabelText(/name/i);
-    fireEvent.change(nameInput, { target: { value: 'Jane Doe' } });
-
-    const saveBtn = screen.getByRole('button', { name: /save/i });
-    fireEvent.click(saveBtn);
-
-    const error = await screen.findByText(/update failed/i);
-    expect(error).toBeInTheDocument();
+  test('delete button has correct accessibility label', () => {
+    setup();
+    const deleteBtn = screen.getByRole('button', { name: /delete buy groceries/i });
+    expect(deleteBtn).toBeInTheDocument();
   });
 
-  test('cancel button resets form fields', async () => {
-    api.fetchUser.mockResolvedValue(mockUser);
-    render(<UserProfile userId={1} />);
-    await screen.findByDisplayValue(mockUser.name);
-
-    const nameInput = screen.getByLabelText(/name/i);
-    fireEvent.change(nameInput, { target: { value: 'Someone Else' } });
-
-    const cancelBtn = screen.getByRole('button', { name: /cancel/i });
-    fireEvent.click(cancelBtn);
-
-    expect(nameInput.value).toBe(mockUser.name);
+  test('matches snapshot when not completed', () => {
+    const { asFragment } = render(
+      <TodoItem {...mockTodo} onToggle={() => {}} onDelete={() => {}} />
+    );
+    expect(asFragment()).toMatchSnapshot();
   });
 
-  test('form does not submit if required fields are empty', async () => {
-    api.fetchUser.mockResolvedValue(mockUser);
-    render(<UserProfile userId={1} />);
-    await screen.findByDisplayValue(mockUser.name);
-
-    const nameInput = screen.getByLabelText(/name/i);
-    fireEvent.change(nameInput, { target: { value: '' } });
-
-    const saveBtn = screen.getByRole('button', { name: /save/i });
-    fireEvent.click(saveBtn);
-
-    expect(api.updateUser).not.toHaveBeenCalled();
-  });
-
-  test('form is disabled while submitting', async () => {
-    api.fetchUser.mockResolvedValue(mockUser);
-    let resolveUpdate;
-    const updatePromise = new Promise((res) => {
-      resolveUpdate = res;
-    });
-    api.updateUser.mockReturnValue(updatePromise);
-
-    render(<UserProfile userId={1} />);
-    await screen.findByDisplayValue(mockUser.name);
-
-    const saveBtn = screen.getByRole('button', { name: /save/i });
-    fireEvent.click(saveBtn);
-
-    expect(saveBtn).toBeDisabled();
-
-    resolveUpdate();
-    await waitFor(() => expect(saveBtn).not.toBeDisabled());
-  });
-
-  test('shows spinner while updating', async () => {
-    api.fetchUser.mockResolvedValue(mockUser);
-    let resolve;
-    const updatePromise = new Promise((res) => (resolve = res));
-    api.updateUser.mockReturnValue(updatePromise);
-
-    render(<UserProfile userId={1} />);
-    await screen.findByDisplayValue(mockUser.name);
-
-    const saveBtn = screen.getByRole('button', { name: /save/i });
-    fireEvent.click(saveBtn);
-
-    expect(screen.getByTestId('updating-spinner')).toBeInTheDocument();
-    resolve();
-  });
-
-  test('does not refetch on re-render with same userId', async () => {
-    api.fetchUser.mockResolvedValue(mockUser);
-    const { rerender } = render(<UserProfile userId={1} />);
-    await screen.findByDisplayValue(mockUser.name);
-    rerender(<UserProfile userId={1} />);
-    expect(api.fetchUser).toHaveBeenCalledTimes(1);
-  });
-
-  test('refetches if userId changes', async () => {
-    api.fetchUser.mockResolvedValue(mockUser);
-    const { rerender } = render(<UserProfile userId={1} />);
-    await screen.findByDisplayValue(mockUser.name);
-
-    const newUser = { id: 2, name: 'Alice', email: 'alice@example.com', bio: '' };
-    api.fetchUser.mockResolvedValueOnce(newUser);
-    rerender(<UserProfile userId={2} />);
-
-    const name = await screen.findByDisplayValue(newUser.name);
-    expect(name).toBeInTheDocument();
-  });
-
-  test('renders form fields with correct labels', async () => {
-    api.fetchUser.mockResolvedValue(mockUser);
-    render(<UserProfile userId={1} />);
-    await screen.findByDisplayValue(mockUser.name);
-
-    expect(screen.getByLabelText(/name/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/bio/i)).toBeInTheDocument();
-  });
-
-  test('matches snapshot', async () => {
-    api.fetchUser.mockResolvedValue(mockUser);
-    const { asFragment } = render(<UserProfile userId={1} />);
-    await screen.findByDisplayValue(mockUser.name);
+  test('matches snapshot when completed', () => {
+    const { asFragment } = render(
+      <TodoItem
+        {...mockTodo}
+        completed={true}
+        onToggle={() => {}}
+        onDelete={() => {}}
+      />
+    );
     expect(asFragment()).toMatchSnapshot();
   });
 });
