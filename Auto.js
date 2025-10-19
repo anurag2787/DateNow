@@ -1,86 +1,82 @@
-// ToastMessage.test.jsx
+// ConfirmModal.test.jsx
 import React from 'react';
-import { render, screen, fireEvent, act } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import ToastMessage from './ToastMessage';
+import ConfirmModal from './ConfirmModal';
 
-jest.useFakeTimers();
-
-describe('ToastMessage Component', () => {
-  const setup = (props = {}) => {
-    const defaultProps = {
-      message: 'Test notification',
-      type: 'success',
-      onClose: jest.fn(),
-      duration: null,
-      ...props,
-    };
-
-    render(<ToastMessage {...defaultProps} />);
-    return defaultProps;
+describe('ConfirmModal Component', () => {
+  const defaultProps = {
+    isOpen: true,
+    title: 'Delete Item',
+    message: 'Are you sure you want to delete this item?',
+    onConfirm: jest.fn(),
+    onCancel: jest.fn(),
   };
 
-  test('renders the message', () => {
+  const setup = (props = {}) => {
+    const finalProps = { ...defaultProps, ...props };
+    render(<ConfirmModal {...finalProps} />);
+    return finalProps;
+  };
+
+  test('renders title and message when open', () => {
     setup();
-    expect(screen.getByText(/test notification/i)).toBeInTheDocument();
+    expect(screen.getByText(/delete item/i)).toBeInTheDocument();
+    expect(screen.getByText(/are you sure/i)).toBeInTheDocument();
   });
 
-  test('renders success styling', () => {
-    setup({ type: 'success' });
-    const toast = screen.getByRole('alert');
-    expect(toast).toHaveClass('toast-success');
-  });
-
-  test('renders error styling', () => {
-    setup({ type: 'error' });
-    const toast = screen.getByRole('alert');
-    expect(toast).toHaveClass('toast-error');
-  });
-
-  test('renders info styling', () => {
-    setup({ type: 'info' });
-    const toast = screen.getByRole('alert');
-    expect(toast).toHaveClass('toast-info');
-  });
-
-  test('calls onClose when close button is clicked', () => {
+  test('calls onConfirm when "Yes" button is clicked', () => {
     const props = setup();
-    const closeButton = screen.getByRole('button', { name: /close/i });
-    fireEvent.click(closeButton);
-    expect(props.onClose).toHaveBeenCalled();
+    fireEvent.click(screen.getByRole('button', { name: /yes/i }));
+    expect(props.onConfirm).toHaveBeenCalled();
   });
 
-  test('auto closes after duration', () => {
-    const props = setup({ duration: 3000 });
-    act(() => {
-      jest.advanceTimersByTime(3000);
-    });
-    expect(props.onClose).toHaveBeenCalled();
-  });
-
-  test('does not auto close if duration is not provided', () => {
+  test('calls onCancel when "Cancel" button is clicked', () => {
     const props = setup();
-    act(() => {
-      jest.advanceTimersByTime(5000);
+    fireEvent.click(screen.getByRole('button', { name: /cancel/i }));
+    expect(props.onCancel).toHaveBeenCalled();
+  });
+
+  test('does not render when isOpen is false', () => {
+    setup({ isOpen: false });
+    expect(screen.queryByText(/delete item/i)).not.toBeInTheDocument();
+  });
+
+  test('has accessible role "dialog"', () => {
+    setup();
+    const dialog = screen.getByRole('dialog');
+    expect(dialog).toBeInTheDocument();
+  });
+
+  test('focus is on the modal when opened', () => {
+    setup();
+    const dialog = screen.getByRole('dialog');
+    expect(document.activeElement).toBe(dialog);
+  });
+
+  test('"Yes" and "Cancel" buttons are present', () => {
+    setup();
+    expect(screen.getByRole('button', { name: /yes/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /cancel/i })).toBeInTheDocument();
+  });
+
+  test('renders with custom title and message', () => {
+    setup({
+      title: 'Custom Title',
+      message: 'Custom message content',
     });
-    expect(props.onClose).not.toHaveBeenCalled();
+    expect(screen.getByText(/custom title/i)).toBeInTheDocument();
+    expect(screen.getByText(/custom message content/i)).toBeInTheDocument();
   });
 
-  test('has accessible alert role', () => {
-    setup();
-    const toast = screen.getByRole('alert');
-    expect(toast).toBeInTheDocument();
+  test('matches snapshot when open', () => {
+    const { asFragment } = render(<ConfirmModal {...defaultProps} />);
+    expect(asFragment()).toMatchSnapshot();
   });
 
-  test('close button is accessible', () => {
-    setup();
-    const button = screen.getByRole('button', { name: /close/i });
-    expect(button).toBeInTheDocument();
-  });
-
-  test('matches snapshot', () => {
+  test('matches snapshot when closed', () => {
     const { asFragment } = render(
-      <ToastMessage message="Snapshot!" type="info" onClose={() => {}} />
+      <ConfirmModal {...defaultProps} isOpen={false} />
     );
     expect(asFragment()).toMatchSnapshot();
   });
