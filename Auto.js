@@ -1,91 +1,87 @@
-// TodoItem.test.jsx
+// Removing because of the confict 
+// SearchBar.test.jsx
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import TodoItem from './TodoItem';
+import SearchBar from './SearchBar';
 
-describe('TodoItem Component', () => {
-  const mockTodo = {
-    id: 1,
-    text: 'Buy groceries',
-    completed: false,
-  };
-
-  const setup = (overrides = {}) => {
+describe('SearchBar Component', () => {
+  const setup = (value = '') => {
     const props = {
-      ...mockTodo,
-      onToggle: jest.fn(),
-      onDelete: jest.fn(),
-      ...overrides,
+      placeholder: 'Search users...',
+      value,
+      onChange: jest.fn(),
+      onSubmit: jest.fn(),
     };
 
-    render(<TodoItem {...props} />);
+    render(<SearchBar {...props} />);
     return props;
   };
 
-  test('renders todo text', () => {
+  test('renders input with placeholder', () => {
     setup();
-    expect(screen.getByText(/buy groceries/i)).toBeInTheDocument();
+    const input = screen.getByPlaceholderText(/search users/i);
+    expect(input).toBeInTheDocument();
   });
 
-  test('calls onToggle when checkbox is clicked', () => {
-    const props = setup();
-    const checkbox = screen.getByRole('checkbox');
-    fireEvent.click(checkbox);
-    expect(props.onToggle).toHaveBeenCalledWith(mockTodo.id);
+  test('renders current value in input', () => {
+    setup('admin');
+    const input = screen.getByDisplayValue('admin');
+    expect(input).toBeInTheDocument();
   });
 
-  test('calls onDelete when delete button is clicked', () => {
-    const props = setup();
-    const deleteBtn = screen.getByRole('button', { name: /delete/i });
-    fireEvent.click(deleteBtn);
-    expect(props.onDelete).toHaveBeenCalledWith(mockTodo.id);
+  test('calls onChange when typing', () => {
+    const props = setup('');
+    const input = screen.getByPlaceholderText(/search users/i);
+    fireEvent.change(input, { target: { value: 'john' } });
+    expect(props.onChange).toHaveBeenCalledWith('john');
   });
 
-  test('checkbox reflects completed state', () => {
-    setup({ completed: true });
-    const checkbox = screen.getByRole('checkbox');
-    expect(checkbox).toBeChecked();
+  test('calls onSubmit when Enter key is pressed', () => {
+    const props = setup('developer');
+    const input = screen.getByDisplayValue('developer');
+    fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' });
+    expect(props.onSubmit).toHaveBeenCalled();
   });
 
-  test('applies "completed" class when completed', () => {
-    setup({ completed: true });
-    const textEl = screen.getByText(/buy groceries/i);
-    expect(textEl).toHaveClass('completed');
+  test('calls onSubmit when search button is clicked', () => {
+    const props = setup('test');
+    const button = screen.getByRole('button', { name: /search/i });
+    fireEvent.click(button);
+    expect(props.onSubmit).toHaveBeenCalled();
   });
 
-  test('does not apply "completed" class when not completed', () => {
-    setup({ completed: false });
-    const textEl = screen.getByText(/buy groceries/i);
-    expect(textEl).not.toHaveClass('completed');
+  test('disables search button when input is empty', () => {
+    setup('');
+    const button = screen.getByRole('button', { name: /search/i });
+    expect(button).toBeDisabled();
   });
 
-  test('checkbox has correct accessibility label', () => {
+  test('enables search button when input is not empty', () => {
+    setup('foo');
+    const button = screen.getByRole('button', { name: /search/i });
+    expect(button).toBeEnabled();
+  });
+
+  test('input has accessible name', () => {
     setup();
-    const checkbox = screen.getByRole('checkbox');
-    expect(checkbox).toHaveAccessibleName(/mark buy groceries as done/i);
+    const input = screen.getByRole('textbox');
+    expect(input).toHaveAccessibleName(/search users/i);
   });
 
-  test('delete button has correct accessibility label', () => {
-    setup();
-    const deleteBtn = screen.getByRole('button', { name: /delete buy groceries/i });
-    expect(deleteBtn).toBeInTheDocument();
+  test('search button has accessible name', () => {
+    setup('abc');
+    const button = screen.getByRole('button', { name: /search/i });
+    expect(button).toBeInTheDocument();
   });
 
-  test('matches snapshot when not completed', () => {
+  test('matches snapshot', () => {
     const { asFragment } = render(
-      <TodoItem {...mockTodo} onToggle={() => {}} onDelete={() => {}} />
-    );
-    expect(asFragment()).toMatchSnapshot();
-  });
-
-  test('matches snapshot when completed', () => {
-    const { asFragment } = render(
-      <TodoItem
-        {...mockTodo}
-        completed={true}
-        onToggle={() => {}}
-        onDelete={() => {}}
+      <SearchBar
+        placeholder="Search..."
+        value="hello"
+        onChange={() => {}}
+        onSubmit={() => {}}
       />
     );
     expect(asFragment()).toMatchSnapshot();
