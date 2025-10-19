@@ -1,88 +1,86 @@
-// Removing because of the confict 
-// SearchBar.test.jsx
+// ToastMessage.test.jsx
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import SearchBar from './SearchBar';
+import ToastMessage from './ToastMessage';
 
-describe('SearchBar Component', () => {
-  const setup = (value = '') => {
-    const props = {
-      placeholder: 'Search users...',
-      value,
-      onChange: jest.fn(),
-      onSubmit: jest.fn(),
+jest.useFakeTimers();
+
+describe('ToastMessage Component', () => {
+  const setup = (props = {}) => {
+    const defaultProps = {
+      message: 'Test notification',
+      type: 'success',
+      onClose: jest.fn(),
+      duration: null,
+      ...props,
     };
 
-    render(<SearchBar {...props} />);
-    return props;
+    render(<ToastMessage {...defaultProps} />);
+    return defaultProps;
   };
 
-  test('renders input with placeholder', () => {
+  test('renders the message', () => {
     setup();
-    const input = screen.getByPlaceholderText(/search users/i);
-    expect(input).toBeInTheDocument();
+    expect(screen.getByText(/test notification/i)).toBeInTheDocument();
   });
 
-  test('renders current value in input', () => {
-    setup('admin');
-    const input = screen.getByDisplayValue('admin');
-    expect(input).toBeInTheDocument();
+  test('renders success styling', () => {
+    setup({ type: 'success' });
+    const toast = screen.getByRole('alert');
+    expect(toast).toHaveClass('toast-success');
   });
 
-  test('calls onChange when typing', () => {
-    const props = setup('');
-    const input = screen.getByPlaceholderText(/search users/i);
-    fireEvent.change(input, { target: { value: 'john' } });
-    expect(props.onChange).toHaveBeenCalledWith('john');
+  test('renders error styling', () => {
+    setup({ type: 'error' });
+    const toast = screen.getByRole('alert');
+    expect(toast).toHaveClass('toast-error');
   });
 
-  test('calls onSubmit when Enter key is pressed', () => {
-    const props = setup('developer');
-    const input = screen.getByDisplayValue('developer');
-    fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' });
-    expect(props.onSubmit).toHaveBeenCalled();
+  test('renders info styling', () => {
+    setup({ type: 'info' });
+    const toast = screen.getByRole('alert');
+    expect(toast).toHaveClass('toast-info');
   });
 
-  test('calls onSubmit when search button is clicked', () => {
-    const props = setup('test');
-    const button = screen.getByRole('button', { name: /search/i });
-    fireEvent.click(button);
-    expect(props.onSubmit).toHaveBeenCalled();
+  test('calls onClose when close button is clicked', () => {
+    const props = setup();
+    const closeButton = screen.getByRole('button', { name: /close/i });
+    fireEvent.click(closeButton);
+    expect(props.onClose).toHaveBeenCalled();
   });
 
-  test('disables search button when input is empty', () => {
-    setup('');
-    const button = screen.getByRole('button', { name: /search/i });
-    expect(button).toBeDisabled();
+  test('auto closes after duration', () => {
+    const props = setup({ duration: 3000 });
+    act(() => {
+      jest.advanceTimersByTime(3000);
+    });
+    expect(props.onClose).toHaveBeenCalled();
   });
 
-  test('enables search button when input is not empty', () => {
-    setup('foo');
-    const button = screen.getByRole('button', { name: /search/i });
-    expect(button).toBeEnabled();
+  test('does not auto close if duration is not provided', () => {
+    const props = setup();
+    act(() => {
+      jest.advanceTimersByTime(5000);
+    });
+    expect(props.onClose).not.toHaveBeenCalled();
   });
 
-  test('input has accessible name', () => {
+  test('has accessible alert role', () => {
     setup();
-    const input = screen.getByRole('textbox');
-    expect(input).toHaveAccessibleName(/search users/i);
+    const toast = screen.getByRole('alert');
+    expect(toast).toBeInTheDocument();
   });
 
-  test('search button has accessible name', () => {
-    setup('abc');
-    const button = screen.getByRole('button', { name: /search/i });
+  test('close button is accessible', () => {
+    setup();
+    const button = screen.getByRole('button', { name: /close/i });
     expect(button).toBeInTheDocument();
   });
 
   test('matches snapshot', () => {
     const { asFragment } = render(
-      <SearchBar
-        placeholder="Search..."
-        value="hello"
-        onChange={() => {}}
-        onSubmit={() => {}}
-      />
+      <ToastMessage message="Snapshot!" type="info" onClose={() => {}} />
     );
     expect(asFragment()).toMatchSnapshot();
   });
