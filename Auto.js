@@ -1,3 +1,4 @@
+// Removing because of the confict 
 // SearchBar.test.jsx
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
