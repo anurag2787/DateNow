@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-.flex-hidescroll::-webkit-scrollbar {
+/* .flex-hidescroll::-webkit-scrollbar {
     display:none;
+} */
+
+body {
+  overflow: hidden; /* removes both vertical & horizontal scrollbars */
 }
