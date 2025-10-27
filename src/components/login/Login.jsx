@@ -1,25 +1,32 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import PasswordStrengthBar from "react-password-strength-bar";
 import { Check, Eye, EyeOff, X } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import {
-  getAuth,
+  // getAuth,
   onAuthStateChanged,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signInWithPopup,
   GoogleAuthProvider,
-  updateProfile,
+  fetchSignInMethodsForEmail,
+  deleteUser
+  // updateProfile,
 } from "firebase/auth";
 import { auth } from "../../auth";
 import { Mail, Lock, User, ArrowRight } from "lucide-react";
 import { toast } from "react-toastify";
+import OTPVerification from "../OTP/otp-verfication";
+import { useOTP } from "../../context/OTPContext";
 const provider = new GoogleAuthProvider();
 
 function Login() {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
+  const {isOTP,setIsOTP,sendOTP} = useOTP()
+  const [isVerifying, setIsVerifying] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
@@ -29,19 +36,17 @@ function Login() {
   const params = new URLSearchParams(location.search);
   const redirectPath = params.get("redirect") || "/";
 
-  useEffect(() => {
-    console.log(redirectPath);
-  }, []);
+  // Removed debug log effect
 
   // Check if user is already logged in
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        navigate(redirectPath); // Redirect if already logged in
+      if (user && !isVerifying) {
+        navigate(redirectPath); // Redirect if already logged in and not in verification flow
       }
     });
     return () => unsubscribe();
-  }, [navigate]);
+  }, [navigate, isVerifying, redirectPath]);
 
   function validatePassword(password) {
     const minLength = 8;
@@ -78,6 +83,11 @@ function Login() {
         <span className={val ? "text-green-600" : "text-gray-600"}>{text}</span>
       </li>
     );
+  };
+
+  ValidIndicator.propTypes = {
+    val: PropTypes.bool.isRequired,
+    text: PropTypes.string.isRequired,
   };
 
 
@@ -119,7 +129,41 @@ function Login() {
         setIsLogin(true);
       } else {
         if (isValid) {
-          const userCredential = await createUserWithEmailAndPassword(
+          setIsVerifying(true);
+          // Robust duplicate check: attempt temp account create, then delete, then send OTP
+          const normalizedEmail = email.trim().toLowerCase();
+          try {
+            const tempCred = await createUserWithEmailAndPassword(auth, normalizedEmail, password);
+            // Account created => delete immediately and proceed to OTP
+            try {
+              await deleteUser(tempCred.user);
+            } catch (delErr) {
+              console.warn('Temporary user deletion failed:', delErr);
+            }
+            await sendOTP(username, normalizedEmail);
+            setIsOTP(true);
+          } catch (err) {
+            if (err.code === 'auth/email-already-in-use') {
+              
+              toast.error('User Already Exists');
+              return;
+            }
+            // Fallback: if API available, try provider methods check
+            try {
+              const methods = await fetchSignInMethodsForEmail(auth, normalizedEmail);
+              if (methods && methods.length > 0) {
+                toast.error('User Already Exists');
+                return;
+              }
+            } catch (fallbackErr) {
+              console.warn('fetchSignInMethodsForEmail fallback failed:', fallbackErr);
+            }
+            // Unknown error: surface message
+            throw err;
+          } finally {
+            setIsVerifying(false);
+          }
+/*           const userCredential = await createUserWithEmailAndPassword(
             auth,
             email,
             password
@@ -140,7 +184,7 @@ function Login() {
             theme: "dark",
           });
           navigate(redirectPath);
-          setIsLogin(true);
+          setIsLogin(true); */
         }
       }
     } catch (error) {
@@ -150,6 +194,8 @@ function Login() {
       } else {
         setErrorMessage(error.message);
       }
+    } finally {
+      setIsVerifying(false);
     }
   };
 
@@ -188,7 +234,7 @@ function Login() {
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-transparent">
-      <div className="bg-[#ffdad7] p-8 md:p-12 rounded-xl shadow-2xl mx-5 md:mx-0 flex flex-col justify-between max-w-md w-full">
+      {isOTP ? <OTPVerification username={username} email={email} password={password} redirectPath={redirectPath} /> : <div className="bg-[#ffdad7] p-8 md:p-12 rounded-xl shadow-2xl mx-5 md:mx-0 flex flex-col justify-between max-w-md w-full">
         <div className="overflow-y-auto mb-4">
           <div className="space-y-6">
             <h1 className="text-3xl font-bold text-center mb-8 text-black">
@@ -327,9 +373,10 @@ function Login() {
 
               <button
                 type="submit"
-                className="w-full bg-gradient-to-r bg-[#e71f1f] hover:bg-[#F8A199] text-white hover:text-black py-3 rounded-lg font-medium shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2"
+                disabled={isVerifying}
+                className="w-full bg-gradient-to-r bg-[#e71f1f] hover:bg-[#F8A199] text-white hover:text-black py-3 rounded-lg font-medium shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
               >
-                {isLogin ? "Sign In" : "Create Account"}
+                {isVerifying ? "Verifying..." : (isLogin ? "Sign In" : "Create Account")}
                 <ArrowRight size={18} />
               </button>
             </form>
@@ -348,7 +395,7 @@ function Login() {
             </div>
           </div>
         </div>
-      </div>
+      </div>}
     </div>
   );
 }
