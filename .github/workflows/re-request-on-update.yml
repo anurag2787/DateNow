@@ -1,0 +1,23 @@
+name: Re-request Code Owner Review on PR Update
+
+on:
+  pull_request_target:
+    types: [synchronize]
+
+# Grant the action explicit permissions to write to pull requests
+permissions:
+  pull-requests: write
+  contents: read
+
+
+jobs:
+  re-request-review:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Re-request review from code owners
+        uses: peter-evans/re-request-review@v2
+        with:
+          reviewers: 'codeowners'
+          wait-for-mergeable: true
+          token: ${{ secrets.GITHUB_TOKEN }}
